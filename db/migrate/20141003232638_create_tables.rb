@@ -46,6 +46,8 @@ class CreateTables < ActiveRecord::Migration
       t.belongs_to :owner,    index: true, class_name: 'User'
       t.belongs_to :reviewer, index: true, class_name: 'User'
       t.integer :status,      default: 0, null: false
+      t.string :subject, null: false
+      t.string :commit_message, null: false
       t.timestamps
     end
 

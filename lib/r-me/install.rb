@@ -28,6 +28,11 @@ def install_rme_gem
   abort 'Failed to install r-me gem' unless $?.success?
 end
 
+def check_git_repository
+  # TODO: Check if the local git repository is the same referenced by
+  #       rme, check this using git remote show and git remote show -n
+end
+
 def configure_git
   puts 'Configuring git...'
   `git config --local rme.projectid #{$project_id}`
@@ -39,5 +44,6 @@ end
 puts "r-me command line interface installer for #{$project_name}\n"
 install_rme_gem unless check_rme_gem
 
+check_git_repository
 configure_git
 puts 'All done, type rme --help for more info.'

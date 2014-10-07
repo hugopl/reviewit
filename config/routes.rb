@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     member do
       get 'setup'
     end
+
+    resources :merge_requests, only: [:create, :update, :show]
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

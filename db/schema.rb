@@ -27,7 +27,9 @@ ActiveRecord::Schema.define(version: 20141003232638) do
     t.integer  "project_id"
     t.integer  "owner_id"
     t.integer  "reviewer_id"
-    t.integer  "status",      default: 0, null: false
+    t.integer  "status",         default: 0, null: false
+    t.string   "subject",                    null: false
+    t.string   "commit_message",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
