@@ -8,7 +8,7 @@ module Rme
       read_commit_diff
 
       if updating?
-        api.update_merge_request(@subject, @commit_message, @commit_diff, read_user_message)
+        api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, read_user_message)
       else
         mr_id = api.create_merge_request(@subject, @commit_message, @commit_diff)
         append_mr_id_to_commit(mr_id)
@@ -33,10 +33,10 @@ module Rme
     end
 
     def updating?
-      match = /^Rme-URL: (?<url>.*)$/.match @commit_message
+      match = /^Rme-MR-id: (?<id>\d+)$/.match @commit_message
       return false if match.nil?
 
-      @mr_url = match[:url]
+      @mr_id = match[:id]
     end
   end
 end

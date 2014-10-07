@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
   create_table "comments", force: true do |t|
     t.integer  "user_id",                 null: false
     t.integer  "patch_id"
-    t.text     "comment",    default: "", null: false
+    t.text     "content",    default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

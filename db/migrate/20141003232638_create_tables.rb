@@ -60,7 +60,7 @@ class CreateTables < ActiveRecord::Migration
     create_table :comments do |t|
       t.references :user,    null: false
       t.references :patch,   index: true
-      t.text       :comment, default: '', null: false
+      t.text       :content, default: '', null: false
       t.timestamps
     end
   end

@@ -3,6 +3,7 @@ class MergeRequestsController < ApplicationController
   before_action :authenticate_user_by_token!, :only => [:create, :update]
 
   def create
+    # TODO put this in a transaction
     mr = MergeRequest.new
     mr.project = project
     mr.owner = current_user
@@ -20,7 +21,28 @@ class MergeRequestsController < ApplicationController
   end
 
   def update
-    render json: "oi"
+    # TODO put this in a transaction
+    mr = project.merge_requests.find(params[:id]) or raise 'Merge request not found.'
+
+    mr.subject = params[:subject]
+    mr.commit_message = params[:commit_message]
+    mr.save!
+
+    # TODO avoid this code repetition
+    patch = Patch.new
+    patch.merge_request = mr
+    patch.diff = params[:diff]
+    patch.save!
+
+    comment = Comment.new
+    comment.patch = patch
+    comment.user = current_user
+    comment.content = params[:comments]
+    comment.save!
+
+    render json: ''
+  rescue RuntimeError
+    render text: $!.message, status: :not_found
   end
 
   def show
