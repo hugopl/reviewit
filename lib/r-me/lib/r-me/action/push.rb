@@ -1,7 +1,7 @@
 module Rme
   class Push < Action
 
-    RME_STAMP = "\nRme-URL: "
+    RME_STAMP = /^Rme-MR-id: (.*)$/
 
     def run
       read_commit_header
@@ -10,8 +10,8 @@ module Rme
       if updating?
         api.update_merge_request(@subject, @commit_message, @commit_diff, read_user_message)
       else
-        url = api.create_merge_request(@subject, @commit_message, @commit_diff)
-        append_url_to_commit(url)
+        mr_id = api.create_merge_request(@subject, @commit_message, @commit_diff)
+        append_mr_id_to_commit(mr_id)
       end
     end
   private
@@ -24,16 +24,19 @@ module Rme
       @commit_diff = `git show --format=""`
     end
 
-    def append_url_to_commit url
+    def append_mr_id_to_commit mr_id
       open('|git commit --amend -F -', 'w+') do |git|
         git.write @commit_message
-        git.write "\n\nRme-URL: #{url}\n"
+        git.write "\n\nRme-MR-id: #{mr_id}\n"
         git.close
       end
     end
 
     def updating?
-      @commit_message.include? RME_STAMP
+      match = /^Rme-URL: (?<url>.*)$/.match @commit_message
+      return false if match.nil?
+
+      @mr_url = match[:url]
     end
   end
 end

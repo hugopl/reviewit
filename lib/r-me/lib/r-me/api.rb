@@ -16,15 +16,19 @@ module Rme
     def create_merge_request subject, commit_message, diff
       puts "Creating merge request..."
       res = post('merge_requests', subject: subject, commit_message: commit_message, diff: diff)
-      url = @base_url + res['url']
+      url = url_for("merge_requests/#{res['mr_id']}")
       puts "Merge Request created at #{url}"
-      url
+      res['mr_id']
     end
 
   private
 
+    def url_for path
+      "#{@base_url}/projects/#{@project_id}/#{path}"
+    end
+
     def post url, args
-      uri = URI("#{@base_url}/projects/#{@project_id}/#{url}?api_token=#{@api_token}")
+      uri = URI("#{url_for(url)}?api_token=#{@api_token}")
       res = Net::HTTP.post_form(uri, args)
       raise res.body if res.code != '200'
       JSON.load(res.body)

@@ -15,7 +15,7 @@ class MergeRequestsController < ApplicationController
     patch.diff = params[:diff]
     patch.save!
 
-    result = { :url => project_merge_request_path(project, mr) }
+    result = { :mr_id => mr.id }
     render json: result
   end
 
