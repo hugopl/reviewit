@@ -8,17 +8,23 @@
 </head>
 <body>
 
-<div id="header">
-<div class="content">
-<span class="path"><%= link_to 'Home', projects_path %> / SomeProject</span>
-<div class="user-nav">
-  <%= current_user.name %>
-  <%= link_to 'settings', '/settings' %>
-  <%= link_to 'logout', '/users/sign_out', method: :delete %></div></div>
-</div>
-<div class="content">
-<%= yield %>
-</div>
-<div id="error_tips"></div>
+  <div id="header">
+  <div class="content">
+    <span class="path">
+      <%= link_to 'Home', projects_path %>
+      <%- unless @project.nil? %>
+        / <%= link_to @project.name, @project %>
+      <%- end %>
+    </span>
+    <div class="user-nav">
+      <%= current_user.name %>
+      <%= link_to 'settings', '/settings' %>
+      <%= link_to 'logout', '/users/sign_out', method: :delete %></div></div>
+    </div>
+  </div>
+  <div class="content">
+    <%= yield %>
+  </div>
+  <div id="error_tips"></div>
 </body>
 </html>

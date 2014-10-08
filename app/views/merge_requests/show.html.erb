@@ -1,0 +1,19 @@
+<h1><%= @mr.subject %></h1>
+
+<pre class="message"><%= @mr.commit_message %></pre>
+
+<% if patches.count %>
+<p>You have more than one patch...  hell yeah!</p>
+<% end %>
+
+<hr>
+
+<%= patch.diff %>
+
+<p>[comments goes here]</p>
+
+<div class="merge-bar">
+  <%= link_to 'Accept', project_merge_requests_path(@project, @mr), class: 'button accept' %>
+  <%= link_to 'Reject', project_merge_requests_path(@project, @mr), class: 'button reject' %>
+  <%= link_to 'Just push comments', project_merge_requests_path(@project, @mr), class: 'button comment' %>
+</div>

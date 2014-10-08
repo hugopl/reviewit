@@ -1,3 +1,50 @@
 // Place all the styles related to the merge_requests controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@mixin button($color: #777777, $bordercolor: #dcdcdc, $bgcolor1: #ededed, $bgcolor2: #dfdfdf) {
+  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  background: linear-gradient(to bottom, $bgcolor1 5%, $bgcolor2 100%);
+  border-radius: 6px;
+  border: 1px solid $bordercolor;
+  display: inline-block;
+  cursor: pointer;
+  color: $color;
+  font-family:arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffffff;
+
+  &:hover {
+    background: linear-gradient(to bottom, $bgcolor2 5%, $bgcolor1 100%);
+  }
+
+  &:active {
+    position:relative;
+    top:1px;
+  }
+}
+
+.button {
+  @include button;
+}
+
+pre.message {
+  font-family: sans-serif;
+  white-space: pre-wrap;
+}
+
+.merge-bar {
+  .comment {
+    margin-left: 50px;
+  }
+  .accept {
+    @include button(white, #83c41a, #b8e356, #a5cc52)
+  }
+  .reject {
+    @include button(white, #d83526, #fc8d83, #e4685d)
+  }
+}

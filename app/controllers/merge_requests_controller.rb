@@ -22,7 +22,7 @@ class MergeRequestsController < ApplicationController
 
   def update
     # TODO put this in a transaction
-    mr = project.merge_requests.find(params[:id]) or raise 'Merge request not found.'
+    mr = merge_request
 
     mr.subject = params[:subject]
     mr.commit_message = params[:commit_message]
@@ -46,6 +46,13 @@ class MergeRequestsController < ApplicationController
   end
 
   def show
-    render text: "oi"
+    @mr = merge_request
+  end
+
+  private
+
+  def merge_request
+    @project ||= current_user.projects.find_by_id(params[:project_id]) or raise 'Invalid project.'
+    project.merge_requests.find(params[:id]) or raise 'Merge request not found.'
   end
 end
