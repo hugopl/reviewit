@@ -38,3 +38,32 @@ html, body {
 h1 {
   font-size: 22px;
 }
+
+form {
+  width: 600px;
+}
+
+form > * {
+  margin: 5px;
+  vertical-align: top;
+}
+
+label + input {
+    display: block;
+}
+
+form label {
+  text-align: right;
+}
+form input, form textarea {
+  width: 300px;
+}
+
+.field_with_errors > * {
+  border: 1px solid red;
+}
+
+#error_tips .tpd-skin-dark .tpd-background-content,
+#error_tips tpd-skin-dark .tpd-background-title {
+  background-color: red;
+}
