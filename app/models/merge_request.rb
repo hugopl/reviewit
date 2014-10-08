@@ -6,4 +6,6 @@ class MergeRequest < ActiveRecord::Base
   has_many :patches
 
   enum status: [ :open, :waiting, :closed ]
+
+  scope :pending, -> { where('status < 2') }
 end

@@ -1,3 +1,38 @@
 // Place all the styles related to the Projects controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.review-list-header {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 18px;
+  border: 1px solid #e5e5e5;
+  border-bottom: none;
+  background-color: #f5f5f5;
+  padding: 10px;
+}
+
+.review-list {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 18px;
+
+  border: 1px solid #e5e5e5;
+  border-top: none;
+  padding: 10px;
+
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  .summary {
+    font-size: 12px;
+    color: #999;
+    font-weight: normal;
+  }
+}
+
+.review-list:hover {
+  background-color: #f9f9f9;
+}

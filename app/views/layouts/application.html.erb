@@ -10,7 +10,7 @@
 
 <div id="header">
 <div class="content">
-<%= collection_select(:project, :id, current_user.projects, :id, :name) %>
+<span class="path"><%= link_to 'Home', projects_path %> / SomeProject</span>
 <div class="user-nav">
   <%= current_user.name %>
   <%= link_to 'settings', '/settings' %>
