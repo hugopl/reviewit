@@ -14,3 +14,9 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(document).ready(function() {
+    var func = window[document.body.dataset.whoAmI];
+    if (func)
+        func();
+});

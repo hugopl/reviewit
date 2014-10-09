@@ -94,4 +94,34 @@ pre.message {
     color: #ccc;
     background-color: #fafafa;
   }
+
+  td > div.add-comment {
+    position: relative;
+    float: left;
+    width: 18px;
+    height: 18px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    visibility: hidden;
+    margin-left: -16px;
+    cursor: pointer;
+    display: inline-block;
+    background-image: linear-gradient(#5490ca, #4183c4);
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      transform: scale(1.5, 1.5);
+    }
+  }
+
+  td > div.add-comment:before {
+    font-weight: bold;
+    content: '✚';
+  }
+
+  tr:hover > td > div.add-comment {
+   visibility: visible;
+  }
 }

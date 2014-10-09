@@ -65,7 +65,7 @@ module MergeRequestsHelper
         @old_ln = $1.to_i
         @new_ln = $2.to_i
       else
-        @data = line[1..-2]
+        @data = line[0..-2]
         @old_ln = old_ln
         @new_ln = new_ln
 
@@ -75,6 +75,10 @@ module MergeRequestsHelper
     end
 
     attr_reader :data
+
+    def id
+      0
+    end
 
     def old_ln
       case @type

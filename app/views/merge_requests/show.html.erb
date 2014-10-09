@@ -16,7 +16,7 @@
     <tr class="<%= line.type %>">
       <td><%= line.old_ln %></td>
       <td><%= line.new_ln %></td>
-      <td><%= line.data %></td>
+      <td><div class="add-comment" data-line="<%= line.id %>"></div><%= line.data %></td>
     </tr>
   <% end %>
   </table>
