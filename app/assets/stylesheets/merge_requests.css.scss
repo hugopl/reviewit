@@ -48,3 +48,50 @@ pre.message {
     @include button(white, #d83526, #fc8d83, #e4685d)
   }
 }
+
+.code-review {
+  width: 100%;
+  border-spacing: 0px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  th {
+    border-bottom: 1px solid #ccc;
+    background-color: #eee;
+  }
+
+  tr > td:nth-child(1), tr > td:nth-child(2) {
+    text-align: right;
+    background-color: whitesmoke;
+    border-right: 1px solid #ccc;
+  }
+  td {
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+    padding: 0px 6px 0px 6px;
+  }
+  .add > td:nth-child(3) {
+    background-color: #cfd;
+  }
+  .add > td:nth-child(1), .add > td:nth-child(2) {
+    background-color: #cfc;
+    border-right: 1px solid #b9e7b9;
+  }
+  .del > td:nth-child(3) {
+    background-color: #fdd;
+  }
+  .del > td:nth-child(1), .del > td:nth-child(2) {
+    background-color: #fcc;
+    border-right: 1px solid #e7baba;
+  }
+  .info > td:nth-child(3) {
+    color: #ccc;
+    background-color: #fafafa;
+  }
+}

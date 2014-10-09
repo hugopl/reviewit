@@ -6,9 +6,21 @@
 <p>You have more than one patch...  hell yeah!</p>
 <% end %>
 
-<hr>
+<% process_diff(patch.diff) do |file| %>
+  <table class="code-review">
+    <tr>
+      <th colspan="3"><%= file.name %></th>
+    </tr>
 
-<%= patch.diff %>
+  <% file.each_line do |line| %>
+    <tr class="<%= line.type %>">
+      <td><%= line.old_ln %></td>
+      <td><%= line.new_ln %></td>
+      <td><%= line.data %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
 
 <p>[comments goes here]</p>
 
