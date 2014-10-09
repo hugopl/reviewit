@@ -12,8 +12,17 @@
   <div class="content">
     <span class="path">
       <%= link_to 'Home', projects_path %>
-      <%- unless @project.nil? %>
+      <%- if under? 'projects' %>
         / <%= link_to @project.name, @project %>
+      <%- end %>
+      <%- if under_index_of? 'merge_requests' %>
+        / <%= link_to 'Merge Requests', project_merge_requests_path(@project) %>
+      <%- end %>
+      <%- if under? 'merge_requests' %>
+        / <%=
+        # A rails bug, project_merge_requests_path is returning project/:id/merge_requests.:id
+        link_to(@mr.id, project_merge_requests_path(@project, @mr).gsub(".", "/"))
+         %>
       <%- end %>
     </span>
     <div class="user-nav">

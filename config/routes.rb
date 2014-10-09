@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get 'setup'
     end
 
-    resources :merge_requests, only: [:create, :update, :show]
+    resources :merge_requests, only: [:create, :update, :show, :index]
   end
 
   # Example of regular route:

@@ -12,4 +12,19 @@ module ApplicationHelper
 
     javascript_tag(script)
   end
+
+  def under_index_of? section
+    path_info.include? section
+  end
+
+  def under? section
+    index = path_info.index section
+    index and index < (path_info.count - 1)
+  end
+
+  private
+
+  def path_info
+    @path_info ||= request.env['PATH_INFO'].split('/')
+  end
 end

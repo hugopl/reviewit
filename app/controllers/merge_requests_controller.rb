@@ -45,6 +45,10 @@ class MergeRequestsController < ApplicationController
     render text: $!.message, status: :not_found
   end
 
+  def index
+    @project = current_user.projects.find_by_id(params[:project_id])
+  end
+
   def show
     @mr = merge_request
   end
