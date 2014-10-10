@@ -7,7 +7,7 @@ require 'r-me/version.rb'
 
 module Rme
 
-  ACTIONS = %w(push abort).freeze
+  ACTIONS = %w(push abort list).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "r-me/action/#{action}.rb"
   end

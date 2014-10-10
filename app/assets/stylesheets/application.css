@@ -79,3 +79,12 @@ label + input, label + div > input {
 .path a {
  text-decoration: none;
 }
+
+a:hover {
+  color: #439fe0;
+  text-decoration: underline;
+}
+a, a:visited {
+  color: #2a80b9;
+  text-decoration: none;
+}
