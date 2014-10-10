@@ -7,15 +7,19 @@ window.merge_requests = ->
   $("td > div.add-comment").on 'click', (event) ->
     show_comment_box(event.target.parentElement.parentElement, event.target.dataset.line)
 
+  $('#push-comments').on 'click', (event) ->
+    false
+
 show_comment_box = (tr, line) ->
   if tr.dataset.expanded == 'true'
     $(tr.nextSibling).find('textarea').focus()
     return
   tr.dataset.expanded = true
+  location = tr.dataset.location
 
   html = "<tr><td colspan='3' class='add-comment'>\
-           <textarea placeholder='Leave a comment'></textarea>\
-           <a class='button cancel' onclick='hide_comment_box(this);'>Cancel</a>
+           <textarea placeholder='Leave a comment' name='comments[#{location}]'></textarea>\
+           <input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>
            </td></tr>"
   $(html).insertAfter tr
 
@@ -23,3 +27,4 @@ window.hide_comment_box = (cancel_link) ->
   tr = cancel_link.parentElement.parentElement
   tr.previousSibling.dataset.expanded = false
   $(tr).remove()
+

@@ -4,11 +4,14 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   resources :projects do
-    member do
-      get 'setup'
-    end
+    resources :merge_requests, only: [:update, :show, :index]
+  end
 
-    resources :merge_requests, only: [:create, :update, :show, :index]
+  namespace :api do
+    resources :projects, only: [:setup] do
+      get 'setup', on: :member
+      resources :merge_requests, only: [:create, :update, :index]
+    end
   end
 
   # Example of regular route:

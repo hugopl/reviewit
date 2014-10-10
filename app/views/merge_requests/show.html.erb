@@ -2,9 +2,8 @@
 
 <pre class="message"><%= @mr.commit_message %></pre>
 
-<% if patches.count %>
-<p>You have more than one patch...  hell yeah!</p>
-<% end %>
+<%= form_tag nil, method: 'patch' do %>
+<%= hidden_field_tag(:patch_id, @patch.id) %>
 
 <% process_diff(patch.diff) do |file| %>
   <table class="code-review">
@@ -25,7 +24,9 @@
 <p>[comments goes here]</p>
 
 <div class="merge-bar">
-  <%= link_to 'Accept', project_merge_request_path(@project, @mr), class: 'button accept' %>
-  <%= link_to 'Reject', project_merge_request_path(@project, @mr), class: 'button reject' %>
-  <%= link_to 'Just push comments', project_merge_request_path(@project, @mr), class: 'button comment' %>
+  <input type="submit" value="Accept" class="accept">
+  <input type="submit" value="Reject" class="reject">
+
+  <input type="submit" value="Just push comments" class="push-comments">
 </div>
+<% end %>

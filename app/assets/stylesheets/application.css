@@ -44,15 +44,6 @@ h1 {
   font-size: 24px;
 }
 
-form {
-  width: 600px;
-}
-
-form > * {
-  margin: 5px;
-  vertical-align: top;
-}
-
 label + input {
     display: block;
 }

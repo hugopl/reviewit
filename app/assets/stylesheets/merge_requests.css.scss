@@ -20,20 +20,24 @@
 
   &:hover {
     background: linear-gradient(to bottom, $bgcolor2 5%, $bgcolor1 100%);
-    color: $color;
-    text-decoration: none;
   }
 
   &:active {
-    color: $color;
-    text-decoration: none;
     position:relative;
     top:1px;
   }
 }
 
-.button {
+input[type=submit], input[type=button] {
   @include button;
+
+  &.accept {
+    @include button(white, #83c41a, #b8e356, #a5cc52)
+  }
+
+  &.reject {
+    @include button(white, #d83526, #fc8d83, #e4685d)
+  }
 }
 
 pre.message {
@@ -45,11 +49,9 @@ pre.message {
   .comment {
     margin-left: 50px;
   }
-  .accept {
-    @include button(white, #83c41a, #b8e356, #a5cc52)
-  }
-  .reject {
-    @include button(white, #d83526, #fc8d83, #e4685d)
+
+  input[type=submit].push-comments {
+    float: right;
   }
 }
 

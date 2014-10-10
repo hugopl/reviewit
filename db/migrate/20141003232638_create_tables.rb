@@ -61,6 +61,7 @@ class CreateTables < ActiveRecord::Migration
       t.references :user,    null: false
       t.references :patch,   index: true
       t.text       :content, default: '', null: false
+      t.integer    :location, default: 0
       t.timestamps
     end
   end

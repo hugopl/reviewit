@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
     t.integer  "user_id",                 null: false
     t.integer  "patch_id"
     t.text     "content",    default: "", null: false
+    t.integer  "location",   default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
