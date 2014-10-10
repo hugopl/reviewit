@@ -13,7 +13,7 @@
     </tr>
 
   <% file.each_line do |line| %>
-    <tr class="<%= line.type %>">
+    <tr class="<%= line.type %>" data-location="<%= line.location %>">
       <td><%= line.old_ln %></td>
       <td><%= line.new_ln %></td>
       <td><div class="add-comment" data-line="<%= line.id %>"></div><%= line.data %></td>
@@ -25,7 +25,7 @@
 <p>[comments goes here]</p>
 
 <div class="merge-bar">
-  <%= link_to 'Accept', project_merge_requests_path(@project, @mr), class: 'button accept' %>
-  <%= link_to 'Reject', project_merge_requests_path(@project, @mr), class: 'button reject' %>
-  <%= link_to 'Just push comments', project_merge_requests_path(@project, @mr), class: 'button comment' %>
+  <%= link_to 'Accept', project_merge_request_path(@project, @mr), class: 'button accept' %>
+  <%= link_to 'Reject', project_merge_request_path(@project, @mr), class: 'button reject' %>
+  <%= link_to 'Just push comments', project_merge_request_path(@project, @mr), class: 'button comment' %>
 </div>

@@ -84,7 +84,7 @@ a:hover {
   color: #439fe0;
   text-decoration: underline;
 }
-a, a:visited {
+a {
   color: #2a80b9;
   text-decoration: none;
 }

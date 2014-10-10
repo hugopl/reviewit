@@ -20,9 +20,13 @@
 
   &:hover {
     background: linear-gradient(to bottom, $bgcolor2 5%, $bgcolor1 100%);
+    color: $color;
+    text-decoration: none;
   }
 
   &:active {
+    color: $color;
+    text-decoration: none;
     position:relative;
     top:1px;
   }
@@ -123,5 +127,17 @@ pre.message {
 
   tr:hover > td > div.add-comment {
    visibility: visible;
+  }
+
+  tr > td.add-comment {
+    padding: 10px;
+
+    textarea {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 0px 0px 10px 0px;
+    }
   }
 }

@@ -19,10 +19,7 @@
         / <%= link_to 'Merge Requests', project_merge_requests_path(@project) %>
       <%- end %>
       <%- if under? 'merge_requests' %>
-        / <%=
-        # A rails bug, project_merge_requests_path is returning project/:id/merge_requests.:id
-        link_to(@mr.id, project_merge_requests_path(@project, @mr).gsub(".", "/"))
-         %>
+        / <%= link_to(@mr.id, project_merge_request_path(@project, @mr).gsub(".", "/")) %>
       <%- end %>
     </span>
     <div class="user-nav">

@@ -3,8 +3,23 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 window.merge_requests = ->
+  # Click to add a comment
   $("td > div.add-comment").on 'click', (event) ->
-    show_comment_box(event.target.dataset.line)
+    show_comment_box(event.target.parentElement.parentElement, event.target.dataset.line)
 
-show_comment_box = (line) ->
-  console.log "add comment on line #{line}"
+show_comment_box = (tr, line) ->
+  if tr.dataset.expanded == 'true'
+    $(tr.nextSibling).find('textarea').focus()
+    return
+  tr.dataset.expanded = true
+
+  html = "<tr><td colspan='3' class='add-comment'>\
+           <textarea placeholder='Leave a comment'></textarea>\
+           <a class='button cancel' onclick='hide_comment_box(this);'>Cancel</a>
+           </td></tr>"
+  $(html).insertAfter tr
+
+window.hide_comment_box = (cancel_link) ->
+  tr = cancel_link.parentElement.parentElement
+  tr.previousSibling.dataset.expanded = false
+  $(tr).remove()

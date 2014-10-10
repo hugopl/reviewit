@@ -19,7 +19,7 @@ module ApplicationHelper
 
   def under? section
     index = path_info.index section
-    index and index < (path_info.count - 1)
+    index and index < (path_info.count - 1) and path_info[index + 1] =~ /\A\d+\z/
   end
 
   private

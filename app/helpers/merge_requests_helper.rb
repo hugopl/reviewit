@@ -19,10 +19,14 @@ module MergeRequestsHelper
 
   def process_diff diff, &block
     it = diff.each_line
+    location = 0
     loop do
       line = it.next
+      location += 1
       next unless line.start_with? '+++'
-      yield DiffFile.new(line, it)
+      diff_file = DiffFile.new(line, it, location)
+      yield diff_file
+      location = diff_file.location
     end
   rescue StopIteration
   end
@@ -30,18 +34,21 @@ module MergeRequestsHelper
   private
 
   class DiffFile
-    def initialize line, it
+    def initialize line, it, location
       @it = it
+      @location = location
       @name = line[6..-1]
     end
 
     attr_reader :name
+    attr_reader :location
 
     def each_line
       old_ln = 0
       new_ln = 0
       loop do
-        diffline = DiffLine.new(@it.next, old_ln, new_ln)
+        @location += 1
+        diffline = DiffLine.new(@it.next, old_ln, new_ln, @location)
         yield diffline
         old_ln, new_ln = diffline.line_numbers
       end
@@ -56,8 +63,9 @@ module MergeRequestsHelper
       '+' => :add,
       ' ' => :nil
     }.freeze
-    def initialize line, old_ln, new_ln
+    def initialize line, old_ln, new_ln, location
       @type = (LINE_TYPES[line.first] or :nil)
+      @location = location
 
       if @type == :info
         @data = line[0..-1]
@@ -75,6 +83,7 @@ module MergeRequestsHelper
     end
 
     attr_reader :data
+    attr_reader :location
 
     def id
       0

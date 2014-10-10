@@ -15,8 +15,10 @@
 //= require turbolinks
 //= require_tree .
 
-$(document).ready(function() {
-    var func = window[document.body.dataset.whoAmI];
-    if (func)
-        func();
-});
+var ready = function() {
+  var func = window[document.body.dataset.whoAmI];
+  if (func)
+    func();
+}
+$(document).ready(ready);
+$(document).on('page:load', ready);
