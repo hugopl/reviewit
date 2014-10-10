@@ -19,6 +19,10 @@ var ready = function() {
   var func = window[document.body.dataset.whoAmI];
   if (func)
     func();
+
+  $(".tipped").each(function(idx, item) {
+    Tipped.create(item, item.dataset.tip);
+  });
 }
 $(document).ready(ready);
 $(document).on('page:load', ready);
