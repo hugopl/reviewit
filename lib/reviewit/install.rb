@@ -11,21 +11,21 @@ def puts text
 end
 
 def check_rme_gem
-  puts 'Checking r-me gem...'
+  puts 'Checking reviewit gem...'
   `gem list r-me -i`
   $?.success?
 end
 
 def install_rme_gem
   gem_file = "/tmp/#{File.basename($gem_url)}"
-  puts 'Downloading r-me gem...'
+  puts 'Downloading reviewit gem...'
   File.open(gem_file, 'wb') do |f|
     f.write(Net::HTTP.get(URI($gem_url)))
   end
 
-  puts 'Installing r-me gem...'
+  puts 'Installing reviewit gem...'
   `gem install #{gem_file}`
-  abort 'Failed to install r-me gem' unless $?.success?
+  abort 'Failed to install reviewit gem' unless $?.success?
 end
 
 def check_git_repository
@@ -41,9 +41,9 @@ def configure_git
   abort 'Error configuring git for rme.' unless $?.success?
 end
 
-puts "r-me command line interface installer for #{$project_name}\n"
+puts "reviewit command line interface installer for #{$project_name}\n"
 install_rme_gem unless check_rme_gem
 
 check_git_repository
 configure_git
-puts 'All done, type rme --help for more info.'
+puts 'All done, type review --help to know what you can do.'

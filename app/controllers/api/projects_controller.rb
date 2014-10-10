@@ -1,4 +1,4 @@
-require Rails.root.join('lib', 'r-me', 'lib', 'r-me', 'version.rb')
+require Rails.root.join('lib', 'reviewit', 'lib', 'reviewit', 'version.rb')
 
 module Api
   class ProjectsController < ApiController
@@ -10,7 +10,7 @@ module Api
 
     def r_me_script
       port = request.port != 80 ? ":#{request.port}" : ''
-      gem_url = "#{request.protocol}#{request.host}#{port}/r-me-#{Rme::VERSION}.gem"
+      gem_url = "#{request.protocol}#{request.host}#{port}/reviewit-#{Reviewit::VERSION}.gem"
 
       <<-eos
       $base_url = "#{request.protocol}#{request.host}#{port}/api"

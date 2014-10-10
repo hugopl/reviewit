@@ -1,11 +1,11 @@
 require 'trollop'
 require 'awesome_print'
 
-require 'r-me/api.rb'
-require 'r-me/action/action.rb'
-require 'r-me/version.rb'
+require 'reviewit/api.rb'
+require 'reviewit/action/action.rb'
+require 'reviewit/version.rb'
 
-module Rme
+module Reviewit
 
   ACTIONS = %w(push abort list).freeze
   ACTIONS.each do |action|

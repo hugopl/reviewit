@@ -1,4 +1,4 @@
-module Rme
+module Reviewit
   class Action
     def initialize(api, options)
       @api = api

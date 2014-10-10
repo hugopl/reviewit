@@ -1,4 +1,4 @@
-module Rme
+module Reviewit
   class Push < Action
 
     RME_STAMP = /^Rme-MR-id: (.*)$/

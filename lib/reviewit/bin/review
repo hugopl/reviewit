@@ -3,6 +3,6 @@
 lib_dir = "#{File.dirname(__FILE__)}/../lib/"
 $: << lib_dir unless $:.include? lib_dir
 
-require 'r-me'
+require 'reviewit'
 
-Rme::App.new.run
+Reviewit::App.new.run

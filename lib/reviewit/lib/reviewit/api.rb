@@ -1,7 +1,7 @@
 require 'net/http'
 require 'json'
 
-module Rme
+module Reviewit
   class Api
     def initialize base_url, project_id, api_token
       @base_url = base_url

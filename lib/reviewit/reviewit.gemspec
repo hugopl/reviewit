@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.authors     = ['Hugo Parente Lima']
   s.email       = ['hugo.pl@gmail.com']
   s.homepage    = 'http://hugopl.github.io/'
-  s.summary     = 'R-me command line interface.'
-  s.description = 'R-me command line interface, because some times Web interface sux.'
+  s.summary     = 'Reviewit command line interface.'
+  s.description = 'Reviewit command line interface, because sometimes Web interface sux.'
   s.license     = 'MIT'
 
   s.add_runtime_dependency 'trollop', '~> 2.0'
