@@ -1,0 +1,29 @@
+.devise {
+ display: flex;
+
+ .content {
+   width: 400px;
+   margin: auto;
+   padding: 10px;
+
+  h1 {
+    text-align: center;
+  }
+
+  .submit {
+    text-align: center;
+  }
+
+  .links {
+    text-align: right;
+  }
+
+  input[type=email], input[type=password] {
+    width: 100%;
+  }
+
+  form > div:last-child {
+   text-align: right;
+  }
+ }
+}
