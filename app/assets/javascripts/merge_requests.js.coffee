@@ -22,6 +22,7 @@ show_comment_box = (tr, line) ->
            <input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>
            </td></tr>"
   $(html).insertAfter tr
+  $(tr.nextSibling).find('textarea').focus()
 
 window.hide_comment_box = (cancel_link) ->
   tr = cancel_link.parentElement.parentElement

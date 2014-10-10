@@ -46,6 +46,7 @@ pre.message {
 }
 
 .merge-bar {
+  margin-top: 20px;
   .comment {
     margin-left: 50px;
   }
@@ -140,6 +141,20 @@ pre.message {
       width: 100%;
       padding: 10px;
       margin: 0px 0px 10px 0px;
+    }
+  }
+
+  td.comment {
+    white-space: normal;
+
+    .comment-header {
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .comment-body {
+      text-align: left;
+      white-space: pre-wrap;
     }
   }
 }

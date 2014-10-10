@@ -3,4 +3,6 @@ class Patch < ActiveRecord::Base
 
   has_many :comments
   scope :newer, -> { order(:updated_at).reverse_order.first }
+
+  order :location
 end

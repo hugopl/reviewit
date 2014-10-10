@@ -15,13 +15,20 @@
     <tr class="<%= line.type %>" data-location="<%= line.location %>">
       <td><%= line.old_ln %></td>
       <td><%= line.new_ln %></td>
-      <td><div class="add-comment" data-line="<%= line.id %>"></div><%= line.data %></td>
+      <td><div class="add-comment"></div><%= line.data %></td>
     </tr>
+    <% if @comments.include? line.location  %>
+    <%   comment = @comments[line.location] %>
+      <tr>
+        <td colspan="3" class="comment">
+          <div class="comment-header"><%= comment.user.name %></div>
+          <div class="comment-body"><%= comment.content %></div>
+        </td>
+      </tr>
+    <% end %>
   <% end %>
   </table>
 <% end %>
-
-<p>[comments goes here]</p>
 
 <div class="merge-bar">
   <input type="submit" value="Accept" class="accept">

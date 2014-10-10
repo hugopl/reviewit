@@ -96,7 +96,7 @@ module MergeRequestsHelper
       case @type
         when :del then ''
         when :info then '...'
-      else @old_ln
+      else @new_ln
       end
     end
 
