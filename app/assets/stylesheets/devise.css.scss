@@ -1,6 +1,10 @@
 .devise {
  display: flex;
 
+  #logo {
+    text-align: center;
+  }
+
  .content {
    width: 400px;
    margin: auto;
