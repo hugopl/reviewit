@@ -5,12 +5,12 @@
 window.merge_requests = ->
   # Click to add a comment
   $("td > div.add-comment").on 'click', (event) ->
-    show_comment_box(event.target.parentElement.parentElement, event.target.dataset.line)
+    show_comment_box(event.target.parentElement.parentElement)
 
   $('#push-comments').on 'click', (event) ->
     false
 
-show_comment_box = (tr, line) ->
+window.show_comment_box = (tr) ->
   if tr.dataset.expanded == 'true'
     $(tr.nextSibling).find('textarea').focus()
     return

@@ -17,9 +17,11 @@ class MergeRequestsController < ApplicationController
   def show
     @patch = merge_request.patches.last
     @comments = @patch.comments.order(:location).to_a.inject({}) do |hash, comment|
-      hash[comment.location.to_i] = comment
+      hash[comment.location.to_i] ||= []
+      hash[comment.location.to_i] << comment
       hash
     end
+    ap @comments
     @mr = merge_request
   end
 

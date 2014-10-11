@@ -70,7 +70,7 @@ input {
   display: block;
 }
 
-input[type=submit] {
+input[type=submit], input[type=button] {
   min-width: 0px;
 }
 

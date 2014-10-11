@@ -136,7 +136,6 @@ pre.message {
     padding: 10px;
 
     textarea {
-      box-sizing: border-box;
       display: block;
       width: 100%;
       padding: 10px;
@@ -144,17 +143,35 @@ pre.message {
     }
   }
 
-  td.comment {
-    white-space: normal;
+  tr.comment {
+    td {
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      background-color: white;
 
-    .comment-header {
-      font-weight: bold;
-      text-align: left;
+      &:first-child {
+        font-family: FontAwesome;
+        font-size: 16px;
+        text-align: center;
+      }
     }
 
-    .comment-body {
-      text-align: left;
-      white-space: pre-wrap;
+    td:nth-child(2) {
+      white-space: normal;
+
+      .comment-header {
+        font-weight: bold;
+        text-align: left;
+      }
+
+      .comment-body {
+        text-align: left;
+        white-space: pre-wrap;
+      }
+
+      .comment-body + .comment-header {
+        margin-top: 20px;
+      }
     }
   }
 }
