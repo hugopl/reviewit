@@ -8,4 +8,7 @@ class MergeRequest < ActiveRecord::Base
   enum status: [ :open, :waiting, :closed ]
 
   scope :pending, -> { where('status < 2') }
+
+  validates :target_branch, presence: true
+
 end

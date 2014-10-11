@@ -40,8 +40,10 @@ module Reviewit
       help = <<eot
 review actions:
   push      Create or update a review.
-  pending   Show pending reviews.
   cancel    Cancel current review.
+  pending   Show pending reviews.
+  apply     Apply patch from a merge request on your tree.
+  show      Show patch from a merge request.
 eot
       puts help
       abort(should_abort) if should_abort
