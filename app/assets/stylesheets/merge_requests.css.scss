@@ -145,6 +145,7 @@ pre.message {
 
   tr.comment {
     td {
+      font-family: sans-serif;
       border-top: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
       background-color: white;
@@ -158,7 +159,18 @@ pre.message {
 
     td:nth-child(2) {
       white-space: normal;
+      padding-top: 5px;
+      padding-bottom: 5px;
 
+      > div + div {
+        clear: both;
+        margin-top: 30px;
+      }
+      .avatar {
+        float: left;
+        margin-right: 10px;
+        border-radius: 20px;
+      }
       .comment-header {
         font-weight: bold;
         text-align: left;
@@ -167,10 +179,7 @@ pre.message {
       .comment-body {
         text-align: left;
         white-space: pre-wrap;
-      }
-
-      .comment-body + .comment-header {
-        margin-top: 20px;
+        padding-left: 50px;
       }
     }
   }

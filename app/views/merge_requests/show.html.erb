@@ -24,8 +24,11 @@
       </td>
       <td>
         <% @comments[line.location].each_with_index do |comment, i|  %>
-          <div class="comment-header"><%= comment.user.name %></div>
-          <div class="comment-body"><%= comment.content %></div>
+          <div>
+            <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
+            <div class="comment-header"><%= comment.user.name %></div>
+            <div class="comment-body"><%= comment.content %></div>
+          </div>
         <% end %>
         <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
       </td>
