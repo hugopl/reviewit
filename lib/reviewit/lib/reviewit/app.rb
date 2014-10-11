@@ -7,9 +7,9 @@ require 'reviewit/version.rb'
 
 module Reviewit
 
-  ACTIONS = %w(push abort list).freeze
+  ACTIONS = %w(push pending cancel).freeze
   ACTIONS.each do |action|
-    autoload action.capitalize.to_sym, "r-me/action/#{action}.rb"
+    autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end
 
   class App
@@ -18,26 +18,33 @@ module Reviewit
 
     def run
       load_configuration
-      options = parse_args
-
       api = Api.new(@base_url, @project_id, @api_token)
-      action = Rme.const_get(options[:action].capitalize).new(api, options)
+
+      action = action_class.new(api)
       action.run
     rescue RuntimeError
       abort $!.message
     end
 
   private
-    def parse_args
-      options = Trollop::options do
-        opt :message, 'A message to the given action', type: String
-      end
+    def action_class
+      show_help('') if ARGV.empty?
 
-      action = ARGV.empty? ? 'push' : ARGV.first
-      raise 'Unknown action' unless ACTIONS.include? action
+      action_name = ARGV.shift
+      raise 'Unknown action' unless ACTIONS.include? action_name
 
-      options[:action] = action
-      options
+      Reviewit.const_get(action_name.capitalize)
+    end
+
+    def show_help should_abort
+      help = <<eot
+review actions:
+  push      Create or update a review.
+  pending   Show pending reviews.
+  cancel    Cancel current review.
+eot
+      puts help
+      abort(should_abort) if should_abort
     end
 
     def load_configuration

@@ -1,8 +1,9 @@
 module Reviewit
   class Action
-    def initialize(api, options)
+    def initialize(api)
       @api = api
-      @options = options
+
+      @options = parse_options
     end
   protected
     attr_reader :api
@@ -12,6 +13,10 @@ module Reviewit
 
       # TODO: open user editor askign for a message.
       %(Let's say you wrote a nice message)
+    end
+
+    def parse_options
+      abort "Missing #{self.class}#parse_options implementation"
     end
   end
 end

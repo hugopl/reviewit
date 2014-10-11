@@ -14,6 +14,17 @@ module Reviewit
         append_mr_id_to_commit(mr_id)
       end
     end
+
+  protected
+
+    def parse_options
+      options = Trollop::options do
+        opt :message, 'A message to the given action', type: String
+      end
+      options[:branch] = ARGV.shift
+      options
+    end
+
   private
     def read_commit_header
       @subject = `git show -s --format="%s"`.strip
