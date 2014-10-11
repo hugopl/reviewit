@@ -19,7 +19,7 @@ module Api
       $project_name = "#{project.name.gsub('"', '\"')}"
       $project_id = #{@project.id}
 
-      #{File.read(Rails.root.join('lib', 'r-me', 'install.rb'))}
+      #{File.read(Rails.root.join('lib', 'reviewit', 'install.rb'))}
       eos
     end
   end
