@@ -11,6 +11,10 @@ window.merge_requests = ->
     false
 
 window.show_comment_box = (tr) ->
+  # check if there are comments for this line
+  if $(tr).next().hasClass('comment')
+    tr = $(tr).next()[0]
+
   if tr.dataset.expanded == 'true'
     $(tr.nextSibling).find('textarea').focus()
     return
