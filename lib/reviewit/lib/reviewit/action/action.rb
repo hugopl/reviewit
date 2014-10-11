@@ -12,7 +12,7 @@ module Reviewit
       return @options[:message] if @options[:message_given]
 
       # TODO: open user editor askign for a message.
-      %(Let's say you wrote a nice message)
+      abort %(I didn't implement yet the code to open a editor and get the comments, sorry, use -m.)
     end
 
     def parse_options
