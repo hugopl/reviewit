@@ -10,8 +10,8 @@ module Reviewit
       if updating?
         api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, read_user_message)
       else
-        abort 'You need to specify the target branch before creating a merge request.' if @options[:branch].nil?
-        mr_id = api.create_merge_request(@subject, @commit_message, @commit_diff)
+        abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?
+        mr_id = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch])
         append_mr_id_to_commit(mr_id)
       end
     end

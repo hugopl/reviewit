@@ -1,21 +1,25 @@
 module Api
   class MergeRequestsController < ApiController
     def create
-      # TODO put this in a transaction
-      mr = MergeRequest.new
-      mr.project = project
-      mr.owner = current_user
-      mr.subject = params[:subject]
-      mr.commit_message = params[:commit_message]
-      mr.save!
 
-      patch = Patch.new
-      patch.merge_request = mr
-      patch.diff = params[:diff]
-      patch.save!
+      MergeRequest.transaction do
+        mr = MergeRequest.new
+        mr.project = project
+        mr.owner = current_user
+        mr.subject = params[:subject]
+        mr.commit_message = params[:commit_message]
+        mr.target_branch = params[:target_branch]
 
-      result = { :mr_id => mr.id }
-      render json: result
+        mr.save!
+
+        patch = Patch.new
+        patch.merge_request = mr
+        patch.diff = params[:diff]
+        patch.save!
+        render(json: { :mr_id => mr.id })
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render( json: { :error => "Could not create the merge request.\n#{$!.message}" }, status: :bad_request)
     end
 
     def update

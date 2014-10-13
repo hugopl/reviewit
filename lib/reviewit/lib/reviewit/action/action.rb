@@ -7,6 +7,7 @@ module Reviewit
     end
   protected
     attr_reader :api
+    attr_reader :options
 
     def read_user_message
       return @options[:message] if @options[:message_given]

@@ -14,9 +14,9 @@ module Reviewit
       patch("merge_requests/#{mr_id}", subject: subject, commit_message: commit_message, diff: diff, comments: comments)
     end
 
-    def create_merge_request subject, commit_message, diff
+    def create_merge_request subject, commit_message, diff, target_branch
       puts "Creating merge request..."
-      res = post('merge_requests', subject: subject, commit_message: commit_message, diff: diff)
+      res = post('merge_requests', subject: subject, commit_message: commit_message, diff: diff, target_branch: target_branch)
       url = url_for("merge_requests/#{res['mr_id']}")
       puts "Merge Request created at #{url}"
       res['mr_id']
@@ -33,24 +33,25 @@ module Reviewit
     end
 
     def post url, args
-      res = Net::HTTP.post_form(full_uri_for(url), args)
-      raise res.body if res.code != '200'
-      JSON.load(res.body)
+      send_request url, args, Net::HTTP::Post
     end
 
     def patch url, args
-      res = patch_form(full_uri_for(url), args)
-      raise res.body if res.code != '200'
-      JSON.load(res.body)
+      send_request url, args, Net::HTTP::Patch
     end
 
-    def patch_form(url, params)
-      req = Net::HTTP::Patch.new(url)
+    def send_request(url, params, method)
+      url = full_uri_for(url)
+      req = method.new(url)
       req.form_data = params
-      Net::HTTP.start(url.hostname, url.port, :use_ssl => url.scheme == 'https' ) do |http|
+      res = Net::HTTP.start(url.hostname, url.port, :use_ssl => url.scheme == 'https' ) do |http|
         http.request(req)
       end
+      data = JSON.load(res.body)
+      raise (data['error'] or 'Unknow error') if res.code != '200'
+      return data
+    rescue JSON::ParserError
+      raise 'Error parsing returned JSON.'
     end
-
   end
 end
