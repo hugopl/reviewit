@@ -23,26 +23,29 @@ module Api
     end
 
     def update
-      # TODO put this in a transaction
       mr = merge_request
+      MergeRequest.transaction do
+        mr.subject = params[:subject]
+        mr.commit_message = params[:commit_message]
+        mr.save!
 
-      mr.subject = params[:subject]
-      mr.commit_message = params[:commit_message]
-      mr.save!
+        patch = Patch.new
+        patch.merge_request = mr
+        patch.diff = params[:diff]
+        patch.save!
 
-      # TODO avoid this code repetition
-      patch = Patch.new
-      patch.merge_request = mr
-      patch.diff = params[:diff]
-      patch.save!
+        unless params[:comments].empty?
+          comment = Comment.new
+          comment.patch = patch
+          comment.user = current_user
+          comment.content = params[:comments]
+          comment.save!
+        end
 
-      comment = Comment.new
-      comment.patch = patch
-      comment.user = current_user
-      comment.content = params[:comments]
-      comment.save!
-
-      render json: ''
+        render json: ''
+      end
+    rescue ActiveRecord::ActiveRecordError
+      render( json: { :error => "Could not update the merge request.\n#{$!.message}" }, status: :bad_request)
     rescue RuntimeError
       render text: $!.message, status: :not_found
     end
@@ -50,8 +53,8 @@ module Api
   private
 
     def merge_request
-      @project ||= current_user.projects.find_by_id(params[:project_id]) or raise 'Invalid project.'
-      project.merge_requests.find(params[:id]) or raise 'Merge request not found.'
+      @project ||= current_user.projects.find(params[:project_id])
+      project.merge_requests.find(params[:id])
     end
   end
 end

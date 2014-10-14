@@ -12,6 +12,8 @@ module Reviewit
     def update_merge_request mr_id, subject, commit_message, diff, comments
       puts 'Updating merge request...'
       patch("merge_requests/#{mr_id}", subject: subject, commit_message: commit_message, diff: diff, comments: comments)
+      url = url_for("merge_requests/#{mr_id}")
+      puts "Merge Request updated at #{url}"
     end
 
     def create_merge_request subject, commit_message, diff, target_branch

@@ -33,7 +33,10 @@ class MergeRequestsController < ApplicationController
   end
 
   def create_comments comments
+    return if comments.nil?
+
     comments.each do |location, text|
+      next if text.strip.empty?
       comment = Comment.new
       comment.user = current_user
       comment.patch = @patch
