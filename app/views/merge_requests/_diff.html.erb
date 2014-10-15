@@ -1,0 +1,32 @@
+<% comments = patch.comments_by_location %>
+<% process_diff(patch.diff) do |file| %>
+  <div class="code-review-header"><%= file.name %></div>
+  <div class="code-review-container">
+    <table class="code-review">
+  <% file.each_line do |line| %>
+    <tr class="<%= line.type %>" data-location="<%= line.location %>">
+      <td><%= line.old_ln %></td>
+      <td><%= line.new_ln %></td>
+      <td><div class="add-comment"></div><%= line.data %></td>
+    </tr>
+    <% if comments.include? line.location %>
+    <tr class="comment" data-location="<%= line.location %>">
+      <td colspan="2">
+       <%= "\uf086 #{comments[line.location].count}" if comments[line.location].count > 1 %>
+      </td>
+      <td>
+        <% comments[line.location].each_with_index do |comment, i|  %>
+          <div>
+            <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
+            <div class="comment-header"><%= comment.user.name %></div>
+            <div class="comment-body"><%= comment.content %></div>
+          </div>
+        <% end %>
+        <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
+      </td>
+    </tr>
+    <% end %>
+  <% end %>
+  </table>
+  </div>
+<% end %>

@@ -26,18 +26,6 @@ class MergeRequestsController < ApplicationController
 
   def show
     @patch = merge_request.patches.last
-    @comments = @patch.comments.order(:location).to_a.inject({}) do |hash, comment|
-      location = comment.location.to_i
-      if location.zero?
-        @patch_comment = comment
-      else
-        hash[location] ||= []
-        hash[location] << comment
-      end
-      hash
-    end
-
-    @mr = merge_request
   end
 
   private
@@ -55,7 +43,6 @@ class MergeRequestsController < ApplicationController
   end
 
   def merge_request
-    @project ||= current_user.projects.find_by_id(params[:project_id])
     @mr ||= project.merge_requests.find(params[:id])
   end
 

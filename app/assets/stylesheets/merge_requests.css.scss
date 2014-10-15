@@ -223,3 +223,23 @@ span {
   &.rejected { color: red; }
   &.needs_rebase { color: blue; }
 }
+
+.patch-history {
+ h2 {
+   margin: 0px;
+   font-size: 16px;
+ }
+
+  ol {
+    padding: 0px;
+    margin: 0px;
+    list-style-position: inside;
+
+    li  {
+      font-size: 14px;
+      line-height: 18px;
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+}

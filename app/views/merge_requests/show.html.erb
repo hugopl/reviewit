@@ -1,52 +1,13 @@
 <h1><%= @mr.subject %></h1>
 
-<div class="mr-summary">
-Status: <span class="<%= @mr.status %>"><%= @mr.status.humanize %></span><br>
-Version: <span><%= @mr.patches.count %></span></br>
-CI: ?<br>
-Linter: ?</span>
-</div>
-<pre class="message"><%= @mr.commit_message %></pre>
+<%= render partial: 'summary', locals: { version: @mr.patches.count } %>
 
-
-<% unless @patch_comment.nil? %>
-<p><strong>About this patch version:</strong> <em><%= @patch_comment.content %></em></p>
-<% end %>
+<%= render partial: 'history', locals: { current_version: @mr.patches.count } %>
 
 <%= form_tag nil, method: 'patch' do %>
 <%= hidden_field_tag(:patch_id, @patch.id) %>
 
-<% process_diff(patch.diff) do |file| %>
-  <div class="code-review-header"><%= file.name %></div>
-  <div class="code-review-container">
-    <table class="code-review">
-  <% file.each_line do |line| %>
-    <tr class="<%= line.type %>" data-location="<%= line.location %>">
-      <td><%= line.old_ln %></td>
-      <td><%= line.new_ln %></td>
-      <td><div class="add-comment"></div><%= line.data %></td>
-    </tr>
-    <% if @comments.include? line.location %>
-    <tr class="comment" data-location="<%= line.location %>">
-      <td colspan="2">
-       <%= "\uf086 #{@comments[line.location].count}" if @comments[line.location].count > 1 %>
-      </td>
-      <td>
-        <% @comments[line.location].each_with_index do |comment, i|  %>
-          <div>
-            <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
-            <div class="comment-header"><%= comment.user.name %></div>
-            <div class="comment-body"><%= comment.content %></div>
-          </div>
-        <% end %>
-        <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
-      </td>
-    </tr>
-    <% end %>
-  <% end %>
-  </table>
-  </div>
-<% end %>
+<%= render partial: 'diff', locals: { patch: patch } %>
 
 <div class="merge-bar">
   <input type="submit" value="Accept" class="accept" name="mr_action">
