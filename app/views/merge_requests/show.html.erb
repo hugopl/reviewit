@@ -5,14 +5,16 @@
 <%= render partial: 'history', locals: { current_version: @mr.patches.count } %>
 
 <%= form_tag nil, method: 'patch' do %>
-<%= hidden_field_tag(:patch_id, @patch.id) %>
+  <%= hidden_field_tag(:patch_id, @patch.id) %>
 
-<%= render partial: 'diff', locals: { patch: patch } %>
+  <%= render partial: 'diff', locals: { patch: patch } %>
 
-<div class="merge-bar">
-  <input type="submit" value="Accept" class="accept" name="mr_action">
-  <input type="submit" value="Reject" class="reject" name="mr_action">
+  <% if @mr.open? %>
+    <div class="merge-bar">
+      <input type="submit" value="Accept" class="accept" name="mr_action">
+      <input type="submit" value="Abandon" class="reject" name="mr_action">
 
-  <input type="submit" value="Just push comments" name="mr_action" class="push-comments">
-</div>
+      <input type="submit" value="Just push comments" name="mr_action" class="push-comments">
+    </div>
+  <% end %>
 <% end %>

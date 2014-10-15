@@ -10,10 +10,10 @@ class MergeRequestsController < ApplicationController
 
     case params[:mr_action]
     when 'Accept' then accept
-    when 'Reject' then reject
+    when 'Abandon' then abandon
+    else
+      redirect_to action: :show
     end
-
-    redirect_to action: :show
   end
 
   def index
@@ -36,10 +36,12 @@ class MergeRequestsController < ApplicationController
 
   def accept
     @mr.accepted!
+    redirect_to action: :index
   end
 
-  def reject
-    @mr.rejected!
+  def abandon
+    @mr.abandoned!
+    redirect_to action: :index
   end
 
   def merge_request

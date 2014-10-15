@@ -220,7 +220,7 @@ pre.message {
 span {
   font-weight: bold;
   &.accepted { color: green; }
-  &.rejected { color: red; }
+  &.abandoned { color: red; }
   &.needs_rebase { color: blue; }
 }
 
