@@ -56,16 +56,32 @@ pre.message {
   }
 }
 
+.code-review-header {
+  background-color: #eee;
+  font-weight: bold;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.code-review-container {
+  overflow-x: scroll;
+  border: 1px solid #ccc;
+  border-radius: 0px 0px 4px 4px;
+
+  &+ .code-review-header {
+    margin-top: 40px;
+  }
+}
+
 .code-review {
   width: 100%;
   border-spacing: 0px;
   color: #333;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 
   th {
-    border-bottom: 1px solid #ccc;
-    background-color: #eee;
   }
 
   tr > td:nth-child(1), tr > td:nth-child(2) {
@@ -134,6 +150,9 @@ pre.message {
 
   tr > td.add-comment {
     padding: 10px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
 
     textarea {
       display: block;
@@ -142,6 +161,11 @@ pre.message {
       margin: 0px 0px 10px 0px;
     }
   }
+
+  tr td.reply {
+    border-top: none;
+  }
+
 
   tr.comment {
     td {
@@ -154,6 +178,7 @@ pre.message {
         font-family: FontAwesome;
         font-size: 16px;
         text-align: center;
+        white-space: normal;
       }
     }
 

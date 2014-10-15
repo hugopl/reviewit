@@ -43,7 +43,9 @@ module MergeRequestsHelper
       new_ln = 0
       loop do
         @location += 1
-        diffline = DiffLine.new(@it.next, old_ln, new_ln, @location)
+        line = @it.next
+        return if line.start_with? 'diff'
+        diffline = DiffLine.new(line, old_ln, new_ln, @location)
         yield diffline
         old_ln, new_ln = diffline.line_numbers
       end

@@ -12,8 +12,10 @@ window.merge_requests = ->
 
 window.show_comment_box = (tr) ->
   # check if there are comments for this line
+  extraCss = ''
   if $(tr).next().hasClass('comment')
     tr = $(tr).next()[0]
+    extraCss = 'reply'
 
   if tr.dataset.expanded == 'true'
     $(tr.nextSibling).find('textarea').focus()
@@ -21,7 +23,7 @@ window.show_comment_box = (tr) ->
   tr.dataset.expanded = true
   location = tr.dataset.location
 
-  html = "<tr><td colspan='3' class='add-comment'>\
+  html = "<tr><td colspan='3' class='add-comment #{extraCss}'>\
            <textarea placeholder='Leave a comment' name='comments[#{location}]'></textarea>\
            <input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>
            </td></tr>"

@@ -6,11 +6,9 @@
 <%= hidden_field_tag(:patch_id, @patch.id) %>
 
 <% process_diff(patch.diff) do |file| %>
-  <table class="code-review">
-    <tr>
-      <th colspan="3"><%= file.name %></th>
-    </tr>
-
+  <div class="code-review-header"><%= file.name %></div>
+  <div class="code-review-container">
+    <table class="code-review">
   <% file.each_line do |line| %>
     <tr class="<%= line.type %>" data-location="<%= line.location %>">
       <td><%= line.old_ln %></td>
@@ -36,6 +34,7 @@
     <% end %>
   <% end %>
   </table>
+  </div>
 <% end %>
 
 <div class="merge-bar">
