@@ -1,7 +1,7 @@
 <h1><%= @mr.subject %></h1>
 
 <div class="mr-summary">
-Status: <span class="<%= @mr.status %>"><%= @mr.nice_status %></span><br>
+Status: <span class="<%= @mr.status %>"><%= @mr.status.humanize %></span><br>
 Version: <span><%= @mr.patches.count %></span></br>
 CI: ?<br>
 Linter: ?</span>

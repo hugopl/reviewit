@@ -11,8 +11,4 @@ class MergeRequest < ActiveRecord::Base
   scope :closed, -> { where('status >= 2') }
 
   validates :target_branch, presence: true
-
-  def nice_status
-    status.gsub('_', ' ')
-  end
 end
