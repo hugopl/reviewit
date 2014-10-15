@@ -2,7 +2,7 @@
  <p>No merge requests were found.</p>
 <%- else %>
   <div class="review-list-container">
-    <div class="review-list-header"><%= pluralize(mrs.count, 'Pending review', 'Pending reviews') %></div>
+    <div class="review-list-header"><%= pluralize(mrs.count, *title) %></div>
     <%- mrs.each do |mr| %>
       <div class="review-list">
         <div class="subject"><%= link_to mr.subject, project_merge_request_path(@project, mr) %></div>

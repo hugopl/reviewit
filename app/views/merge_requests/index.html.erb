@@ -1,5 +1,5 @@
 <h1>Pending merge requests for <%= @project.name %></h1>
 
-<%= render partial: 'list', locals: { mrs: @mrs } %>
+<%= render partial: 'list', locals: { mrs: @mrs, title: ['Pending review', 'Pending reviews'] } %>
 
-<p>See <%= link_to 'old/accepted/rejected code reviews', old_ones_project_merge_requests_path(@project) %>.</p>
+<p>See <%= link_to 'finished code reviews', old_ones_project_merge_requests_path(@project) %>.</p>
