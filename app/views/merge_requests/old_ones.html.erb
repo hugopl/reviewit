@@ -1,0 +1,5 @@
+<h1>Closed merge requests for <%= @project.name %></h1>
+
+<%= render partial: 'list', locals: { mrs: @mrs } %>
+
+<p>See <%= link_to 'pending code reviews', project_merge_requests_path(@project) %>.</p>

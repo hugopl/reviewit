@@ -1,14 +1,5 @@
-<h1>Merge requests for <%= @project.name %></h1>
+<h1>Pending merge requests for <%= @project.name %></h1>
 
-<%- mrs = @project.merge_requests.pending %>
-<%- if mrs.empty? %>
- <p>No merge requests were found.</p>
-<%- else %>
-  <div class="review-list-header"><%= pluralize(mrs.count, 'Pending review', 'Pending reviews') %></div>
-  <%- mrs.each do |mr| %>
-    <div class="review-list">
-      <div class="subject"><%= link_to mr.subject, project_merge_request_path(@project, mr) %></div>
-      <div class="summary">#<%= mr.id %> <%= merge_request_pending_since(mr) %>, opened by <%= mr.owner.name %> </div>
-    </div>
-  <%- end %>
-<%- end %>
+<%= render partial: 'list', locals: { mrs: @mrs } %>
+
+<p>See <%= link_to 'old/accepted/rejected code reviews', old_ones_project_merge_requests_path(@project) %>.</p>

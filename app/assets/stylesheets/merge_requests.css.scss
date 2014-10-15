@@ -64,16 +64,14 @@ pre.message {
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-radius: 4px 4px 0px 0px;
+  margin-top: 40px;
+  clear: both;
 }
 
 .code-review-container {
   overflow-x: scroll;
   border: 1px solid #ccc;
   border-radius: 0px 0px 4px 4px;
-
-  &+ .code-review-header {
-    margin-top: 40px;
-  }
 }
 
 .code-review {
@@ -208,4 +206,20 @@ pre.message {
       }
     }
   }
+}
+
+.mr-summary {
+  float: right;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 40px;
+  padding: 10px;
+  background-color: whitesmoke;
+}
+
+span {
+  font-weight: bold;
+  &.accepted { color: green; }
+  &.rejected { color: red; }
+  &.needs_rebase { color: blue; }
 }

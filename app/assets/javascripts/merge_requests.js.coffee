@@ -7,9 +7,6 @@ window.merge_requests = ->
   $("td > div.add-comment").on 'click', (event) ->
     show_comment_box(event.target.parentElement.parentElement)
 
-  $('#push-comments').on 'click', (event) ->
-    false
-
 window.show_comment_box = (tr) ->
   # check if there are comments for this line
   extraCss = ''

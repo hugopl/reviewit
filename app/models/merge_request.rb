@@ -5,10 +5,14 @@ class MergeRequest < ActiveRecord::Base
 
   has_many :patches
 
-  enum status: [ :open, :waiting, :closed ]
+  enum status: [ :open, :needs_rebase, :accepted, :rejected ]
 
   scope :pending, -> { where('status < 2') }
+  scope :closed, -> { where('status >= 2') }
 
   validates :target_branch, presence: true
 
+  def nice_status
+    status.gsub('_', ' ')
+  end
 end

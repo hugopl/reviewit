@@ -2,6 +2,15 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.review-list-container {
+  > div:first-child {
+    border-radius: 4px 4px 0px 0px;
+  }
+  > div:last-child {
+    border-radius: 0px 0px 4px 4px;
+  }
+}
+
 .review-list-header {
   font-size: 15px;
   font-weight: bold;

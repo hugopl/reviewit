@@ -1,6 +1,17 @@
 <h1><%= @mr.subject %></h1>
 
+<div class="mr-summary">
+Status: <span class="<%= @mr.status %>"><%= @mr.nice_status %></span><br>
+Version: <span><%= @mr.patches.count %></span></br>
+CI: ?<br>
+Linter: ?</span>
+</div>
 <pre class="message"><%= @mr.commit_message %></pre>
+
+
+<% unless @patch_comment.nil? %>
+<p><strong>About this patch version:</strong> <em><%= @patch_comment.content %></em></p>
+<% end %>
 
 <%= form_tag nil, method: 'patch' do %>
 <%= hidden_field_tag(:patch_id, @patch.id) %>
@@ -38,9 +49,9 @@
 <% end %>
 
 <div class="merge-bar">
-  <input type="submit" value="Accept" class="accept">
-  <input type="submit" value="Reject" class="reject">
+  <input type="submit" value="Accept" class="accept" name="mr_action">
+  <input type="submit" value="Reject" class="reject" name="mr_action">
 
-  <input type="submit" value="Just push comments" class="push-comments">
+  <input type="submit" value="Just push comments" name="mr_action" class="push-comments">
 </div>
 <% end %>

@@ -1,0 +1,13 @@
+<%- if mrs.empty? %>
+ <p>No merge requests were found.</p>
+<%- else %>
+  <div class="review-list-container">
+    <div class="review-list-header"><%= pluralize(mrs.count, 'Pending review', 'Pending reviews') %></div>
+    <%- mrs.each do |mr| %>
+      <div class="review-list">
+        <div class="subject"><%= link_to mr.subject, project_merge_request_path(@project, mr) %></div>
+        <div class="summary">#<%= mr.id %> <%= merge_request_pending_since(mr) %>, opened by <%= mr.owner.name %>, <span class="<%= mr.status %>"><%= mr.nice_status %></span></div>
+      </div>
+    <%- end %>
+  </div>
+<%- end %>
