@@ -7,15 +7,16 @@
 
 html {
   overflow-y: scroll;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-html, body {
+body {
   margin: 0;
   color: #555459;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
-  height: 100%;
-  box-sizing: border-box;
+  min-height: 100vh;
 
   font-family: sans-serif;
   display: -webkit-flex;
