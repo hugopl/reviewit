@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   before_create :generate_api_token
 
+  validates :name, presence: true, allow_blank: false
+
   def self.valid_token? token
     User.exists?(api_token: token)
   end
