@@ -6,3 +6,7 @@
 <code>$ curl -f <%= full_setup_url %> | ruby</code></p>
 
 <p>Then type <code>review --help</code>, happy coding.</p>
+
+<h2>Team</h2>
+
+<%= @project.users.map {|u| u.name }.to_sentence %>
