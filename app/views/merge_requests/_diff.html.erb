@@ -7,7 +7,7 @@
     <tr class="<%= line.type %>" data-location="<%= line.location %>">
       <td><%= line.old_ln %></td>
       <td><%= line.new_ln %></td>
-      <td><div class="add-comment"></div><%= line.data %></td>
+      <td><% if @mr.open? %><div class="add-comment"></div><% end %><%= line.data %></td>
     </tr>
     <% if comments.include? line.location %>
     <tr class="comment" data-location="<%= line.location %>">
