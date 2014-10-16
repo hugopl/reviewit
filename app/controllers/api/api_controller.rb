@@ -4,6 +4,18 @@ module Api
     before_action :authenticate_user_by_token!
     before_action :authenticate_user!, only: []
 
+    rescue_from RuntimeError do |exception|
+      render json: { error: exception.message }, status: :bad_request
+    end
+
+    rescue_from ActiveRecord::RecordNotFound do
+      render json: { error: 'Can not find the merge request, project or whatever you tried to find/use.' }, status: :not_found
+    end
+
+    rescue_from ActiveRecord::RecordInvalid do |exception|
+      render json: { error: 'Problem found: #{exception.message}' }, status: :bad_request
+    end
+
   protected
 
     def authenticate_user_by_token!

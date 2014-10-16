@@ -18,12 +18,12 @@ module Api
         patch.save!
         render(json: { :mr_id => mr.id })
       end
-    rescue ActiveRecord::ActiveRecordError
-      render( json: { :error => "Could not create the merge request.\n#{$!.message}" }, status: :bad_request)
     end
 
     def update
       mr = merge_request
+      raise "You can not update a #{mr.status} merge request." if mr.closed?
+
       MergeRequest.transaction do
         mr.subject = params[:subject]
         mr.commit_message = params[:commit_message]
@@ -44,10 +44,6 @@ module Api
 
         render json: ''
       end
-    rescue ActiveRecord::ActiveRecordError
-      render( json: { :error => "Could not update the merge request.\n#{$!.message}" }, status: :bad_request)
-    rescue RuntimeError
-      render text: $!.message, status: :not_found
     end
 
   private

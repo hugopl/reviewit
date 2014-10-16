@@ -11,4 +11,8 @@ class MergeRequest < ActiveRecord::Base
   scope :closed, -> { where('status >= 2') }
 
   validates :target_branch, presence: true
+
+  def closed?
+    MergeRequest.statuses[status] >= 2
+  end
 end
