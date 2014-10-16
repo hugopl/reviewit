@@ -4,5 +4,8 @@
   Version: <span><%= version %></span></br>
   CI: ?<br>
   Linter: ?</span>
+<% if @mr.reviewer %>
+<br><%= @mr.status.humanize %> by: <%= @mr.reviewer.name %>
+<% end %>
 </div>
 <pre class="message"><%= @mr.commit_message %></pre>

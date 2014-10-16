@@ -35,12 +35,16 @@ class MergeRequestsController < ApplicationController
   end
 
   def accept
-    @mr.accepted!
+    @mr.status = :accepted
+    @mr.reviewer = current_user
+    @mr.save!
     redirect_to action: :index
   end
 
   def abandon
-    @mr.abandoned!
+    @mr.status = :abandoned
+    @mr.reviewer = current_user
+    @mr.save!
     redirect_to action: :index
   end
 
