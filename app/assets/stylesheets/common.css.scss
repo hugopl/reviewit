@@ -14,11 +14,27 @@ html, body {
   color: #555459;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
-  padding-bottom: 40px;
   height: 100%;
   box-sizing: border-box;
 
   font-family: sans-serif;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+body > div.content {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+footer {
+  color: #ccc;
+  padding: 20px 0px 10px 0px;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
 }
 
 *, *:before, *:after {
