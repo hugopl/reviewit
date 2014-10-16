@@ -12,19 +12,21 @@ module Reviewit
     def update_merge_request mr_id, subject, commit_message, diff, comments
       puts 'Updating merge request...'
       patch("merge_requests/#{mr_id}", subject: subject, commit_message: commit_message, diff: diff, comments: comments)
-      url = url_for("merge_requests/#{mr_id}")
-      puts "Merge Request updated at #{url}"
+      puts "Merge Request updated at #{mr_url(mr_id)}"
     end
 
     def create_merge_request subject, commit_message, diff, target_branch
       puts "Creating merge request..."
       res = post('merge_requests', subject: subject, commit_message: commit_message, diff: diff, target_branch: target_branch)
-      url = url_for("merge_requests/#{res['mr_id']}")
-      puts "Merge Request created at #{url}"
+      puts "Merge Request created at #{mr_url(res['mr_id'])}"
       res['mr_id']
     end
 
   private
+
+    def mr_url id
+      @base_url.gsub(/api\/?\z/, "mr/#{id}")
+    end
 
     def url_for path
       "#{@base_url}/projects/#{@project_id}/#{path}"

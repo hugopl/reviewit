@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   resources :settings, only: [:index]
 
+  resources :mr, only: [:show]
+
   namespace :api do
     resources :projects, only: [] do
       get 'setup', on: :member
