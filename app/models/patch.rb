@@ -1,7 +1,7 @@
 class Patch < ActiveRecord::Base
   belongs_to :merge_request
 
-  has_many :comments
+  has_many :comments, dependent: :destroy
   scope :newer, -> { order(:updated_at).reverse_order.first }
 
   order :location

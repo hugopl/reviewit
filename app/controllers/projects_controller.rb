@@ -35,6 +35,12 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def destroy
+    @project = current_user.projects.find(params[:id])
+    @project.destroy
+    redirect_to action: :index
+  end
+
 private
 
   def set_project_users

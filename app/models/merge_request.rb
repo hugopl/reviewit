@@ -3,7 +3,7 @@ class MergeRequest < ActiveRecord::Base
   belongs_to :reviewer, class_name: User
   belongs_to :project
 
-  has_many :patches
+  has_many :patches, dependent: :destroy
 
   enum status: [ :open, :needs_rebase, :accepted, :abandoned ]
 
