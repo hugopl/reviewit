@@ -50,8 +50,9 @@ ActiveRecord::Schema.define(version: 20141003232638) do
   add_index "patches", ["merge_request_id"], name: "index_patches_on_merge_request_id"
 
   create_table "projects", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "repository", null: false
+    t.string   "name",                     null: false
+    t.string   "description", default: "", null: false
+    t.string   "repository",               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

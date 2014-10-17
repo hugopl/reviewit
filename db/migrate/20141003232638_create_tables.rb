@@ -30,6 +30,7 @@ class CreateTables < ActiveRecord::Migration
 
     create_table :projects do |t|
       t.string :name,       unique: true, null: false
+      t.string :description, default: '', null: false
       t.string :repository, null: false
       t.timestamps
     end
