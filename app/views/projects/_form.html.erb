@@ -1,0 +1,16 @@
+<%= form_for @project, url: {action: action} do |f| %>
+  <label>Name:</label><br>
+  <%= f.text_field :name, :placeholder => 'The project name' %>
+
+  <label>Git repository:</label><br>
+  <%= f.text_field :repository, :placeholder => 'The project git repository URL' %>
+
+  <label>Users:</label><br>
+  <ul id="project_users" data-users="<%= User.all_names.join('|') %>" data-myself="<%= current_user.name %>">
+    <% @project.users.each do |user| %>
+      <li><%= user.name %></li>
+    <% end %>
+  </ul>
+
+  <%= f.submit "Create", class: 'button' %>
+<% end %>

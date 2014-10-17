@@ -7,11 +7,16 @@ class ProjectsController < ApplicationController
 
   def new
     @project = Project.new
+    @project.users << current_user
   end
 
   def create
     @project = Project.new(project_params)
-    @project.users << current_user
+    names = params[:project][:users].is_a?(Array) ? params[:project][:users] : []
+    users = User.where(name: names) << current_user
+    users.uniq!
+
+    @project.users = users
     if @project.save
       redirect_to @project
     else

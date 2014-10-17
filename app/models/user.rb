@@ -13,6 +13,10 @@ class User < ActiveRecord::Base
     User.exists?(api_token: token)
   end
 
+  def self.all_names
+    User.all.map { |u| u.name }
+  end
+
 private
   def generate_api_token
     loop do

@@ -1,23 +1,7 @@
 <h1>New Project</h1>
 
-<% unless @project.errors.empty? %>
-<p class="error">Project not created, fix the issues in red and try again.</p>
-<% end %>
-
 <p>By creating a new project you will be able to push merge requests from reviewit command line interface and review them from this web interface... that's all!</p>
 
-<%= form_for @project, url: {action: "create"} do |f| %>
-
-    <label>Name:</label><br>
-    <%= f.text_field :name, :placeholder => 'The project name' %>
-
-    <label>Git repository:</label><br>
-    <%= f.text_field :repository, :placeholder => 'The project git repository URL' %>
-
-    <label>Users:</label><br>
-    <%= text_field_tag 'project[users]'  %>
-
-  <%= f.submit "Create", class: 'button' %>
-<% end %>
+<%= render partial: 'form', locals: {action: 'create'} %>
 
 <%= print_errors :project %>
