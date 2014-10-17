@@ -55,3 +55,12 @@ code {
 #project_destroy {
   float: right;
 }
+
+.project.name {
+  font-weight: bold;
+}
+
+.project.description {
+  font-style: italic;
+  padding-left: 20px;
+}

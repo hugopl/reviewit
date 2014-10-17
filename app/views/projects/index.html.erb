@@ -3,11 +3,12 @@
 <%- if current_user.projects.empty? %>
     <p>There are no projects for you :-(</p>
 <%- else %>
-<ul>
-    <%- current_user.projects.each do |p| %>
-        <li><%= link_to p.name, project_merge_requests_path(p) %></li>
-    <%- end %>
-</ul>
+
+<%- current_user.projects.each do |p| %>
+  <div class="project name"><%= link_to p.name, project_merge_requests_path(p) %></div>
+  <div class="project description"><%= p.description.blank? ? '?' : p.description %></div>
+<%- end %>
+
 <%- end %>
 
 <p><%= link_to 'Create project', new_project_path %></p>
