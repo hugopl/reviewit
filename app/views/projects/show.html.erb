@@ -9,4 +9,6 @@
 
 <h2>Team</h2>
 
-<%= @project.users.map {|u| u.name }.to_sentence %>
+<p><%= @project.users.map {|u| u.name }.to_sentence %></p>
+
+<p>Didn't like it!? So <%= link_to 'edit your project', edit_project_path(@project) %>.</p>

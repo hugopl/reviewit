@@ -12,11 +12,22 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
-    names = params[:project][:users].is_a?(Array) ? params[:project][:users] : []
-    users = User.where(name: names) << current_user
-    users.uniq!
+    set_project_users
+    if @project.save
+      redirect_to @project
+    else
+      render 'new'
+    end
+  end
 
-    @project.users = users
+  def edit
+    @project = current_user.projects.find(params[:id])
+  end
+
+  def update
+    @project = current_user.projects.find(params[:id])
+    @project.update_attributes(project_params)
+    set_project_users
     if @project.save
       redirect_to @project
     else
@@ -25,6 +36,13 @@ class ProjectsController < ApplicationController
   end
 
 private
+
+  def set_project_users
+    names = params[:project][:users].is_a?(Array) ? params[:project][:users] : []
+    users = User.where(name: names) << current_user
+    users.uniq!
+    @project.users = users
+  end
 
   def project_params
     params.require(:project).permit(:name, :repository)
