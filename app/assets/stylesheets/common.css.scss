@@ -207,3 +207,8 @@ input[type=checkbox]:checked + label:before {
   background-image: image-url('checkbox.png');
   background-position: 0px -21px;
 }
+
+.pagination {
+  text-align: right;
+  margin-top: 10px;
+}

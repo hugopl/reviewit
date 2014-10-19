@@ -17,11 +17,11 @@ class MergeRequestsController < ApplicationController
   end
 
   def index
-    @mrs = project.merge_requests.pending
+    @mrs = project.merge_requests.pending.paginate(page: params[:page])
   end
 
   def old_ones
-    @mrs = project.merge_requests.closed
+    @mrs = project.merge_requests.closed.paginate(page: params[:page])
   end
 
   def show
