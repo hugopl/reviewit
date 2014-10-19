@@ -6,6 +6,8 @@ class Patch < ActiveRecord::Base
 
   order :location
 
+  validates :diff, presence: true
+
   def comment
     @comment ||= (self.comments.find_by_location(0) or Comment.new)
   end
