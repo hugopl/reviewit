@@ -4,7 +4,7 @@
   Version: <span><%= version %></span></br>
   CI: ?<br>
   Linter: ?</span>
-<% if @mr.reviewer %>
+<% if @mr.accepted? or @mr.abandoned? %>
 <br><%= @mr.status.humanize %> by: <%= @mr.reviewer.name %>
 <% end %>
 </div>

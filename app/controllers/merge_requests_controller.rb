@@ -2,7 +2,6 @@ class MergeRequestsController < ApplicationController
   before_action :authenticate_user!
 
   def update
-    ap params
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
     MergeRequest.transaction do
       create_comments params[:comments]
@@ -25,15 +24,13 @@ class MergeRequestsController < ApplicationController
   end
 
   def show
-    @patch = merge_request.patches.last
+    @patch = merge_request.patches.newer
   end
 
   private
 
   def accept
-    @mr.status = :accepted
-    @mr.reviewer = current_user
-    @mr.save!
+    @mr.integrate! current_user
     redirect_to action: :index
   end
 

@@ -10,7 +10,7 @@
 
     <%= render partial: 'diff', locals: { patch: patch } %>
 
-    <% if @mr.open? %>
+    <% if @mr.open? or @mr.needs_rebase? %>
       <div class="merge-bar">
         <input type="submit" value="Accept" class="accept" name="mr_action">
         <input type="submit" value="Abandon" class="reject" name="mr_action">

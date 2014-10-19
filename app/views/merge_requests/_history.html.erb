@@ -18,3 +18,10 @@
   </ol>
 </section>
 <% end %>
+
+<% unless @patch.integration_log.blank? %>
+<section class="integrationlog">
+<h2>Integration log</h2>
+<code><%= @patch.integration_log %></code>
+</section>
+<% end %>

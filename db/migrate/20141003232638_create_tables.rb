@@ -56,6 +56,7 @@ class CreateTables < ActiveRecord::Migration
     create_table :patches do |t|
       t.references :merge_request, index: true
       t.text       :diff,          default: '', null: false
+      t.text       :integration_log
       t.timestamps
     end
 
