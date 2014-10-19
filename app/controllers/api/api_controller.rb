@@ -22,9 +22,9 @@ module Api
       @current_user = User.find_by_api_token(params[:api_token]) or raise 'Sorry, invalid token.'
 
       project_id = params[:controller] == 'api/projects' ? params[:id] : params[:project_id]
-      @project = current_user.projects.find_by_id(project_id) or raise 'Invalid project.'
+      @project = current_user.projects.find(project_id)
     rescue RuntimeError
-      render text: $!.message, status: :unauthorized
+      render json: { error: $!.message }, status: :unauthorized
     end
   end
 end
