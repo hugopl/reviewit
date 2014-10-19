@@ -37,20 +37,17 @@ module Reviewit
     end
 
     def post url, args
-      send_request url, args, Net::HTTP::Post
+      send_request url, args
     end
 
     def patch url, args
-      send_request url, args, Net::HTTP::Patch
+      args[:_method] = 'patch'
+      send_request url, args
     end
 
-    def send_request(url, params, method)
-      url = full_uri_for(url)
-      req = method.new(url)
-      req.form_data = params
-      res = Net::HTTP.start(url.hostname, url.port, :use_ssl => url.scheme == 'https' ) do |http|
-        http.request(req)
-      end
+    def send_request(url, params)
+      uri = full_uri_for(url)
+      res = Net::HTTP.post_form(uri, params)
       data = JSON.load(res.body)
       raise (data['error'] or 'Unknow error') if res.code != '200'
       return data
