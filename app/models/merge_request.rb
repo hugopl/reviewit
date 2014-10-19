@@ -3,7 +3,7 @@ require 'fileutils'
 require 'tempfile'
 
 class MergeRequest < ActiveRecord::Base
-  belongs_to :owner, class_name: User
+  belongs_to :author, class_name: User
   belongs_to :reviewer, class_name: User
   belongs_to :project
 
@@ -46,7 +46,7 @@ private
 
   def git_format_patch patch
     out =<<eot
-From: #{owner.name} #{owner.email}
+From: #{author.name} #{author.email}
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
 #{commit_message}

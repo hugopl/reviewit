@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
 
   create_table "merge_requests", force: true do |t|
     t.integer  "project_id"
-    t.integer  "owner_id"
+    t.integer  "author_id"
     t.integer  "reviewer_id"
     t.integer  "status",         default: 0, null: false
     t.string   "target_branch",              null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
     t.datetime "updated_at"
   end
 
-  add_index "merge_requests", ["owner_id"], name: "index_merge_requests_on_owner_id"
+  add_index "merge_requests", ["author_id"], name: "index_merge_requests_on_author_id"
   add_index "merge_requests", ["project_id"], name: "index_merge_requests_on_project_id"
   add_index "merge_requests", ["reviewer_id"], name: "index_merge_requests_on_reviewer_id"
 

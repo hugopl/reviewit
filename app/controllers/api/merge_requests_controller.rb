@@ -13,8 +13,8 @@ module Api
         id: @mr.id,
         target_branch:  @mr.target_branch,
         status:         @mr.status,
-        author:         @mr.owner.name,
-        author_email:   @mr.owner.email,
+        author:         @mr.author.name,
+        author_email:   @mr.author.email,
         commit_message: @mr.commit_message,
         diff:           patch.diff
       }
@@ -24,7 +24,7 @@ module Api
       MergeRequest.transaction do
         mr = MergeRequest.new
         mr.project = project
-        mr.owner = current_user
+        mr.author = current_user
         mr.subject = params[:subject]
         mr.commit_message = params[:commit_message]
         mr.target_branch = params[:target_branch]

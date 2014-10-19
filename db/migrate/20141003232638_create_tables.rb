@@ -44,7 +44,7 @@ class CreateTables < ActiveRecord::Migration
 
     create_table :merge_requests do |t|
       t.references :project,  index: true
-      t.belongs_to :owner,    index: true, class_name: 'User'
+      t.belongs_to :author,   index: true, class_name: 'User'
       t.belongs_to :reviewer, index: true, class_name: 'User'
       t.integer :status,      default: 0, null: false
       t.string :target_branch, null: false
