@@ -1,5 +1,10 @@
 module Api
   class MergeRequestsController < ApiController
+
+    def index
+      render json: project.merge_requests.pending
+    end
+
     def create
 
       MergeRequest.transaction do

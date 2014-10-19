@@ -10,18 +10,24 @@ module Reviewit
     end
 
     def update_merge_request mr_id, subject, commit_message, diff, comments
-      puts 'Updating merge request...'
       patch("merge_requests/#{mr_id}", subject: subject, commit_message: commit_message, diff: diff, comments: comments)
-      puts "Merge Request updated at #{mr_url(mr_id)}"
+      mr_url(mr_id)
     end
 
     def create_merge_request subject, commit_message, diff, target_branch
-      puts "Creating merge request..."
       res = post('merge_requests', subject: subject, commit_message: commit_message, diff: diff, target_branch: target_branch)
-      puts "Merge Request created at #{mr_url(res['mr_id'])}"
-      res['mr_id']
+      { url: mr_url(res['mr_id']), id: res['mr_id'] }
     end
 
+    def pending_merge_requests
+      list = get 'merge_requests'
+      list.map do |item|
+        {
+         url:     mr_url(item['id']),
+         subject: item['subject']
+        }
+      end
+    end
   private
 
     def mr_url id
@@ -45,11 +51,19 @@ module Reviewit
       send_request url, args
     end
 
+    def get url
+      uri = full_uri_for(url)
+      process_response Net::HTTP.get_response(uri)
+    end
+
     def send_request(url, params)
       uri = full_uri_for(url)
-      res = Net::HTTP.post_form(uri, params)
-      data = JSON.load(res.body)
-      raise (data['error'] or 'Unknow error') if res.code != '200'
+      process_response Net::HTTP.post_form(uri, params)
+    end
+
+    def process_response response
+      data = JSON.load(response.body)
+      raise (data['error'] or 'Unknow error') if response.code != '200'
       return data
     rescue JSON::ParserError
       raise 'Error parsing returned JSON.'
