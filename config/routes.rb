@@ -12,8 +12,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :settings, only: [:index]
-
   resources :mr, only: [:show]
 
   namespace :api do

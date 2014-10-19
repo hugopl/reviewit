@@ -24,8 +24,8 @@
     </span>
     <div class="user-nav">
       <%= current_user.name %>
-      <%= link_to "\uf013", '/settings', class: 'settings tipped', 'data-tip' => 'Settings' %>
-      <%= link_to "\uf08b", '/users/sign_out', method: :delete, class: 'logout tipped', 'data-tip' => 'Logout' %></div></div>
+      <%= link_to "\uf013", edit_user_registration_path, class: 'settings tipped', 'data-tip' => 'Settings' %>
+      <%= link_to "\uf08b", destroy_user_session_path, method: :delete, class: 'logout tipped', 'data-tip' => 'Logout' %></div></div>
     </div>
   </div>
   <div class="content">

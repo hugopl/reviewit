@@ -4,6 +4,7 @@ module ApplicationHelper
   def print_errors obj
     obj_str = obj.to_s
     obj_instance = instance_variable_get("@#{obj_str}")
+    obj_instance = send(obj) if obj_instance.nil?
 
     return nil unless obj_instance.errors.any?
 

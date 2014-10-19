@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
   end
 
+  layout Proc.new { |controller|
+    user_signed_in? ? 'application' : 'devise/sessions'
+  }
+
   def project
     @project ||= current_user.projects.find(params.include?(:project_id) ? params[:project_id] : params[:id])
   end
@@ -19,5 +23,6 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
+    devise_parameter_sanitizer.for(:account_update) << :name
   end
 end
