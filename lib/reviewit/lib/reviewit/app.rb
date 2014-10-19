@@ -7,7 +7,7 @@ require 'reviewit/version.rb'
 
 module Reviewit
 
-  ACTIONS = %w(push pending cancel).freeze
+  ACTIONS = %w(push pending show).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end

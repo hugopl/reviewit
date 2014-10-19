@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :projects, only: [] do
       get 'setup', on: :member
-      resources :merge_requests, only: [:create, :update, :index]
+      resources :merge_requests, only: [:create, :update, :index, :show]
     end
   end
 

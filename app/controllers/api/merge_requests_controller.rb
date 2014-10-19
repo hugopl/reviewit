@@ -5,8 +5,22 @@ module Api
       render json: project.merge_requests.pending
     end
 
-    def create
+    def show
+      patch = merge_request.patches.newer
+      raise 'No patches were found for this merge request.' unless patch.is_a? Patch
 
+      render json: {
+        id: @mr.id,
+        target_branch:  @mr.target_branch,
+        status:         @mr.status,
+        author:         @mr.owner.name,
+        author_email:   @mr.owner.email,
+        commit_message: @mr.commit_message,
+        diff:           patch.diff
+      }
+    end
+
+    def create
       MergeRequest.transaction do
         mr = MergeRequest.new
         mr.project = project
@@ -47,7 +61,7 @@ module Api
           comment.save!
         end
 
-        render json: ''
+        render json: {}
       end
     end
   end

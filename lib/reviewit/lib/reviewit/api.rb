@@ -23,10 +23,15 @@ module Reviewit
       list = get 'merge_requests'
       list.map do |item|
         {
+         id:      item['id'],
          url:     mr_url(item['id']),
          subject: item['subject']
         }
       end
+    end
+
+    def merge_request id
+      get "merge_requests/#{id}"
     end
   private
 
