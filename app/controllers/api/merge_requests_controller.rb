@@ -45,12 +45,5 @@ module Api
         render json: ''
       end
     end
-
-  private
-
-    def merge_request
-      @project ||= current_user.projects.find(params[:project_id])
-      project.merge_requests.find(params[:id])
-    end
   end
 end

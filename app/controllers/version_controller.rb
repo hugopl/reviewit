@@ -10,10 +10,6 @@ class VersionController < ApplicationController
 
   private
 
-  def project
-    @project ||= current_user.projects.find_by_id(params[:project_id])
-  end
-
   def merge_request
     @mr ||= project.merge_requests.find(params[:merge_request_id])
   end

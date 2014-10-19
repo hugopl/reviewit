@@ -21,12 +21,11 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = current_user.projects.find(params[:id])
+    project
   end
 
   def update
-    @project = current_user.projects.find(params[:id])
-    @project.update_attributes(project_params)
+    project.update_attributes(project_params)
     set_project_users
     if @project.save
       redirect_to @project
@@ -36,8 +35,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = current_user.projects.find(params[:id])
-    @project.destroy
+    project.destroy
     redirect_to action: :index
   end
 

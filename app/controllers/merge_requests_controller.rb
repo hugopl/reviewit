@@ -30,10 +30,6 @@ class MergeRequestsController < ApplicationController
 
   private
 
-  def project
-    @project ||= current_user.projects.find_by_id(params[:project_id])
-  end
-
   def accept
     @mr.status = :accepted
     @mr.reviewer = current_user
@@ -46,10 +42,6 @@ class MergeRequestsController < ApplicationController
     @mr.reviewer = current_user
     @mr.save!
     redirect_to action: :index
-  end
-
-  def merge_request
-    @mr ||= project.merge_requests.find(params[:id])
   end
 
   def create_comments comments
