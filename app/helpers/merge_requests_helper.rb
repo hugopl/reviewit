@@ -8,7 +8,10 @@ module MergeRequestsHelper
   end
 
   def merge_request_pending_since mr
-    time = distance_of_time_in_words(Time.now, mr.patches.newer.updated_at)
+    last_patch = mr.patches.newer
+    return '' if last_patch.empty?
+    time = (last_patch.updated_at or last_patch.created_at)
+    time = distance_of_time_in_words(Time.now, time)
     "pending for #{time}"
   end
 
