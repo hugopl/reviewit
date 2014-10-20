@@ -1,3 +1,5 @@
+![Logo](app/assets/images/logo.png)
+
 # Review it!
 
 Review it! is a review tool for git-based projects.
