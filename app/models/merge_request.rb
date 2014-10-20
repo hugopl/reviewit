@@ -31,20 +31,28 @@ class MergeRequest < ActiveRecord::Base
     save!
 
     Thread.new do
-      patch = patches.newer.reload
-      prepare_git_repository(patch)
-      if git_am(patch) and git_push
-        reload.accepted!
-      else
-        reload.needs_rebase!
+      begin
+        prepare_git_repository(patch)
+        if git_am(patch) and git_push
+          reload.accepted!
+        else
+          reload.needs_rebase!
+        end
+      rescue
+        output.puts "\n\n******** Stupid error from Review it! programmer ******** \n\n"
+        output.puts $!.inspect
+        output.puts $!.backtrace
+        open!
+      ensure
+        patch.integration_log = output.string
+        patch.save
+        ActiveRecord::Base.connection.close
       end
-      patch.integration_log = @output.string
-      patch.save
     end
   end
 
   def patch
-    patches.newer
+    @patch ||= patches.newer
   end
 
   def git_format_patch
@@ -75,7 +83,7 @@ private
   end
 
   def git_am patch
-    contents = git_format_patch(patch)
+    contents = git_format_patch
     file = Tempfile.new 'patch'
     file.puts contents
     file.close
@@ -86,11 +94,14 @@ private
     call "cd #{@dir} && git push origin #{target_branch}"
   end
 
-  def call command
+  def output
     @output ||= StringIO.new
-    @output.puts "$ #{command}"
-    output = `#{command} 2>&1`.strip
-    @output.puts output unless output.empty?
+  end
+
+  def call command
+    output.puts "$ #{command}"
+    res = `#{command} 2>&1`.strip
+    output.puts(res) unless res.empty?
     $?.exitstatus == 0
   end
 end
