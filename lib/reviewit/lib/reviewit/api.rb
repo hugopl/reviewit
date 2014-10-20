@@ -42,11 +42,11 @@ module Reviewit
       get "merge_requests/#{id}/show_git_patch"
     end
 
-  private
-
     def mr_url id
       @base_url.gsub(/api\/?\z/, "mr/#{id}")
     end
+
+  private
 
     def url_for path
       "#{@base_url}/projects/#{@project_id}/#{path}"

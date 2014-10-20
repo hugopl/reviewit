@@ -7,7 +7,7 @@ require 'reviewit/version.rb'
 
 module Reviewit
 
-  ACTIONS = %w(push pending show apply cancel).freeze
+  ACTIONS = %w(push pending show apply cancel open).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end
@@ -44,6 +44,7 @@ review actions:
   cancel    Cancel current review.
   apply     Apply patch from a merge request on your tree.
   show      Show patch from a merge request.
+  open      Open a merge request in your default browser.
 eot
       puts help
       abort(should_abort) if should_abort
