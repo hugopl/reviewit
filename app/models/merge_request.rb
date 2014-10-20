@@ -25,6 +25,12 @@ class MergeRequest < ActiveRecord::Base
     MergeRequest.statuses[status] >= CLOSE_LIMIT
   end
 
+  def abandon! reviewer
+    self.reviewer = reviewer
+    self.status = :abandoned
+    save!
+  end
+
   def integrate! reviewer
     self.reviewer = reviewer
     self.status = :integrating

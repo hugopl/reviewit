@@ -53,7 +53,8 @@ module Reviewit
     end
 
     def full_uri_for path
-      URI("#{url_for(path)}?api_token=#{@api_token}")
+      # FIXME: Remove API Token from GET requests
+      URI("#{url_for(path)}?api_token=#{@api_token}&cli_version=#{VERSION}")
     end
 
     def post url, args

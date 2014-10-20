@@ -1,5 +1,3 @@
-require Rails.root.join('lib', 'reviewit', 'lib', 'reviewit', 'version.rb')
-
 module Api
   class ProjectsController < ApiController
     def setup

@@ -23,7 +23,8 @@ module Api
     def destroy
       raise 'You can not abandon a merge request in the integration process, wait a bit.' if merge_request.integrating?
       raise 'Too late, this merge request was already accepted.' if merge_request.accepted?
-      merge_request.abandoned!
+      raise 'This merge request was already abandoned.' if merge_request.abandoned?
+      merge_request.abandon! current_user
       render json: {}
     end
 

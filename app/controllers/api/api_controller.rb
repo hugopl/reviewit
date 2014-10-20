@@ -1,3 +1,5 @@
+require Rails.root.join('lib', 'reviewit', 'lib', 'reviewit', 'version.rb')
+
 module Api
   class ApiController < ApplicationController
     protect_from_forgery with: :null_session
@@ -20,6 +22,8 @@ module Api
 
     def authenticate_user_by_token!
       @current_user = User.find_by_api_token(params[:api_token]) or raise 'Sorry, invalid token.'
+
+      raise "You need Review it! version #{Reviewit::VERSION}, but have #{params[:cli_version]}" if params[:cli_version] != Reviewit::VERSION
 
       project_id = params[:controller] == 'api/projects' ? params[:id] : params[:project_id]
       @project = current_user.projects.find(project_id)
