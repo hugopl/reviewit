@@ -8,8 +8,27 @@ module Reviewit
       @options = parse_options
     end
   protected
+
+    MR_STAMP = 'Reviewit-MR-id:'
+    MR_STAMP_REGEX = /^#{MR_STAMP} (?<id>\d+)$/
+
     attr_reader :api
     attr_reader :options
+
+    def read_commit_header
+      @subject = `git show -s --format="%s"`.strip
+      @commit_message = `git show -s --format="%B"`.strip
+    end
+
+    def process_commit_message!
+      match = MR_STAMP_REGEX.match @commit_message
+
+      if match
+        @commit_message["#{match}"] = ''
+        @mr_id = match[:id]
+      end
+      @commit_message.strip!
+    end
 
     def read_user_message
       return @options[:message] if @options[:message_given]

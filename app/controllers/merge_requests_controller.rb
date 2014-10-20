@@ -24,7 +24,7 @@ class MergeRequestsController < ApplicationController
   end
 
   def show
-    @patch = merge_request.patches.newer
+    @patch = merge_request.patch
   end
 
   private

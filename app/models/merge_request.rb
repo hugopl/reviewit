@@ -42,22 +42,26 @@ class MergeRequest < ActiveRecord::Base
       patch.save
     end
   end
-private
 
-  def git_format_patch patch
+  def patch
+    patches.newer
+  end
+
+  def git_format_patch
+    reviewer_stamp = (reviewer.nil? ? '' : "\nReviewed by #{reviewer.name} on MR ##{id}\n\n")
     out =<<eot
 From: #{author.name} #{author.email}
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
 #{commit_message}
-
-Reviewed by #{reviewer.name} on MR ##{id}
-
+#{reviewer_stamp}
 #{patch.diff}
 --
 review it!
 eot
   end
+
+private
 
   def prepare_git_repository patch
     base_dir = "#{Dir.tmpdir}/reviewit/project#{project_id}"

@@ -6,7 +6,7 @@ module Api
     end
 
     def show
-      patch = merge_request.patches.newer
+      patch = merge_request.patch
       raise 'No patches were found for this merge request.' unless patch.is_a? Patch
 
       render json: {
@@ -18,6 +18,17 @@ module Api
         commit_message: @mr.commit_message,
         diff:           patch.diff
       }
+    end
+
+    def destroy
+      raise 'You can not abandon a merge request in the integration process, wait a bit.' if merge_request.integrating?
+      raise 'Too late, this merge request was already accepted.' if merge_request.accepted?
+      merge_request.abandoned!
+      render json: {}
+    end
+
+    def show_git_patch
+      render json: { patch: merge_request.git_format_patch }
     end
 
     def create

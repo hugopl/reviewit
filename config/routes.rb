@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   namespace :api do
     resources :projects, only: [] do
       get 'setup', on: :member
-      resources :merge_requests, only: [:create, :update, :index, :show]
+      resources :merge_requests, only: [:create, :update, :index, :show, :destroy] do
+        get 'show_git_patch', on: :member
+      end
     end
   end
 

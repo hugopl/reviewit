@@ -1,9 +1,6 @@
 module Reviewit
   class Push < Action
 
-    MR_STAMP = 'Reviewit-MR-id:'
-    MR_STAMP_REGEX = /^#{MR_STAMP} (?<id>\d+)$/
-
     def run
       read_commit_header
       read_commit_diff
@@ -32,24 +29,8 @@ module Reviewit
       options
     end
 
-    def read_commit_header
-      @subject = `git show -s --format="%s"`.strip
-      @commit_message = `git show -s --format="%B"`.strip
-    end
-
     def read_commit_diff
       @commit_diff = `git show --format=""`
-    end
-
-    def process_commit_message!
-      match = MR_STAMP_REGEX.match @commit_message
-      @updating = match
-
-      if @updating
-        @commit_message["#{match}"] = ''
-        @mr_id = match[:id]
-      end
-      @commit_message.strip!
     end
 
     def append_mr_id_to_commit mr_id
@@ -61,7 +42,7 @@ module Reviewit
     end
 
     def updating?
-      @updating
+      not @mr_id.nil?
     end
   end
 end

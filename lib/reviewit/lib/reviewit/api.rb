@@ -19,6 +19,10 @@ module Reviewit
       { url: mr_url(res['mr_id']), id: res['mr_id'] }
     end
 
+    def abandon_merge_request id
+      delete("merge_requests/#{id}")
+    end
+
     def pending_merge_requests
       list = get 'merge_requests'
       list.map do |item|
@@ -33,6 +37,11 @@ module Reviewit
     def merge_request id
       get "merge_requests/#{id}"
     end
+
+    def show_git_patch id
+      get "merge_requests/#{id}/show_git_patch"
+    end
+
   private
 
     def mr_url id
@@ -53,6 +62,11 @@ module Reviewit
 
     def patch url, args
       args[:_method] = 'patch'
+      send_request url, args
+    end
+
+    def delete url
+      args = { _method: 'delete' }
       send_request url, args
     end
 

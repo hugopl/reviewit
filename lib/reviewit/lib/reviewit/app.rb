@@ -7,7 +7,7 @@ require 'reviewit/version.rb'
 
 module Reviewit
 
-  ACTIONS = %w(push pending show).freeze
+  ACTIONS = %w(push pending show apply cancel).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end
@@ -40,8 +40,8 @@ module Reviewit
       help = <<eot
 review actions:
   push      Create or update a review.
-  cancel    Cancel current review.
   pending   Show pending reviews.
+  cancel    Cancel current review.
   apply     Apply patch from a merge request on your tree.
   show      Show patch from a merge request.
 eot
