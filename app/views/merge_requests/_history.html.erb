@@ -3,7 +3,7 @@
   <h2>Patch version log</h2>
   <ol>
     <% @mr.patches.each_with_index do |patch, i| %>
-      <% patch_name = i.zero? ? 'First version' : patch.comment.content %>
+      <% patch_name = i.zero? ? 'First version' : patch.description %>
       <% if (i + 1) == @version %>
         <li><%= patch_name %></li>
       <% else %>

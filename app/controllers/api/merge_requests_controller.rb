@@ -46,6 +46,7 @@ module Api
         patch = Patch.new
         patch.merge_request = mr
         patch.diff = params[:diff]
+        patch.description = 'First version'
         patch.save!
         render(json: { :mr_id => mr.id })
       end
@@ -66,15 +67,8 @@ module Api
         patch = Patch.new
         patch.merge_request = mr
         patch.diff = params[:diff]
+        patch.description = (params[:description] or '').lines.first.to_s
         patch.save!
-
-        unless params[:comments].empty?
-          comment = Comment.new
-          comment.patch = patch
-          comment.user = current_user
-          comment.content = params[:comments]
-          comment.save!
-        end
 
         render json: {}
       end

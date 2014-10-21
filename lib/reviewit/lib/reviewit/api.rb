@@ -9,8 +9,8 @@ module Reviewit
       @api_token = api_token
     end
 
-    def update_merge_request mr_id, subject, commit_message, diff, comments
-      patch("merge_requests/#{mr_id}", subject: subject, commit_message: commit_message, diff: diff, comments: comments)
+    def update_merge_request mr_id, subject, commit_message, diff, description
+      patch("merge_requests/#{mr_id}", subject: subject, commit_message: commit_message, diff: diff, description: description)
       mr_url(mr_id)
     end
 

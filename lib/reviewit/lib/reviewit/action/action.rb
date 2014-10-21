@@ -30,6 +30,11 @@ module Reviewit
       @commit_message.strip!
     end
 
+    def read_user_single_line_message prompt
+      print prompt
+      STDIN.readline.strip
+    end
+
     def read_user_message
       return @options[:message] if @options[:message_given]
 
