@@ -1,8 +1,8 @@
 <h1><%= @mr.subject %></h1>
 
-<%= render partial: 'summary', locals: { version: @mr.patches.count } %>
+<%= render partial: 'summary' %>
 
-<%= render partial: 'history', locals: { current_version: @mr.patches.count } %>
+<%= render partial: 'history' %>
 
 <% if @mr.patches.count > 0 %>
   <%= form_tag nil, method: 'patch' do %>

@@ -8,7 +8,6 @@ Rails.application.routes.draw do
       collection do
        get 'old_ones'
       end
-      resources :version, only: [:show]
     end
   end
 

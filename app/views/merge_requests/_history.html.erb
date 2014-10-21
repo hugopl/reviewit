@@ -2,17 +2,12 @@
 <section class="patch-history">
   <h2>Patch version log</h2>
   <ol>
-    <% if current_version == 1 %>
-      <li>First Version</li>
-    <% else %>
-      <li><%= link_to 'First version', project_merge_request_version_path(@project, @mr, 1) %></li>
-    <% end %>
-
-    <% @mr.patches.to_a[1..-1].each_with_index do |patch, i| %>
-      <% if (i + 2) == current_version %>
-        <li><%= patch.comment.content %></li>
+    <% @mr.patches.each_with_index do |patch, i| %>
+      <% patch_name = i.zero? ? 'First version' : patch.comment.content %>
+      <% if (i + 1) == @version %>
+        <li><%= patch_name %></li>
       <% else %>
-        <li><%= link_to patch.comment.content, project_merge_request_version_path(@project, @mr, (i + 2))  %></li>
+        <li><%= link_to patch_name, project_merge_request_path(@project, @mr, version: (i + 1))  %></li>
       <% end %>
     <% end %>
   </ol>
