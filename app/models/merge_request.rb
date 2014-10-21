@@ -7,7 +7,7 @@ class MergeRequest < ActiveRecord::Base
   belongs_to :reviewer, class_name: User
   belongs_to :project
 
-  has_many :patches, dependent: :destroy
+  has_many :patches, -> { order(:created_at) }, dependent: :destroy
 
   enum status: [ :open, :integrating, :needs_rebase, :accepted, :abandoned ]
 
@@ -58,7 +58,7 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def patch
-    @patch ||= patches.newer
+    @patch ||= patches.last
   end
 
   def git_format_patch

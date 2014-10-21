@@ -8,7 +8,7 @@ module MergeRequestsHelper
   end
 
   def merge_request_pending_since mr
-    last_patch = mr.patches.newer
+    last_patch = mr.patches.last
     return '' unless last_patch.is_a? Patch
     time = (last_patch.updated_at or last_patch.created_at)
     time = distance_of_time_in_words(Time.now, time)
