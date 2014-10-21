@@ -49,13 +49,13 @@ class CreateTables < ActiveRecord::Migration
       t.integer :status,      default: 0, null: false
       t.string :target_branch, null: false
       t.string :subject, null: false
-      t.string :commit_message, null: false
       t.timestamps
     end
 
     create_table :patches do |t|
       t.references :merge_request, index: true
       t.text       :description,   default: ''
+      t.text       :commit_message, null: false
       t.text       :diff,          default: '', null: false
       t.text       :integration_log
       t.timestamps

@@ -28,10 +28,9 @@ ActiveRecord::Schema.define(version: 20141003232638) do
     t.integer  "project_id"
     t.integer  "author_id"
     t.integer  "reviewer_id"
-    t.integer  "status",         default: 0, null: false
-    t.string   "target_branch",              null: false
-    t.string   "subject",                    null: false
-    t.string   "commit_message",             null: false
+    t.integer  "status",        default: 0, null: false
+    t.string   "target_branch",             null: false
+    t.string   "subject",                   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -43,6 +42,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
   create_table "patches", force: true do |t|
     t.integer  "merge_request_id"
     t.text     "description",      default: ""
+    t.text     "commit_message",                null: false
     t.text     "diff",             default: "", null: false
     t.text     "integration_log"
     t.datetime "created_at"

@@ -6,6 +6,7 @@ class Patch < ActiveRecord::Base
   order :location
 
   validates :diff, presence: true
+  validates :commit_message, presence: true
 
   def comments_by_location
     comments.to_a.inject({}) do |hash, comment|

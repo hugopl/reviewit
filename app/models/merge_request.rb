@@ -19,7 +19,6 @@ class MergeRequest < ActiveRecord::Base
 
   validates :target_branch, presence: true
   validates :subject, presence: true
-  validates :commit_message, presence: true
 
   def can_update?
     not %w(accepted integrating).include? status
