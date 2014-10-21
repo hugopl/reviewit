@@ -25,8 +25,9 @@ class MergeRequestsController < ApplicationController
 
   def show
     @version = params[:version].to_i
-    raise ActiveRecord::RecordNotFound.new if @version < 1
+    raise ActiveRecord::RecordNotFound.new if @version < 0
     @patch = merge_request.patches[@version - 1] or raise ActiveRecord::RecordNotFound.new
+    @version = merge_request.patches.count if @version.zero?
   end
 
   private
