@@ -1,5 +1,7 @@
 module Api
   class ProjectsController < ApiController
+    before_action :check_cli_version!, except: [:setup]
+
     def setup
       render text: r_me_script
     end
