@@ -21,6 +21,10 @@ class MergeRequest < ActiveRecord::Base
   validates :subject, presence: true
   validates :commit_message, presence: true
 
+  def can_update?
+    not %w(accepted integrating).include? status
+  end
+
   def closed?
     MergeRequest.statuses[status] >= CLOSE_LIMIT
   end

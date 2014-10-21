@@ -53,11 +53,14 @@ module Api
 
     def update
       mr = merge_request
-      raise "You can not update a #{mr.status} merge request." if mr.closed?
+
+      raise 'You need to be the MR author to update it.' if mr.author != current_user
+      raise "You can not update a #{mr.status} merge request." unless mr.can_update?
 
       MergeRequest.transaction do
         mr.subject = params[:subject]
         mr.commit_message = params[:commit_message]
+        mr.status = :open
         mr.save!
 
         patch = Patch.new
