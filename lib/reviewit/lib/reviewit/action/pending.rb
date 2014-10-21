@@ -1,17 +1,23 @@
 module Reviewit
   class Pending < Action
 
+    HEADER = %w(Id Status Subject URL)
+
     def run
       list = api.pending_merge_requests
-      max_subject = 0
-      list.each do |mr|
-        len = mr[:subject].length
-        max_subject = len if len > max_subject
+      if list.empty?
+        puts 'No reviews pending, yay!!'
+        return
       end
-      list.each do |mr|
-        puts "%d  %-#{max_subject}s    %s" % [mr[:id], mr[:subject], mr[:url]]
+
+      inject_header(list)
+      length = compute_header_lengths(list)
+
+      list.each_with_index do |mr, i|
+        color = i.zero? ? WHITE : ''
+        puts "#{color}%#{length[:id]}s  %-#{length[:status]}s  %-#{length[:subject]}s  %s#{NO_COLOR}" \
+             % [mr[:id], mr[:status], mr[:subject], mr[:url]]
       end
-      puts 'No reviews pending, yay!!' if list.empty?
     end
 
     private
@@ -21,6 +27,21 @@ module Reviewit
         opt :all, 'Show all pending MRs including the ones created by me'
       end
       options
+    end
+
+    def inject_header list
+      list.unshift Hash[list.first.keys.map {|k| [k, k.to_s.capitalize]}]
+    end
+
+    def compute_header_lengths list
+      length = {}
+      list.each do |mr|
+        mr.keys.each do |key|
+          len = mr[key].to_s.length
+          length[key] = len if len > (length[key] or 0)
+        end
+      end
+      length
     end
   end
 end

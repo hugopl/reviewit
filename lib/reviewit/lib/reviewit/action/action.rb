@@ -9,6 +9,12 @@ module Reviewit
     end
   protected
 
+    NO_COLOR = "\033[0m"
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    WHITE = "\033[1;37m"
+    CYAN = "\033[0;36m"
+
     MR_STAMP = 'Reviewit-MR-id:'
     MR_STAMP_REGEX = /^#{MR_STAMP} (?<id>\d+)$/
 

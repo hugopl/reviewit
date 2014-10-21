@@ -29,6 +29,7 @@ module Reviewit
         {
          id:      item['id'],
          url:     mr_url(item['id']),
+         status:  item['status'],
          subject: item['subject']
         }
       end
