@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'securerandom'
+
+def abort_if_exists file
+  abort "Remove #{file} to continue." if File.exists? file
+end
+
+def execute command
+  puts command
+  abort unless system command
+end
+
+%w(config/database.yml config/reviewit.yml db/production.sqlite3).each do |file|
+  abort_if_exists(file)
+end
+
+File.open('config/reviewit.yml', 'w') do |file|
+    file.write <<eos
+# Changing this key will render invalid all existing confirmation,
+# reset password and unlock tokens in the database.
+secret_key: #{SecureRandom.hex(64)}
+# Configure the e-mail address which will be shown in emails sent by Review it!
+mail_sender:
+eos
+end
+
+File.open('config/database.yml', 'w') do |file|
+  file.write <<eos
+production: &development
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  database: db/production.sqlite3
+eos
+  end
+
+ENV['RAILS_ENV'] = 'production'
+execute 'rake db:migrate'
+execute 'rake db:seed'
+execute 'rake assets:precompile'
+
+puts 'Now edit the missing configuration in config/reviewit.yml and call unicorn_rails.'

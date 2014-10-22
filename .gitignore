@@ -15,5 +15,8 @@
 /log/*.log
 /tmp
 /config/database.yml
+/config/reviewit.yml
 *.rubyproject
 *.rubyproject.user
+/public/assets
+/public/*.gem

@@ -13,7 +13,25 @@ For the sake of simplicity, the work/review processes is split in two components
 
 ## Installing
 
-While still in alpha development, you can try it out by cloning the repo, bundling and running the tools locally.
+These are the painless instructions if you wont have a lot (>30) of users and don't have experience installing rails applications, for a optimal configuration I would recoment you to read about how to add more workers to a unicorn configuration and/or how to use Postgres in a Ruby on Rails application. All this is easy to do but out of the scope of this README.
+
+This instalation will use SQLite3 as database and just 1 unicorn worker, this will work just fine if you don't have a lot of users using the tool at the same time.
+
+First, make sure Ruby is installed on your system, last version (2.x) is always better, then
+
+```bash
+$ git clone --depth 1 https://github.com/hugopl/reviewit.git
+$ cd reviewit
+$ gem install bundle
+$ bundle install
+$ ./scripts/first_install
+$ RAILS_ENV=production unicorn_rails
+```
+
+Notes:
+
+  1. This will open a server on port 8080, see unicorn_rails --help for more info like running unicorn as a daemon.
+  2. This will tell rails to serve the assets, if you are using nginx or apache you will need to change `config.serve_static_assets` to false in config/environments/production.rb
 
 ## Setting up your Project
 
@@ -53,7 +71,7 @@ Just run `review pending`.
 
 ### Open a Review in your Browser
 
-Just run `review open X`, where X is the MR id, you can see the MR ids when listing pending reviews. 
+Just run `review open X`, where X is the MR id, you can see the MR ids when listing pending reviews.
 
 If X is ommited it will open the current review, if it exists.
 
@@ -73,4 +91,3 @@ Sometimes you aren't a believer and want to try the patch yourself, this is easy
 
 1. Lint support
 2. CI integration
-
