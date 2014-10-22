@@ -24,8 +24,7 @@ def install_rme_gem
   end
 
   puts 'Installing reviewit gem...'
-  `gem install #{gem_file}`
-  abort 'Failed to install reviewit gem' unless $?.success?
+  abort 'Failed to install reviewit gem' unless system("gem install #{gem_file}")
 end
 
 def check_git_repository
