@@ -1,13 +1,13 @@
-require './lib/r-me/version.rb'
+require "#{File.dirname(__FILE__)}/lib/reviewit/version.rb"
 
 Gem::Specification.new do |s|
-  s.name        = 'r-me'
-  s.version     = Rme::VERSION
+  s.name        = 'reviewit'
+  s.version     = Reviewit::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Hugo Parente Lima']
   s.email       = ['hugo.pl@gmail.com']
-  s.homepage    = 'http://hugopl.github.io/'
-  s.summary     = 'Reviewit command line interface.'
+  s.homepage    = 'https://github.com/hugopl/reviewit'
+  s.summary     = 'Review it! is a review tool for git-based projects.'
   s.description = 'Reviewit command line interface, because sometimes Web interface sux.'
   s.license     = 'MIT'
 
