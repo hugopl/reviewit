@@ -17,6 +17,8 @@ module Reviewit
     attr_reader :project_id
 
     def run
+      return show_help if ARGV == ['--help']
+
       load_configuration
       api = Api.new(@base_url, @project_id, @api_token)
 
@@ -28,7 +30,7 @@ module Reviewit
 
   private
     def action_class
-      show_help('') if ARGV.empty?
+      show_help(:abort) if ARGV.empty?
 
       action_name = ARGV.shift
       raise 'Unknown action' unless ACTIONS.include? action_name
@@ -36,7 +38,7 @@ module Reviewit
       Reviewit.const_get(action_name.capitalize)
     end
 
-    def show_help should_abort
+    def show_help should_abort = nil
       help = <<eot
 review actions:
   push      Create or update a review.
@@ -47,7 +49,7 @@ review actions:
   open      Open a merge request in your default browser.
 eot
       puts help
-      abort(should_abort) if should_abort
+      abort if should_abort
     end
 
     def load_configuration
