@@ -10,7 +10,15 @@
 
 <div class="content">
 <div id="logo"><%= image_tag 'logo.png' %></div>
+
+<h1>Review it!</h1>
+
+<% flash.each do |key, value| %>
+  <%= content_tag :div, value, class: 'error' %>
+<% end %>
+
 <%= yield %>
+
 </div>
 
 </body>
