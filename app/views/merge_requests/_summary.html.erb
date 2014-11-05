@@ -1,9 +1,8 @@
 <div class="mr-summary">
   Status: <span class="<%= @mr.status %>"><%= @mr.status.humanize %></span><br>
   Author: <span><%= @mr.author.name %></span><br>
+  Branch: <span><%= @mr.target_branch %></span><br>
   Version: <span><%= @version %></span></br>
-  CI: ?<br>
-  Linter: ?</span>
 <% if @mr.accepted? or @mr.abandoned? %>
 <br><%= @mr.status.humanize %> by: <%= @mr.reviewer.name %>
 <% end %>
