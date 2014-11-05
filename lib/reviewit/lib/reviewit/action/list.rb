@@ -1,5 +1,5 @@
 module Reviewit
-  class Pending < Action
+  class List < Action
 
     HEADER = %w(Id Status Subject URL)
 
