@@ -104,8 +104,10 @@ pre.message {
     content: '✚';
   }
 
-  tr:hover > td > div.add-comment {
-   visibility: visible;
+  tr:hover.del, tr:hover.add {
+    > td > div.add-comment {
+     visibility: visible;
+    }
   }
 
   tr > td.add-comment {
