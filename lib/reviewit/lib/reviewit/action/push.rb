@@ -9,7 +9,7 @@ module Reviewit
       if updating?
         puts 'Updating merge request...'
         description = (options[:message] or read_user_single_line_message('Type a single line description of the change: '))
-        url = api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, description)
+        url = api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, description, options[:branch])
         puts "Merge Request updated at #{url}"
       else
         abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?

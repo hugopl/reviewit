@@ -55,29 +55,35 @@ module Api
     def update
       mr = merge_request
 
-      raise 'Seems you are re-submitting the same patch.' if is_it_a_mistake?
       raise 'You need to be the MR author to update it.' if mr.author != current_user
       raise "You can not update a #{mr.status} merge request." unless mr.can_update?
 
-      MergeRequest.transaction do
-        mr.subject = params[:subject]
-        mr.status = :open
+      if is_same_patch?
+        raise 'Seems you are re-submitting the same patch.' if params[:target_branch].blank?
+        mr.target_branch = params[:target_branch].strip
         mr.save!
+      else
+        MergeRequest.transaction do
+          mr.subject = params[:subject]
+          mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
+          mr.status = :open
+          mr.save!
 
-        patch = Patch.new
-        patch.merge_request = mr
-        patch.commit_message = params[:commit_message]
-        patch.diff = params[:diff]
-        patch.description = (params[:description] or '').lines.first.to_s
-        patch.save!
-
-        render json: {}
+          patch = Patch.new
+          patch.merge_request = mr
+          patch.commit_message = params[:commit_message]
+          patch.diff = params[:diff]
+          patch.description = (params[:description] or '').lines.first.to_s
+          patch.save!
+        end
       end
+
+      render json: {}
     end
 
     private
 
-    def is_it_a_mistake?
+    def is_same_patch?
       last_patch = merge_request.patch
       last_patch.diff == params[:diff] and last_patch.commit_message == params[:commit_message]
     end
