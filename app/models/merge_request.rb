@@ -70,7 +70,7 @@ class MergeRequest < ActiveRecord::Base
 From: #{author.name} #{author.email}
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
-#{commit_message}
+#{patch.commit_message}
 #{reviewer_stamp}
 #{patch.diff}
 --
