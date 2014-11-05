@@ -15,7 +15,7 @@ module Api
         status:         @mr.status,
         author:         @mr.author.name,
         author_email:   @mr.author.email,
-        commit_message: @mr.commit_message,
+        commit_message: patch.commit_message,
         diff:           patch.diff
       }
     end
