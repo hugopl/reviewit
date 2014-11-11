@@ -12,7 +12,7 @@ end
 
 def check_rme_gem
   puts 'Checking reviewit gem...'
-  `gem list r-me -i`
+  `gem list reviewit -i`
   $?.success?
 end
 
@@ -34,9 +34,9 @@ end
 
 def configure_git
   puts 'Configuring git...'
-  `git config --local rme.projectid #{$project_id}`
-  `git config --local rme.baseurl #{$base_url}` if $?.success?
-  `git config --local rme.apitoken #{$api_token}` if $?.success?
+  `git config --local reviewit.projectid #{$project_id}`
+  `git config --local reviewit.baseurl #{$base_url}` if $?.success?
+  `git config --local reviewit.apitoken #{$api_token}` if $?.success?
   abort 'Error configuring git for rme.' unless $?.success?
 end
 

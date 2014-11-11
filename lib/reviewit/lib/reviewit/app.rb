@@ -53,9 +53,9 @@ eot
     end
 
     def load_configuration
-      @api_token = git_config 'rme.apitoken'
-      @project_id = git_config 'rme.projectid'
-      @base_url = git_config 'rme.baseurl'
+      @api_token = git_config 'reviewit.apitoken'
+      @project_id = git_config 'reviewit.projectid'
+      @base_url = git_config 'reviewit.baseurl'
       raise 'This project seems not configured.' if @api_token.empty? or @project_id.empty? or @base_url.empty?
     end
 
