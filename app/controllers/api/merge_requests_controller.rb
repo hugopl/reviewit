@@ -29,6 +29,7 @@ module Api
     end
 
     def accept
+      raise 'This merge request was already accepted.' if merge_request.accepted? or merge_request.integrating?
       merge_request.integrate! current_user
       render json: {}
     end

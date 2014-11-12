@@ -37,7 +37,7 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def integrate! reviewer
-    return if status == :accepted
+    return if status == :accepted or status == :integrating
     self.reviewer = reviewer
     self.status = :integrating
     save!
