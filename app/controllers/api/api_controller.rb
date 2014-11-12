@@ -22,13 +22,15 @@ module Api
   protected
 
     def check_cli_version!
-      return if params[:cli_version] == Reviewit::VERSION
-      message = "You need Review it! version #{Reviewit::VERSION}, but have #{params[:cli_version]}."
+      cli_version = request.headers['X-CliVersion']
+      return if cli_version == Reviewit::VERSION
+      message = "You need Review it! version #{Reviewit::VERSION}, but have #{cli_version}."
       render json: { error: message }, status: :upgrade_required
     end
 
     def authenticate_user_by_token!
-      @current_user = User.find_by_api_token(params[:api_token]) or raise 'Sorry, invalid token.'
+      api_token = request.headers['X-ApiToken']
+      @current_user = User.find_by_api_token(api_token) or raise 'Sorry, invalid token.'
 
 
       project_id = params[:controller] == 'api/projects' ? params[:id] : params[:project_id]

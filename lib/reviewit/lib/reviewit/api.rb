@@ -53,11 +53,6 @@ module Reviewit
       "#{@base_url}/projects/#{@project_id}/#{path}"
     end
 
-    def full_uri_for path
-      # FIXME: Remove API Token from GET requests
-      URI("#{url_for(path)}?api_token=#{@api_token}&cli_version=#{VERSION}")
-    end
-
     def post url, args
       send_request url, args
     end
@@ -73,13 +68,21 @@ module Reviewit
     end
 
     def get url
-      uri = full_uri_for(url)
-      process_response Net::HTTP.get_response(uri)
+      send_request(url, {}, :get)
     end
 
-    def send_request(url, params)
-      uri = full_uri_for(url)
-      process_response Net::HTTP.post_form(uri, params)
+    def send_request(relative_url, params, method = :post)
+      klass = method == :get ? Net::HTTP::Get : Net::HTTP::Post
+
+      uri = URI(url_for(relative_url))
+      req = klass.new(uri.to_s)
+      req['X-ApiToken'] = @api_token
+      req['X-CliVersion'] = VERSION
+      req.set_form_data(params) unless params.empty?
+      response = Net::HTTP.start(uri.hostname, uri.port) do |http|
+        http.request(req)
+      end
+      process_response(response)
     end
 
     def process_response response
