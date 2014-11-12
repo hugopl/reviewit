@@ -2,6 +2,7 @@ module Reviewit
   class Push < Action
 
     def run
+      run_linter! if options[:linter]
       read_commit_header
       read_commit_diff
       process_commit_message!
@@ -9,12 +10,12 @@ module Reviewit
       if updating?
         puts 'Updating merge request...'
         description = (options[:message] or read_user_single_line_message('Type a single line description of the change: '))
-        url = api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, description, options[:branch])
+        url = api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, description, options[:branch], linter_ok?)
         puts "Merge Request updated at #{url}"
       else
         abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?
         puts "Creating merge request..."
-        mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch])
+        mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch], linter_ok?)
         puts "Merge Request created at #{mr[:url]}"
         append_mr_id_to_commit(mr[:id])
       end
@@ -25,6 +26,7 @@ module Reviewit
     def parse_options
       options = Trollop::options do
         opt :message, 'A message to the given action', type: String
+        opt :linter, 'Run linter', default: true
       end
       options[:branch] = ARGV.shift
       options
@@ -44,6 +46,46 @@ module Reviewit
 
     def updating?
       not @mr_id.nil?
+    end
+
+    def linter_ok?
+      @linter_ok ||= false
+    end
+
+    def run_linter!
+      if linter.empty?
+        puts 'No linter configured.'
+        return
+      end
+
+      changed_files_regex = /\#{changed_files(?:\|(.*))?}/
+      linter_command = ''
+      if changed_files_regex =~ linter
+        glob = $1
+
+        raise 'Your working copy is dirty, use git stash and try again.' unless `git status --porcelain`.empty?
+        changed_files = `git show --format="" --numstat`.each_line.map { |l| l.split(' ', 3).last.strip }
+        if not glob.nil?
+          glob = glob.split(',').map(&:strip)
+          changed_files.select! do |file|
+            glob.any? do |glob|
+              File.fnmatch? glob, file
+            end
+          end
+        end
+
+        if changed_files.empty?
+          puts 'No files to lint'
+          return true
+        end
+
+        linter_command = linter.gsub(changed_files_regex, changed_files.join(' '))
+      else
+        linter_command = "git show | #{linter}"
+      end
+      puts linter_command
+      @linter_ok = system(linter_command)
+      raise 'Lint error' unless @linter_ok
     end
   end
 end

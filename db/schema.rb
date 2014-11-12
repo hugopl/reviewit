@@ -42,8 +42,9 @@ ActiveRecord::Schema.define(version: 20141003232638) do
   create_table "patches", force: true do |t|
     t.integer  "merge_request_id"
     t.text     "description",      default: ""
-    t.text     "commit_message",                null: false
-    t.text     "diff",             default: "", null: false
+    t.text     "commit_message",                   null: false
+    t.text     "diff",             default: "",    null: false
+    t.boolean  "linter_ok",        default: false, null: false
     t.text     "integration_log"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -55,6 +56,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
     t.string   "name",                     null: false
     t.string   "description", default: "", null: false
     t.string   "repository",               null: false
+    t.string   "linter",      default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

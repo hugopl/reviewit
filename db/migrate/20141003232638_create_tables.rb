@@ -32,6 +32,7 @@ class CreateTables < ActiveRecord::Migration
       t.string :name,       unique: true, null: false
       t.string :description, default: '', null: false
       t.string :repository, null: false
+      t.string :linter,     default: '', null: false
       t.timestamps
     end
 
@@ -57,6 +58,7 @@ class CreateTables < ActiveRecord::Migration
       t.text       :description,   default: ''
       t.text       :commit_message, null: false
       t.text       :diff,          default: '', null: false
+      t.boolean    :linter_ok,     default: false, null: false
       t.text       :integration_log
       t.timestamps
     end

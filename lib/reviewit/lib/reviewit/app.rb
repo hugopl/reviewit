@@ -13,8 +13,7 @@ module Reviewit
   end
 
   class App
-    attr_reader :api_token
-    attr_reader :project_id
+    attr_reader :linter
 
     def run
       return show_help if ARGV == ['--help']
@@ -22,7 +21,7 @@ module Reviewit
       load_configuration
       api = Api.new(@base_url, @project_id, @api_token)
 
-      action = action_class.new(api)
+      action = action_class.new(self, api)
       action.run
     rescue RuntimeError
       abort $!.message
@@ -56,6 +55,7 @@ eot
       @api_token = git_config 'reviewit.apitoken'
       @project_id = git_config 'reviewit.projectid'
       @base_url = git_config 'reviewit.baseurl'
+      @linter = git_config 'reviewit.linter'
       raise 'This project seems not configured.' if @api_token.empty? or @project_id.empty? or @base_url.empty?
     end
 

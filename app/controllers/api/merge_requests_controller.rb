@@ -46,6 +46,7 @@ module Api
         patch.merge_request = mr
         patch.commit_message = params[:commit_message]
         patch.diff = params[:diff]
+        patch.linter_ok = params[:linter_ok]
         patch.description = ''
         patch.save!
         render(json: { :mr_id => mr.id })
@@ -73,6 +74,7 @@ module Api
           patch.merge_request = mr
           patch.commit_message = params[:commit_message]
           patch.diff = params[:diff]
+          patch.linter_ok = params[:linter_ok]
           patch.description = (params[:description] or '').lines.first.to_s
           patch.save!
         end

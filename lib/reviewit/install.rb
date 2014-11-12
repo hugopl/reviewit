@@ -5,6 +5,7 @@ require 'net/http'
 # $project_name
 # $project_id
 # $gem_url
+# $linter
 
 def puts text
   STDOUT.puts "\033[0;32m#{text}\033[0m"
@@ -37,6 +38,7 @@ def configure_git
   `git config --local reviewit.projectid #{$project_id}`
   `git config --local reviewit.baseurl #{$base_url}` if $?.success?
   `git config --local reviewit.apitoken #{$api_token}` if $?.success?
+  `git config --local reviewit.linter "#{$linter.gsub('"', '\"')}"` if $?.success?
   abort 'Error configuring git for rme.' unless $?.success?
 end
 

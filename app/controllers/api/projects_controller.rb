@@ -14,10 +14,11 @@ module Api
 
       <<-eos
       $base_url = "#{request.protocol}#{request.host}#{port}/api"
-      $api_token = "#{current_user.api_token}"
-      $gem_url = "#{gem_url}"
-      $project_name = "#{project.name.gsub('"', '\"')}"
+      $api_token = #{current_user.api_token.inspect}
+      $gem_url = #{gem_url.inspect}
+      $project_name = #{project.name.inspect}
       $project_id = #{@project.id}
+      $linter = #{project.linter.inspect}
 
       #{File.read(Rails.root.join('lib', 'reviewit', 'install.rb'))}
       eos

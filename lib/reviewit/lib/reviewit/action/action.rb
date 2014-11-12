@@ -2,9 +2,10 @@ require 'tempfile'
 
 module Reviewit
   class Action
-    def initialize(api)
+    def initialize(app, api)
       @api = api
 
+      @linter = app.linter
       @options = parse_options
     end
   protected
@@ -20,6 +21,7 @@ module Reviewit
 
     attr_reader :api
     attr_reader :options
+    attr_reader :linter
 
     def read_commit_header
       @subject = `git show -s --format="%s"`.strip

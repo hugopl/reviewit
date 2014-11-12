@@ -89,5 +89,4 @@ Sometimes you aren't a believer and want to try the patch yourself, this is easy
 
 ## Wish list
 
-1. Lint support
-2. CI integration
+1. CI integration
