@@ -12,7 +12,9 @@
 
     <% if @mr.open? or @mr.needs_rebase? %>
       <div class="merge-bar">
-        <input type="submit" value="Accept" class="accept" name="mr_action">
+        <% if @mr.author != current_user %>
+          <input type="submit" value="Accept" class="accept" name="mr_action">
+        <% end %>
         <input type="submit" value="Abandon" class="reject" name="mr_action">
 
         <input type="submit" value="Just push comments" name="mr_action" class="push-comments">

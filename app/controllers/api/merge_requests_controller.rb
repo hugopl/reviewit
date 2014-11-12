@@ -28,6 +28,11 @@ module Api
       render json: {}
     end
 
+    def accept
+      merge_request.integrate! current_user
+      render json: {}
+    end
+
     def show_git_patch
       render json: { patch: merge_request.git_format_patch }
     end

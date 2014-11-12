@@ -16,7 +16,7 @@ module Api
     end
 
     rescue_from ActiveRecord::RecordInvalid do |exception|
-      render json: { error: 'Problem found: #{exception.message}' }, status: :bad_request
+      render json: { error: exception.message }, status: :bad_request
     end
 
   protected

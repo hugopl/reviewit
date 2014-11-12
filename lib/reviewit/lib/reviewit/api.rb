@@ -23,6 +23,10 @@ module Reviewit
       delete("merge_requests/#{id}")
     end
 
+    def accept_merge_request id
+      patch("merge_requests/#{id}/accept")
+    end
+
     def pending_merge_requests
       list = get 'merge_requests'
       list.map do |item|
@@ -57,7 +61,7 @@ module Reviewit
       send_request url, args
     end
 
-    def patch url, args
+    def patch url, args = {}
       args[:_method] = 'patch'
       send_request url, args
     end

@@ -19,6 +19,8 @@ class MergeRequest < ActiveRecord::Base
 
   validates :target_branch, presence: true
   validates :subject, presence: true
+  validates :author, presence: true
+  validate :author_cant_be_reviewer
 
   def can_update?
     not %w(accepted integrating).include? status
@@ -35,6 +37,7 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def integrate! reviewer
+    return if status == :accepted
     self.reviewer = reviewer
     self.status = :integrating
     save!
@@ -79,6 +82,10 @@ eot
   end
 
 private
+
+  def author_cant_be_reviewer
+    errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
+  end
 
   def prepare_git_repository patch
     base_dir = "#{Dir.tmpdir}/reviewit/project#{project_id}"

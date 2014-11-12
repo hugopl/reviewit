@@ -61,7 +61,7 @@ e.g. `review push 3.4.0` will create a merge request with your HEAD commit targe
 
 ### Accepting a Merge Request
 
-Go to web interface and click accept and the patch should be merged.
+Go to web interface and click accept and the patch should be merged, or run `review accept X` where X is the MR id.
 
 Reviewit will try to apply and commit your patch (git am), it will tell you if it can't. And if it can't, solve the conflicts (git rebase) then send it again for review.
 

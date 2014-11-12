@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get 'setup', on: :member
       resources :merge_requests, only: [:create, :update, :index, :show, :destroy] do
         get 'show_git_patch', on: :member
+        patch 'accept', on: :member
       end
     end
   end
