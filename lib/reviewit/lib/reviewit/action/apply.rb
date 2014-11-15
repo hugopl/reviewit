@@ -2,7 +2,7 @@ module Reviewit
   class Apply < Action
 
     def run
-      patch = api.show_git_patch options[:mr]
+      patch = api.merge_request options[:mr]
       file = Tempfile.new 'patch'
       file.puts patch['patch']
       file.close

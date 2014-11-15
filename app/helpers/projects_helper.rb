@@ -1,6 +1,6 @@
 module ProjectsHelper
   def full_setup_url
     port = request.port != 80 ? ":#{request.port}" : ''
-    "#{request.protocol}#{request.host}#{port}#{setup_api_project_path}"
+    "http://#{request.host}#{port}/api/projects/#{@project.id}/setup"
   end
 end

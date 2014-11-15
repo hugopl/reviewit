@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'coffee-rails',  '~> 4.0.0'
 gem 'devise'
+gem 'grape',         '~> 0.9'
+gem 'grape-entity',  '~> 0.4'
 gem 'jquery-rails'
 gem 'rails',         '4.1.6'
 gem 'sass-rails',    '~> 4.0.3'
@@ -22,4 +24,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-

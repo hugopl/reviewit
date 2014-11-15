@@ -4,11 +4,10 @@ module Reviewit
     def run
       mr = api.merge_request options[:mr]
 
-      puts "Author: #{mr['author']} <#{mr['author_email']}>"
       puts "Status: #{mr['status']}"
       puts "Target branch: #{mr['target_branch']}"
-      print_commit_message(mr['commit_message'])
-      print_colored_diff(mr['diff'])
+      puts "Reviewer: #{mr['reviewer']['name']} <#{mr['reviewer']['email']}>" unless mr['reviewer'].nil?
+      print_colored_diff(mr['patch'])
     end
 
     private
@@ -18,12 +17,6 @@ module Reviewit
       mr = ARGV.shift
       raise 'You need to inform the merge request id' if mr.nil?
       { mr: mr }
-    end
-
-    def print_commit_message message
-      puts "\n"
-      message.each_line {|line| puts "    #{line}" }
-      puts "\n"
     end
 
     def print_colored_diff diff

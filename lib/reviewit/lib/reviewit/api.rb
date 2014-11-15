@@ -43,10 +43,6 @@ module Reviewit
       get "merge_requests/#{id}"
     end
 
-    def show_git_patch id
-      get "merge_requests/#{id}/show_git_patch"
-    end
-
     def mr_url id
       @base_url.gsub(/api\/?\z/, "mr/#{id}")
     end
@@ -80,8 +76,8 @@ module Reviewit
 
       uri = URI(url_for(relative_url))
       req = klass.new(uri.to_s)
-      req['X-ApiToken'] = @api_token
-      req['X-CliVersion'] = VERSION
+      req['X-Token'] = @api_token
+      req['X-Cli-Version'] = VERSION
       req.set_form_data(params) unless params.empty?
       response = Net::HTTP.start(uri.hostname, uri.port) do |http|
         http.request(req)
@@ -90,8 +86,8 @@ module Reviewit
     end
 
     def process_response response
+      raise response.body if response.code =~ /[^2]\d\d/
       data = JSON.load(response.body)
-      raise (data['error'] or 'Unknow error') if response.code != '200'
       return data
     rescue JSON::ParserError
       raise 'Error parsing returned JSON.'
