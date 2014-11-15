@@ -68,13 +68,15 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def git_format_patch
-    reviewer_stamp = (reviewer.nil? ? '' : "\nReviewed by #{reviewer.name} on MR ##{id}\n\n")
+    return if patch.nil?
+
+    reviewer_stamp = (reviewer.nil? ? '' : "\nReviewed by #{reviewer.name} on MR ##{id}\n")
     out =<<eot
-From: #{author.name} #{author.email}
+From: #{author.name} <#{author.email}>
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
-#{patch.commit_message}
-#{reviewer_stamp}
+#{indent_comment patch.commit_message}
+#{indent_comment reviewer_stamp}
 #{patch.diff}
 --
 review it!
@@ -82,6 +84,10 @@ eot
   end
 
 private
+
+  def indent_comment comment
+    comment.each_line.map {|line| "    #{line}"}.join
+  end
 
   def author_cant_be_reviewer
     errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
