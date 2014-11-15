@@ -16,11 +16,11 @@ class MergeRequestsController < ApplicationController
   end
 
   def index
-    @mrs = project.merge_requests.includes(:author, :patches).pending.paginate(page: params[:page])
+    @mrs = merge_requests.pending.paginate(page: params[:page])
   end
 
   def old_ones
-    @mrs = project.merge_requests.includes(:author, :patches).closed.paginate(page: params[:page])
+    @mrs = merge_requests.closed.paginate(page: params[:page])
   end
 
   def show
@@ -31,6 +31,10 @@ class MergeRequestsController < ApplicationController
   end
 
   private
+
+  def merge_requests
+    project.merge_requests.includes(:author, :patches).order(updated_at: :desc)
+  end
 
   def accept
     @mr.integrate! current_user
