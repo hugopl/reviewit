@@ -31,7 +31,7 @@ $ RAILS_ENV=production unicorn_rails
 Notes:
 
   1. This will open a server on port 8080, see unicorn_rails --help for more info like running unicorn as a daemon.
-  2. This will tell rails to serve the assets, if you are using nginx or apache you will need to change `config.serve_static_assets` to false in config/environments/production.rb
+  2. The assets (fonts and images) wont show until you change `config.serve_static_assets` to false in config/environments/production.rb.
 
 ## Setting up your Project
 
@@ -67,7 +67,7 @@ Reviewit will try to apply and commit your patch (git am), it will tell you if i
 
 ### List Pending Reviews for your Project
 
-Just run `review pending`.
+Just run `review list`.
 
 ### Open a Review in your Browser
 
