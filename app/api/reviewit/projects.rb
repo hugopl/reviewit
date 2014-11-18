@@ -12,11 +12,13 @@ module Reviewit
 
         format :txt
         get :setup do
-          port = request.port != 80 ? ":#{request.port}" : ''
-          gem_url = "http://#{request.host}#{port}/reviewit-#{Reviewit::VERSION}.gem"
+          port = [80, 443].include?(request.port) ? '' : ":#{request.port}"
+          is_ssl = request.ssl?
+          root_url = "http#{is_ssl ? 's' : ''}://#{request.host}#{port}"
+          gem_url = "#{root_url}/reviewit-#{Reviewit::VERSION}.gem"
 
           <<-eos
-          $base_url = "http://#{request.host}#{port}/api"
+          $base_url = "#{root_url}/api"
           $api_token = #{current_user.api_token.inspect}
           $gem_url = #{gem_url.inspect}
           $project_name = #{project.name.inspect}

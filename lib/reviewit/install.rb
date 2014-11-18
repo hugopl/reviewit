@@ -21,8 +21,14 @@ end
 def install_rme_gem
   gem_file = "/tmp/#{File.basename($gem_url)}"
   puts 'Downloading reviewit gem...'
-  File.open(gem_file, 'wb') do |f|
-    f.write(Net::HTTP.get(URI($gem_url)))
+  uri = URI($gem_url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true if uri.scheme == 'https'
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
+  http.start do |h|
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = h.request(request)
+    File.open(gem_file, 'wb') {|f| f.write(response.body) }
   end
 
   puts 'Installing reviewit gem...'

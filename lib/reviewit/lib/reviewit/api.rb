@@ -79,9 +79,13 @@ module Reviewit
       req['X-Token'] = @api_token
       req['X-Cli-Version'] = VERSION
       req.set_form_data(params) unless params.empty?
-      response = Net::HTTP.start(uri.hostname, uri.port) do |http|
-        http.request(req)
-      end
+
+      http = Net::HTTP.new(uri.hostname, uri.port)
+      http.use_ssl = true if uri.scheme == 'https'
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
+
+      response = http.start {|h| h.request(req) }
+
       if block_given?
         yield response
       else
