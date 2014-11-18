@@ -22,6 +22,7 @@ module Reviewit
           $project_name = #{project.name.inspect}
           $project_id = #{project.id}
           $linter = #{project.linter.inspect}
+          $gem_version = #{Reviewit::VERSION.inspect}
 
           #{File.read(Rails.root.join('lib', 'reviewit', 'install.rb'))}
           eos

@@ -82,15 +82,28 @@ module Reviewit
       response = Net::HTTP.start(uri.hostname, uri.port) do |http|
         http.request(req)
       end
-      process_response(response)
+      if block_given?
+        yield response
+      else
+        process_response(response)
+      end
     end
 
     def process_response response
+      upgrade_and_exit! if response.code == '426'
       raise response.body if response.code =~ /[^2]\d\d/
       data = JSON.load(response.body)
       return data
     rescue JSON::ParserError
       raise 'Error parsing returned JSON.'
     end
+
+    def upgrade_and_exit!
+      send_request('setup', {}, :get) do |response|
+        eval response.body
+      end
+      raise 'You were using an old version of reviewit or the project configuration was changed. Reviewit was re-configured and nothing was changed on the server side.'
+    end
+
   end
 end

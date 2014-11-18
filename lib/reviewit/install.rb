@@ -6,6 +6,7 @@ require 'net/http'
 # $project_id
 # $gem_url
 # $linter
+# $gem_version
 
 def puts text
   STDOUT.puts "\033[0;32m#{text}\033[0m"
@@ -13,7 +14,7 @@ end
 
 def check_rme_gem
   puts 'Checking reviewit gem...'
-  `gem list reviewit -i`
+  `gem list reviewit -i -v #{$gem_version}`
   $?.success?
 end
 
