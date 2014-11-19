@@ -8,6 +8,7 @@ class MergeRequest < ActiveRecord::Base
   belongs_to :project
 
   has_many :patches, -> { order(:created_at) }, dependent: :destroy
+  has_many :history_events, -> { order(:when) }, dependent: :destroy
 
   enum status: [ :open, :integrating, :needs_rebase, :accepted, :abandoned ]
 
@@ -22,6 +23,8 @@ class MergeRequest < ActiveRecord::Base
   validates :author, presence: true
   validate :author_cant_be_reviewer
 
+  before_save :write_history
+
   def can_update?
     not %w(accepted integrating).include? status
   end
@@ -30,13 +33,26 @@ class MergeRequest < ActiveRecord::Base
     MergeRequest.statuses[status] >= CLOSE_LIMIT
   end
 
+  def add_patch data
+    patch = Patch.new
+    patch.commit_message = data[:commit_message]
+    patch.diff = data[:diff]
+    patch.linter_ok = data[:linter_ok]
+    patch.description = data[:description]
+    self.patches << patch
+    add_history_event author, 'updated the merge request'
+  end
+
   def abandon! reviewer
+    add_history_event reviewer, 'abandoned the merge request'
     self.status = :abandoned
     save!
   end
 
   def integrate! reviewer
     return if status == :accepted or status == :integrating
+    add_history_event reviewer, 'accepted the merge request'
+
     self.reviewer = reviewer
     self.status = :integrating
     save!
@@ -47,6 +63,7 @@ class MergeRequest < ActiveRecord::Base
         if git_am(patch) and git_push
           reload.accepted!
         else
+          add_history_event reviewer, 'failed to integrate merge request'
           reload.needs_rebase!
         end
       rescue
@@ -83,6 +100,14 @@ eot
   end
 
 private
+
+  def write_history
+    add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed?
+  end
+
+  def add_history_event who, what
+    self.history_events << HistoryEvent.new(who: who, what: what)
+  end
 
   def indent_comment comment
     comment.each_line.map {|line| "    #{line}"}.join

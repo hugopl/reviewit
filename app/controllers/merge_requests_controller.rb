@@ -23,9 +23,14 @@ class MergeRequestsController < ApplicationController
     @mrs = merge_requests.closed.paginate(page: params[:page])
   end
 
+  def history
+    @mr = project.merge_requests.includes(history_events: [:who]).find(params[:id])
+  end
+
   def show
     @version = params[:version].to_i
     raise ActiveRecord::RecordNotFound.new if @version < 0
+
     @patch = merge_request.patches[@version - 1] or raise ActiveRecord::RecordNotFound.new
     @version = merge_request.patches.count if @version.zero?
   end

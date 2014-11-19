@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :projects do
     resources :merge_requests, only: [:update, :show, :index] do
+      get :history, on: :member
       collection do
        get 'old_ones'
       end

@@ -228,3 +228,14 @@ section.integrationlog {
     color: #b2b2b2;
   }
 }
+
+.history_events {
+  position: absolute;
+  border: 1px solid #ccc;
+  background-color: whitesmoke;
+  padding: 10px;
+  border-radius: 4px;
+  max-height: 70vh;
+  top: 15%;
+  overflow-y: scroll;
+}

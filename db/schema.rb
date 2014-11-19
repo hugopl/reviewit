@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141003232638) do
+ActiveRecord::Schema.define(version: 20141119010138) do
 
   create_table "comments", force: true do |t|
     t.integer  "user_id",                 null: false
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20141003232638) do
   end
 
   add_index "comments", ["patch_id"], name: "index_comments_on_patch_id"
+
+  create_table "history_events", force: true do |t|
+    t.integer  "merge_request_id",                                 null: false
+    t.integer  "who_id"
+    t.datetime "when",             default: '2014-11-19 01:19:30', null: false
+    t.string   "what",                                             null: false
+  end
+
+  add_index "history_events", ["merge_request_id"], name: "index_history_events_on_merge_request_id"
+  add_index "history_events", ["who_id"], name: "index_history_events_on_who_id"
 
   create_table "merge_requests", force: true do |t|
     t.integer  "project_id"

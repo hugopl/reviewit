@@ -3,7 +3,8 @@
   Author: <span><%= @mr.author.name %></span><br>
   Branch: <span><%= @mr.target_branch %></span><br>
   Version: <span><%= @version %></span></br>
-  Linter: <span class="fa <%= @patch.linter_ok? ? 'fa-check ok' : 'fa-exclamation fail' %>"></span>
+  Linter: <span class="fa <%= @patch.linter_ok? ? 'fa-check ok' : 'fa-exclamation fail' %>"></span><br>
+  <%= link_to 'History events', history_project_merge_request_path %>
 <% if @mr.accepted? or @mr.abandoned? %>
 <br><%= @mr.status.humanize %> by: <%= @mr.reviewer.name %>
 <% end %>

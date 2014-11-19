@@ -26,16 +26,13 @@ module Reviewit
           mr.author = current_user
           mr.subject = params[:subject]
           mr.target_branch = params[:target_branch]
-
+          mr.add_patch({
+            commit_message: params[:commit_message],
+            diff: params[:diff],
+            linter_ok: params[:linter_ok],
+            description: 'First version'
+          })
           mr.save!
-
-          patch = Patch.new
-          patch.merge_request = mr
-          patch.commit_message = params[:commit_message]
-          patch.diff = params[:diff]
-          patch.linter_ok = params[:linter_ok]
-          patch.description = ''
-          patch.save!
           { :mr_id => mr.id }
         end
       end
@@ -62,15 +59,13 @@ module Reviewit
               mr.subject = params[:subject]
               mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
               mr.status = :open
+              mr.add_patch({
+                commit_message: params[:commit_message],
+                diff: params[:diff],
+                linter_ok: params[:linter_ok],
+                description: (params[:description] or '').lines.first.to_s
+              })
               mr.save!
-
-              patch = Patch.new
-              patch.merge_request = mr
-              patch.commit_message = params[:commit_message]
-              patch.diff = params[:diff]
-              patch.linter_ok = params[:linter_ok]
-              patch.description = (params[:description] or '').lines.first.to_s
-              patch.save!
             end
           end
           ok
