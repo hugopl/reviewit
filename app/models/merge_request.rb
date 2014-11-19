@@ -113,7 +113,7 @@ private
   end
 
   def git_push
-    call "cd #{@dir} && git push origin #{target_branch}"
+    call "cd #{@dir} && git push origin master:#{target_branch}"
   end
 
   def output
