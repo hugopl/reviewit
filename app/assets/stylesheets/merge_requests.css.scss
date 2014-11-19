@@ -59,8 +59,8 @@ pre.message {
     line-height: 18px;
     padding: 0px 6px 0px 6px;
   }
-  td:nth-child(1), td:nth-child(2) {
-   width: 5px;
+  td:last-child {
+    width: 100%;
   }
   .add > td:nth-child(3) {
     background-color: #cfd;
