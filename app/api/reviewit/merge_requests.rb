@@ -72,8 +72,8 @@ module Reviewit
               patch.description = (params[:description] or '').lines.first.to_s
               patch.save!
             end
-            ok
           end
+          ok
         end
 
         desc 'Accept a merge request'
