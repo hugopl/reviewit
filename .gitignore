@@ -20,3 +20,4 @@
 *.rubyproject.user
 /public/assets
 /public/*.gem
+/.ruby-version
