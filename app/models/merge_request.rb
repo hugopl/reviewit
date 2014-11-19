@@ -31,7 +31,6 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def abandon! reviewer
-    self.reviewer = reviewer
     self.status = :abandoned
     save!
   end
