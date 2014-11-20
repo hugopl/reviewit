@@ -24,9 +24,17 @@
     </span>
     <div class="user-nav">
       <%= current_user.name %>
-      <%= link_to "\uf013", edit_user_registration_path, class: 'settings tipped', 'data-tip' => 'Settings' %>
-      <%= link_to "\uf08b", destroy_user_session_path, method: :delete, class: 'logout tipped', 'data-tip' => 'Logout' %></div></div>
+      <%= link_to faq_path, class: 'tipped', 'data-tip' => 'FAQ' do %>
+      <i class="fa fa-question-circle"></i>
+      <% end %>
+      <%= link_to edit_user_registration_path, class: 'tipped', 'data-tip' => 'Settings' do %>
+      <i class="fa fa-gears"></i>
+      <% end %>
+      <%= link_to destroy_user_session_path, method: :delete, class: 'tipped', 'data-tip' => 'Sign out' do %>
+      <i class="fa fa-sign-out"></i>
+      <% end %>
     </div>
+  </div>
   </div>
   <div class="content">
     <%= yield %>

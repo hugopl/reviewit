@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   resources :mr, only: [:show]
+  get :faq, controller: :application
 
   mount Reviewit::API => '/'
 end
