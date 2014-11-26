@@ -59,12 +59,13 @@ class MergeRequest < ActiveRecord::Base
 
     Thread.new do
       begin
-        prepare_git_repository(patch)
-        if git_am(patch) and git_push
-          reload.accepted!
-        else
-          add_history_event reviewer, 'failed to integrate merge request'
-          reload.needs_rebase!
+        on_git_repository(patch) do |dir|
+          if git_am(dir, patch) and git_push(dir)
+            accepted!
+          else
+            add_history_event reviewer, 'failed to integrate merge request'
+            needs_rebase!
+          end
         end
       rescue
         output.puts "\n\n******** Stupid error from Review it! programmer ******** \n\n"
@@ -117,27 +118,30 @@ private
     errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
   end
 
-  def prepare_git_repository patch
-    base_dir = "#{Dir.tmpdir}/reviewit/project#{project_id}"
-    project_dir_name = "patch#{patch.id}"
-    @dir = "#{base_dir}/#{project_dir_name}"
-    FileUtils.rm_rf @dir
-    FileUtils.mkdir_p @dir
+  def on_git_repository patch
+    base_dir = "#{Dir.tmpdir}/reviewit"
+    project_dir_name = "patch#{patch.id}_#{SecureRandom.hex}"
+    dir = "#{base_dir}/#{project_dir_name}"
+    FileUtils.rm_rf dir
+    FileUtils.mkdir_p dir
 
     call "cd #{base_dir} && git clone --depth 1 #{project.repository} #{project_dir_name}"
-    call "cd #{@dir} && git reset --hard origin/#{target_branch}"
+    call "cd #{dir} && git reset --hard origin/#{target_branch}"
+    yield dir
+  ensure
+    FileUtils.rm_rf dir
   end
 
-  def git_am patch
+  def git_am dir, patch
     contents = git_format_patch
     file = Tempfile.new 'patch'
     file.puts contents
     file.close
-    call "cd #{@dir} && git am #{file.path}"
+    call "cd #{dir} && git am #{file.path}"
   end
 
-  def git_push
-    call "cd #{@dir} && git push origin master:#{target_branch}"
+  def git_push dir
+    call "cd #{dir} && git push origin master:#{target_branch}"
   end
 
   def output
