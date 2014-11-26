@@ -52,6 +52,16 @@ module Reviewit
       @linter_ok ||= false
     end
 
+    def changed_files
+      matches = `git show --format=short`.scan(/^--- (.*)\n\+\+\+ (.*)$/)
+      matches.select! do |pair|
+        pair[1] != '/dev/null'
+      end
+      matches.map do |pair|
+        pair[1][2..-1]
+      end
+    end
+
     def run_linter!
       if linter.empty?
         puts 'No linter configured.'
@@ -64,22 +74,22 @@ module Reviewit
         glob = $1
 
         raise 'Your working copy is dirty, use git stash and try again.' unless `git status --porcelain`.empty?
-        changed_files = `git show --format="" --numstat`.each_line.map { |l| l.split(' ', 3).last.strip }
+        selected_files = changed_files
         if not glob.nil?
           glob = glob.split(',').map(&:strip)
-          changed_files.select! do |file|
+          selected_files.select! do |file|
             glob.any? do |glob|
               File.fnmatch? glob, file
             end
           end
         end
 
-        if changed_files.empty?
+        if selected_files.empty?
           puts 'No files to lint'
           return true
         end
 
-        linter_command = linter.gsub(changed_files_regex, changed_files.join(' '))
+        linter_command = linter.gsub(changed_files_regex, selected_files.join(' '))
       else
         linter_command = "git show | #{linter}"
       end
