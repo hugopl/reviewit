@@ -148,6 +148,6 @@ private
     output.puts "$ #{command}"
     res = `#{command} 2>&1`.strip
     output.puts(res) unless res.empty?
-    $?.exitstatus == 0
+    $?.exitstatus.zero?
   end
 end
