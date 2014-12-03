@@ -15,13 +15,15 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
+  # TODO Refactor this shitty code
   def process_diff diff, &block
     it = diff.each_line
     location = 0
     loop do
       line = it.next
       location += 1
-      next unless line.start_with? '+++'
+      is_file_def = line.start_with?('+++') || line.start_with?('---')
+      next unless is_file_def and line !~ /\A(\-\-\-|\+\+\+) \/dev\/null$/
       diff_file = DiffFile.new(line, it, location)
       yield diff_file
       location = diff_file.location
@@ -47,6 +49,8 @@ module MergeRequestsHelper
       loop do
         @location += 1
         line = @it.next
+        is_file_def = line.start_with?('+++') || line.start_with?('---')
+        line = @it.next if is_file_def
         return if line.start_with? 'diff'
         diffline = DiffLine.new(line, old_ln, new_ln, @location)
         yield diffline
