@@ -32,6 +32,7 @@ Notes:
 
   1. This will open a server on port 8080, see unicorn_rails --help for more info like running unicorn as a daemon.
   2. The assets (fonts and images) wont show until you change `config.serve_static_assets` to false in config/environments/production.rb.
+  3. Unicorn was made to work with a proxy server like [Ngix](http://nginx.org/), so try to use it.
 
 ## Setting up your Project
 
