@@ -50,7 +50,7 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def integrate! reviewer
-    return if status == :accepted or status == :integrating
+    return if %w(accepted integrating abandoned).include? status
     add_history_event reviewer, 'accepted the merge request'
 
     self.reviewer = reviewer
