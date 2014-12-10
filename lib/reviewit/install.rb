@@ -1,4 +1,5 @@
 require 'net/http'
+require 'openssl'
 
 # $base_url
 # $api_token
