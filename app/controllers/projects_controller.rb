@@ -49,6 +49,6 @@ private
   end
 
   def project_params
-    params.require(:project).permit(:name, :repository, :description, :linter)
+    params.require(:project).permit(:name, :repository, :description, :linter, :gitlab_ci_project_url, :gitlab_ci_token)
   end
 end

@@ -32,3 +32,21 @@ window.hide_comment_box = (cancel_link) ->
   tr.previousSibling.dataset.expanded = false
   $(tr).remove()
 
+window.update_ci_status = (data) ->
+  ci_status = $('#ci_status')
+  ci_status.removeClass('fa-refresh fa-spin ')
+  switch data['status']
+    when 'failed'
+      ci_status.addClass('fa-bug fail')
+    when 'success'
+      ci_status.addClass('fa-check ok')
+    when 'unknown'
+      ci_status.addClass('fa-question')
+    else
+      ci_status.addClass('fa-gears')
+
+  ci_status.on 'click', (event) ->
+    if 'url' in data
+      window.open(data['url'], data['url'])
+    else
+      alert('Unable to connect to CI.')

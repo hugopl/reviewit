@@ -60,12 +60,14 @@ class MergeRequest < ActiveRecord::Base
     Thread.new do
       begin
         on_git_repository(patch) do |dir|
-          if git_am(dir, patch) and git_push(dir)
+          if git_am(dir, patch) and git_push(dir, target_branch)
             accepted!
           else
             add_history_event reviewer, 'failed to integrate merge request'
             needs_rebase!
           end
+
+          git_rm_branch(dir, gitlab_ci_branch_name(patch)) unless patch.gitlab_ci_hash.blank?
         end
       rescue
         output.puts "\n\n******** Stupid error from Review it! programmer ******** \n\n"
@@ -75,6 +77,22 @@ class MergeRequest < ActiveRecord::Base
       ensure
         patch.integration_log = output.string
         patch.save
+        ActiveRecord::Base.connection.close
+      end
+    end
+  end
+
+  def push_to_gitlab_ci patch
+    Thread.new do
+      begin
+        on_git_repository(patch) do |dir|
+          git_prune_old_versions(dir, patch)
+          if git_am(dir, patch) and git_push(dir, gitlab_ci_branch_name(patch))
+            patch.gitlab_ci_hash = git_hash(dir)
+            patch.save
+          end
+        end
+      ensure
         ActiveRecord::Base.connection.close
       end
     end
@@ -100,7 +118,13 @@ review it!
 eot
   end
 
-private
+  private
+
+  # TODO Move all these git related methods to a Git model.
+  def gitlab_ci_branch_name patch
+    patch = Patch.find(patch) if patch.is_a? Integer
+    "mr-#{id}-version-#{patches.index(patch) + 1}"
+  end
 
   def write_history
     add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed? and !target_branch_was.nil?
@@ -140,8 +164,24 @@ private
     call "cd #{dir} && git am #{file.path}"
   end
 
-  def git_push dir
-    call "cd #{dir} && git push origin master:#{target_branch}"
+  def git_push dir, branch
+    call "cd #{dir} && git push origin master:#{branch}"
+  end
+
+  def git_rm_branch dir, branch
+    call "cd #{dir} && git push origin :#{branch}"
+  end
+
+  def git_prune_old_versions dir, patch
+    patches = self.patch_ids
+    patches.delete(patch.id)
+    patches.each do |p|
+      git_rm_branch(dir, gitlab_ci_branch_name(p))
+    end
+  end
+
+  def git_hash dir, branch = 'HEAD'
+    `cd #{dir} && git rev-parse #{branch}`.strip
   end
 
   def output

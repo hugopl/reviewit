@@ -1,5 +1,6 @@
 class MergeRequestsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :verify_authenticity_token, only: :ci_status
 
   def update
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
@@ -28,14 +29,26 @@ class MergeRequestsController < ApplicationController
   end
 
   def show
-    @version = params[:version].to_i
-    raise ActiveRecord::RecordNotFound.new if @version < 0
+    @version = version_from_params
+    @patch = patch_for(@version)
+  end
 
-    @patch = merge_request.patches[@version - 1] or raise ActiveRecord::RecordNotFound.new
-    @version = merge_request.patches.count if @version.zero?
+  def ci_status
+    render json: project.ci_status(patch_for(version_from_params)), callback: 'update_ci_status'
   end
 
   private
+
+  def version_from_params
+    version = params[:version].to_i
+    raise ActiveRecord::RecordNotFound.new if version < 0
+    version = merge_request.patches.count if version.zero?
+    version
+  end
+
+  def patch_for version
+    merge_request.patches[version - 1] or raise ActiveRecord::RecordNotFound.new
+  end
 
   def merge_requests
     project.merge_requests.includes(:author, :patches).order(updated_at: :desc)

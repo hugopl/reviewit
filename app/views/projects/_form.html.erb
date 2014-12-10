@@ -19,6 +19,14 @@
     <% end %>
   </ul>
 
+  <h1>GitLab CI integration</h1>
+
+  <label>Gitlab project URL</label>
+  <%= f.text_field :gitlab_ci_project_url %>
+
+  <label>Gitlab CI token</label>
+  <%= f.text_field :gitlab_ci_token %>
+
   <%= f.submit action.humanize, class: 'button' %>
 <% end %>
 
