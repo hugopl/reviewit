@@ -7,6 +7,11 @@ module MergeRequestsHelper
     @patch ||= patches.last
   end
 
+  def patch_name patch
+    i = @mr.patches.index(patch) + 1
+    patch.description.blank? ? "#{i.ordinalize} version" : patch.description
+  end
+
   def merge_request_pending_since mr
     last_patch = mr.patches.last
     return '' unless last_patch.is_a? Patch

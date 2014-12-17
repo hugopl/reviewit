@@ -3,11 +3,10 @@
   <h2>Patch version log</h2>
   <ol>
     <% @mr.patches.each_with_index do |patch, i| %>
-      <% patch_name = i.zero? ? 'First version' : patch.description %>
       <% if (i + 1) == @version %>
-        <li><%= patch_name %></li>
+        <li><%= patch_name(patch) %></li>
       <% else %>
-        <li><%= link_to patch_name, project_merge_request_path(@project, @mr, version: (i + 1))  %></li>
+        <li><%= link_to patch_name(patch), project_merge_request_path(@project, @mr, version: (i + 1))  %></li>
       <% end %>
     <% end %>
   </ol>
