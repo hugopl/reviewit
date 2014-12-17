@@ -103,7 +103,7 @@ eot
 private
 
   def write_history
-    add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed?
+    add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed? and !target_branch_was.nil?
   end
 
   def add_history_event who, what
