@@ -33,7 +33,9 @@ module Reviewit
     end
 
     def read_commit_diff
-      @commit_diff = `git show --format=""`
+      patch = `git show --format="%n"`
+      # git 2.1.x returns full patch on git show --format="", so we use %n and remove the lines
+      @commit_diff = patch.lines[3..-1].join
     end
 
     def append_mr_id_to_commit mr_id
