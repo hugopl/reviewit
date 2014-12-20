@@ -40,7 +40,7 @@ class MergeRequest < ActiveRecord::Base
     patch.linter_ok = data[:linter_ok]
     patch.description = data[:description]
     self.patches << patch
-    add_history_event author, 'updated the merge request'
+    add_history_event(author, 'updated the merge request') if persisted?
   end
 
   def abandon! reviewer
