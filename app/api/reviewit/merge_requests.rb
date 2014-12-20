@@ -51,7 +51,7 @@ module Reviewit
           raise "You can not update a #{mr.status} merge request." unless mr.can_update?
 
           if is_same_patch?
-            raise 'Seems you are re-submitting the same patch.' if params[:target_branch] == mr.target_branch
+            raise 'Seems you are re-submitting the same patch.' if params[:target_branch].blank? or params[:target_branch] == mr.target_branch
             mr.target_branch = params[:target_branch].to_s.strip
             mr.save!
           else
