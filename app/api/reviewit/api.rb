@@ -17,6 +17,9 @@ module Reviewit
     rescue_from Error do |e|
       Rack::Response.new(e.message, e.code).finish
     end
+    rescue_from ActiveRecord::RecordInvalid do |e|
+      Rack::Response.new(e.message, 422).finish
+    end
     rescue_from RuntimeError do |e|
       Rack::Response.new(e.message, 400).finish
     end

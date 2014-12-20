@@ -52,7 +52,7 @@ module Reviewit
 
           if is_same_patch?
             raise 'Seems you are re-submitting the same patch.' if params[:target_branch] == mr.target_branch
-            mr.target_branch = params[:target_branch].strip
+            mr.target_branch = params[:target_branch].to_s.strip
             mr.save!
           else
             MergeRequest.transaction do
