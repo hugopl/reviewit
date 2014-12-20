@@ -50,7 +50,12 @@
 }
 
 .project.name {
+  color: #2a80b9;
   font-weight: bold;
+  span {
+    font-weight: normal;
+    font-size: 0.8em;
+  }
 }
 
 .project.description {

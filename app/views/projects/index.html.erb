@@ -5,7 +5,7 @@
 <%- else %>
 
 <%- current_user.projects.each do |p| %>
-  <div class="project name"><%= link_to p.name, project_merge_requests_path(p) %></div>
+  <div class="project name"><%= link_to p.name, project_path(p) %>, <span><%= link_to 'see merge requests', project_merge_requests_path(p) %></span></div>
   <div class="project description"><%= p.description.blank? ? '?' : p.description %></div>
 <%- end %>
 
