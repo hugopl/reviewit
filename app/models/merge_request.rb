@@ -110,8 +110,9 @@ class MergeRequest < ActiveRecord::Base
 From: #{author.name} <#{author.email}>
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
-#{indent_comment patch.commit_message}
-#{indent_comment reviewer_stamp}
+#{patch.commit_message}
+#{reviewer_stamp}
+
 #{patch.diff}
 --
 review it!
