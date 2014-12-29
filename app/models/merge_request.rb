@@ -105,14 +105,12 @@ class MergeRequest < ActiveRecord::Base
   def git_format_patch
     return if patch.nil?
 
-    reviewer_stamp = (reviewer.nil? ? '' : "\nReviewed by #{reviewer.name} on MR ##{id}\n")
     out =<<eot
 From: #{author.name} <#{author.email}>
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
 #{patch.commit_message}
 #{reviewer_stamp}
-
 #{patch.diff}
 --
 review it!
@@ -120,6 +118,11 @@ eot
   end
 
   private
+
+  def reviewer_stamp
+    return '' unless accepted? or integrating?
+    "\nReviewed by #{reviewer.name} on MR ##{id}\n"
+  end
 
   # TODO Move all these git related methods to a Git model.
   def gitlab_ci_branch_name patch
