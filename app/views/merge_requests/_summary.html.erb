@@ -4,7 +4,7 @@
   Branch: <span><%= @mr.target_branch %></span><br>
   Version: <span><%= @version %></span></br>
   Linter: <span class="fa <%= @patch.linter_ok? ? 'fa-check ok' : 'fa-exclamation fail' %>"></span><br>
-  <% unless @patch.gitlab_ci_hash.blank? %>
+  <% if @project.has_gitlab_ci? and not @patch.gitlab_ci_hash.blank? %>
   CI: <i id="ci_status" class="clickable fa fa-refresh fa-spin"></i><br>
   <script type="text/javascript" async src="<%= ci_status_project_merge_request_path(@project, @mr, version: @version) %>"></script>
   <% end %>
