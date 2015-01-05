@@ -17,7 +17,8 @@ class Project < ActiveRecord::Base
       result['url'] = "#{gitlab_ci_project_url}/builds/#{result['id']}"
       result
     end
-  rescue Timeout::Error, RuntimeError
+  rescue
+    Rails.logger.error "Failed to get CI status: #{$!.message}"
     { status: 'unknown' }
   end
 

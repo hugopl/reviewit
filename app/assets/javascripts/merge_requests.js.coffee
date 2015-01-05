@@ -46,7 +46,7 @@ window.update_ci_status = (data) ->
       ci_status.addClass('fa-gears')
 
   ci_status.on 'click', (event) ->
-    if 'url' in data
+    if data['url']
       window.open(data['url'], data['url'])
     else
       alert('Unable to connect to CI.')
