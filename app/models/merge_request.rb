@@ -92,6 +92,8 @@ class MergeRequest < ActiveRecord::Base
             patch.save
           end
         end
+      rescue
+        Rails.logger.error $!.backtrace
       ensure
         ActiveRecord::Base.connection.close
       end
