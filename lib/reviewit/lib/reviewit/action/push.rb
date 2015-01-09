@@ -2,6 +2,8 @@ module Reviewit
   class Push < Action
 
     def run
+      check_dirty_working_copy!
+
       run_linter! if options[:linter]
       read_commit_header
       read_commit_diff
@@ -75,7 +77,6 @@ module Reviewit
       if changed_files_regex =~ linter
         glob = $1
 
-        raise 'Your working copy is dirty, use git stash and try again.' unless `git status --porcelain`.empty?
         selected_files = changed_files
         if not glob.nil?
           glob = glob.split(',').map(&:strip)

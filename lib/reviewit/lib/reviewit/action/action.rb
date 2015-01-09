@@ -59,6 +59,10 @@ module Reviewit
       comments.join.strip
     end
 
+    def check_dirty_working_copy!
+      raise 'Your working copy is dirty, use git stash and try again.' unless `git status --porcelain`.empty?
+    end
+
     def parse_options
       abort "Missing #{self.class}#parse_options implementation"
     end
