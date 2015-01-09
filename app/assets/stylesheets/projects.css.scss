@@ -22,7 +22,7 @@
 
 .review-list {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 18px;
 
   border: 1px solid #e5e5e5;
@@ -32,12 +32,16 @@
   a {
     color: #333;
     text-decoration: none;
+    font-weight: bold;
   }
 
   .summary {
     font-size: 12px;
     color: #999;
-    font-weight: normal;
+  }
+
+  .target_branch {
+    float: right;
   }
 }
 
