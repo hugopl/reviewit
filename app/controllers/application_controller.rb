@@ -5,11 +5,11 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
-  rescue_from ActiveRecord::RecordNotFound do |exception|
+  rescue_from ActiveRecord::RecordNotFound do |_exception|
     render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found
   end
 
-  layout Proc.new { |controller|
+  layout Proc.new { |_controller|
     user_signed_in? ? 'application' : 'devise/sessions'
   }
 

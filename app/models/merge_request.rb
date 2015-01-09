@@ -104,10 +104,11 @@ class MergeRequest < ActiveRecord::Base
     @patch ||= patches.last
   end
 
-  def git_format_patch
+  def git_format_patch patch = nil
+    patch ||= self.patch
     return if patch.nil?
 
-    out =<<eot
+    <<eot
 From: #{author.name} <#{author.email}>
 Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
@@ -163,7 +164,7 @@ eot
   end
 
   def git_am dir, patch
-    contents = git_format_patch
+    contents = git_format_patch(patch)
     file = Tempfile.new 'patch'
     file.puts contents
     file.close

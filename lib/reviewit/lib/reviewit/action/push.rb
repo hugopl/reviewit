@@ -75,13 +75,13 @@ module Reviewit
       changed_files_regex = /\#{changed_files(?:\|(.*))?}/
       linter_command = ''
       if changed_files_regex =~ linter
-        glob = $1
+        globs = $1
 
         selected_files = changed_files
-        if not glob.nil?
-          glob = glob.split(',').map(&:strip)
+        if not globs.nil?
+          globs = globs.split(',').map(&:strip)
           selected_files.select! do |file|
-            glob.any? do |glob|
+            globs.any? do |glob|
               File.fnmatch? glob, file
             end
           end

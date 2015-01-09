@@ -21,7 +21,7 @@ module MergeRequestsHelper
   end
 
   # TODO Refactor this shitty code
-  def process_diff diff, &block
+  def process_diff diff
     it = diff.each_line
     location = 0
     loop do
@@ -34,6 +34,7 @@ module MergeRequestsHelper
       location = diff_file.location
     end
   rescue StopIteration
+    return
   end
 
   private
@@ -62,6 +63,7 @@ module MergeRequestsHelper
         old_ln, new_ln = diffline.line_numbers
       end
     rescue StopIteration
+      return
     end
   end
 

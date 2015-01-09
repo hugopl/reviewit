@@ -26,7 +26,7 @@ module Reviewit
     private
 
     def parse_options
-      options = Trollop::options {}
+      Trollop::options {}
       mr = ARGV.shift
       { mr: mr }
     end

@@ -34,7 +34,8 @@ module Reviewit
       if not request.path =~ /\/api\/projects\/\d+\/setup/
         raise Error.new("Version #{Reviewit::VERSION} required.", 426) if headers['X-Cli-Version'] != Reviewit::VERSION
       end
-      raise Error.new('Sorry, invalid token.', 401) unless @current_user = User.find_by_api_token(headers['X-Token'])
+      @current_user = User.find_by_api_token(headers['X-Token'])
+      raise Error.new('Sorry, invalid token.', 401) if @current_user.nil?
     end
 
     helpers do

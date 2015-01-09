@@ -13,7 +13,7 @@ eos
 
 desc 'Setup r-me for development'
 task :setup do
-  unless File.exists? 'config/database.yml'
+  unless File.exist? 'config/database.yml'
     File.open('config/database.yml', 'w') do |file|
       file.write DATABASE_YML
     end
