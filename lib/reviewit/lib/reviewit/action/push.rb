@@ -16,17 +16,17 @@ module Reviewit
         puts "Merge Request updated at #{url}"
       else
         abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?
-        puts "Creating merge request..."
+        puts 'Creating merge request...'
         mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch], linter_ok?)
         puts "Merge Request created at #{mr[:url]}"
         append_mr_id_to_commit(mr[:id])
       end
     end
 
-  private
+    private
 
     def parse_options
-      options = Trollop::options do
+      options = Trollop.options do
         opt :message, 'A message to the given action', type: String
         opt :linter, 'Run linter', default: true
       end

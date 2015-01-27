@@ -33,7 +33,7 @@ module Reviewit
             description: 'First version'
           })
           mr.save!
-          { :mr_id => mr.id }
+          { mr_id: mr.id }
         end
       end
 

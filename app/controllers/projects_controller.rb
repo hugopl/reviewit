@@ -39,7 +39,7 @@ class ProjectsController < ApplicationController
     redirect_to action: :index
   end
 
-private
+  private
 
   def set_project_users
     names = params[:project][:users].is_a?(Array) ? params[:project][:users] : []

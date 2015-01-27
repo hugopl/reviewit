@@ -32,10 +32,10 @@ module Reviewit
       list = get 'merge_requests'
       list.map do |item|
         {
-         id:      item['id'],
-         url:     mr_url(item['id']),
-         status:  item['status'],
-         subject: item['subject']
+          id:      item['id'],
+          url:     mr_url(item['id']),
+          status:  item['status'],
+          subject: item['subject']
         }
       end
     end
@@ -48,7 +48,7 @@ module Reviewit
       @base_url.gsub(/api\/?\z/, "mr/#{id}")
     end
 
-  private
+    private
 
     def url_for path
       "#{@base_url}/projects/#{@project_id}/#{path}"

@@ -27,7 +27,8 @@ module Reviewit
       abort $!.message
     end
 
-  private
+    private
+
     def action_class
       show_help(:abort) if ARGV.empty?
 

@@ -20,7 +20,7 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
-  # TODO Refactor this shitty code
+  # TODO: Refactor this shitty code
   def process_diff diff
     it = diff.each_line
     location = 0
@@ -110,8 +110,8 @@ module MergeRequestsHelper
 
     def new_ln
       case @type
-        when :del then ''
-        when :info then '...'
+      when :del then ''
+      when :info then '...'
       else @new_ln
       end
     end

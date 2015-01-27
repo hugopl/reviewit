@@ -29,7 +29,7 @@ def install_rme_gem
   http.start do |h|
     request = Net::HTTP::Get.new(uri.request_uri)
     response = h.request(request)
-    File.open(gem_file, 'wb') {|f| f.write(response.body) }
+    File.open(gem_file, 'wb') { |f| f.write(response.body) }
   end
 
   puts 'Installing reviewit gem...'

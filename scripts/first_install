@@ -4,7 +4,7 @@ require 'fileutils'
 require 'securerandom'
 
 def abort_if_exists file
-  abort "Remove #{file} to continue." if File.exists? file
+  abort "Remove #{file} to continue." if File.exist? file
 end
 
 def execute command
@@ -34,7 +34,7 @@ production: &development
   timeout: 5000
   database: db/production.sqlite3
 eos
-  end
+end
 
 ENV['RAILS_ENV'] = 'production'
 execute 'rake db:migrate'

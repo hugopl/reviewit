@@ -127,7 +127,7 @@ eot
     "\nReviewed by #{reviewer.name} on MR ##{id}\n"
   end
 
-  # TODO Move all these git related methods to a Git model.
+  # TODO: Move all these git related methods to a Git model.
   def gitlab_ci_branch_name patch
     patch = Patch.find(patch) if patch.is_a? Integer
     "mr-#{id}-version-#{patches.index(patch) + 1}"

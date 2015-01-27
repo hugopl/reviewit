@@ -12,9 +12,17 @@ Style/SpecialGlobalVars:
   Enabled: false
 Style/MethodDefParentheses:
   Enabled: false
+Style/SignalException:
+  Enabled: false
+Style/AndOr:
+  Enabled: false
+Style/PerlBackrefs:
+  Enabled: false
 Style/EachWithObject:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
 Metrics/MethodLength:
+  Enabled: false
+Metrics/ClassLength:
   Enabled: false

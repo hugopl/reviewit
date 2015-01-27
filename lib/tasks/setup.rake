@@ -1,6 +1,6 @@
 require 'fileutils'
 
-DATABASE_YML =<<eos
+DATABASE_YML = <<eos
 development: &development
   adapter: sqlite3
   pool: 5

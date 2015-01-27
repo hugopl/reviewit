@@ -14,14 +14,15 @@ class User < ActiveRecord::Base
   end
 
   def self.all_names
-    User.all.map { |u| u.name }
+    User.all.map(&:name)
   end
 
-private
+  private
+
   def generate_api_token
     loop do
       self.api_token = SecureRandom.urlsafe_base64
-      break unless User.exists?(api_token: self.api_token)
+      break unless User.exists?(api_token: api_token)
     end
   end
 end
