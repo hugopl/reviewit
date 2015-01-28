@@ -18,10 +18,13 @@
       </td>
     </tr>
     <% end %>
+
+    <% if @mr.open? or @mr.needs_rebase? %>
     <tr>
       <td colspan="3" class="add-comment">
         <textarea placeholder="Leave a comment" name="comments[0]"></textarea>
       </td>
     </tr>
+    <% end %>
   </table>
 </div>
