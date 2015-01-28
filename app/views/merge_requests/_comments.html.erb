@@ -1,30 +1,13 @@
-<div class="code-review-header">Patch comments</div>
-<div class="code-review-container">
-  <table class="code-review">
-    <% comments = patch.comments.root %>
-    <% if comments.present? %>
-    <tr class="comment">
-      <td colspan="2">
-        <%= "\uf086 #{comments.count}" if comments.count > 1 %>
-      </td>
-      <td>
-        <% comments.each do |comment|  %>
-          <div>
-            <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
-            <div class="comment-header"><%= comment.user.name %></div>
-            <div class="comment-body"><%= comment.content %></div>
-          </div>
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
+<h2 class="comment">General Comments</h2>
 
-    <% if @mr.open? or @mr.needs_rebase? %>
-    <tr>
-      <td colspan="3" class="add-comment">
-        <textarea placeholder="Leave a comment" name="comments[0]"></textarea>
-      </td>
-    </tr>
-    <% end %>
-  </table>
-</div>
+<% patch.comments.root.each do |comment|  %>
+  <div class="comment">
+    <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
+    <div class="comment-header"><%= comment.user.name %></div>
+    <div class="comment-body"><%= comment.content %></div>
+  </div>
+<% end %>
+
+<% if @mr.open? or @mr.needs_rebase? %>
+  <textarea class="comment" placeholder="Leave a comment" name="comments[0]"></textarea>
+<% end %>
