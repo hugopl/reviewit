@@ -16,7 +16,7 @@
       </td>
       <td>
         <% comments[line.location].each_with_index do |comment, i|  %>
-          <div>
+          <div class="comment">
             <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
             <div class="comment-header"><%= comment.user.name %></div>
             <div class="comment-body"><%= comment.content %></div>

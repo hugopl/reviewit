@@ -10,6 +10,8 @@
 
     <%= render partial: 'diff', locals: { patch: patch } %>
 
+    <%= render 'comments' %>
+
     <% if @mr.open? or @mr.needs_rebase? %>
       <div class="merge-bar">
         <% if @mr.author != current_user %>
