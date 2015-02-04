@@ -1,7 +1,6 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-
   yml = YAML.load_file(Rails.root.join('config', 'reviewit.yml'))
 
   # The secret key used by Devise. Devise uses this key to generate
@@ -43,12 +42,12 @@ Devise.setup do |config|
   # Configure which authentication keys should be case-insensitive.
   # These keys will be downcased upon creating or modifying a user and when used
   # to authenticate or find a user. Default is :email.
-  config.case_insensitive_keys = [ :email ]
+  config.case_insensitive_keys = [:email]
 
   # Configure which authentication keys should have whitespace stripped.
   # These keys will have whitespace before and after removed upon creating or
   # modifying a user and when used to authenticate or find a user. Default is :email.
-  config.strip_whitespace_keys = [ :email ]
+  config.strip_whitespace_keys = [:email]
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
@@ -99,7 +98,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = 'e4f358c7916cc8d45a70fd12eea0695c48780fab853c7c6a8fbbaa1f15acff1debf1d7e385d89ee2be6f5b245ae59bbec0bb5de79c43ec132594ca9746bf2aaa'
+  # config.pepper = 'e4f358c7916cc8d45a77c6a8fbbaa1f15acff1debf1d7e385d89ee2be6f5b245ae59bbec0bb5de79c43ec132594ca9746bf2aaa'
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without

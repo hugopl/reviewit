@@ -1,6 +1,5 @@
 module Reviewit
   class Apply < Action
-
     def run
       patch = api.merge_request options[:mr]
       file = Tempfile.new 'patch'
@@ -13,10 +12,10 @@ module Reviewit
     private
 
     def parse_options
-      Trollop::options {}
+      Trollop.options {}
       mr = ARGV.shift
       raise 'You need to inform the merge request id' if mr.nil?
-      {mr: mr}
+      { mr: mr }
     end
   end
 end

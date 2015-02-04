@@ -78,7 +78,7 @@ module Reviewit
         globs = $1
 
         selected_files = changed_files
-        if not globs.nil?
+        if globs
           globs = globs.split(',').map(&:strip)
           selected_files.select! do |file|
             globs.any? do |glob|

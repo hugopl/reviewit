@@ -11,7 +11,7 @@ class Project < ActiveRecord::Base
   def ci_status patch
     fail if patch.gitlab_ci_hash.blank?
 
-    Timeout::timeout(2) do
+    Timeout.timeout(2) do
       raw_result = Net::HTTP.get(ci_status_url_for(patch))
       result = JSON.parse(raw_result)
       result['url'] = "#{gitlab_ci_project_url}/builds/#{result['id']}"

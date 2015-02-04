@@ -1,5 +1,4 @@
 module Reviewit
-
   class Error < RuntimeError
     def initialize msg, code
       super msg

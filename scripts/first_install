@@ -17,7 +17,7 @@ end
 end
 
 File.open('config/reviewit.yml', 'w') do |file|
-    file.write <<eos
+  file.write <<eos
 # Changing this key will render invalid all existing confirmation,
 # reset password and unlock tokens in the database.
 secret_key: #{SecureRandom.hex(64)}

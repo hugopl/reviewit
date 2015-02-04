@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     render file: "#{Rails.root}/public/404", layout: false, status: :not_found
   end
 
-  layout Proc.new { |_controller|
+  layout proc { |_controller|
     user_signed_in? ? 'application' : 'devise/sessions'
   }
 

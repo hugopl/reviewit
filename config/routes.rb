@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get :history, on: :member
       get :ci_status, on: :member
       collection do
-       get 'old_ones'
+        get 'old_ones'
       end
     end
   end

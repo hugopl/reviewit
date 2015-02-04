@@ -1,6 +1,5 @@
 module Reviewit
   class Open < Action
-
     def run
       @mr_id = options[:mr]
       if @mr_id.nil?
@@ -26,7 +25,7 @@ module Reviewit
     private
 
     def parse_options
-      Trollop::options {}
+      Trollop.options {}
       mr = ARGV.shift
       { mr: mr }
     end

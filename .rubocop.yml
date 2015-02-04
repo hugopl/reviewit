@@ -8,6 +8,8 @@ Metrics/LineLength:
   Max: 125
 Style/Documentation:
   Enabled: false
+Style/Not:
+  Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
 Style/MethodDefParentheses:

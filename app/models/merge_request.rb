@@ -10,7 +10,7 @@ class MergeRequest < ActiveRecord::Base
   has_many :patches, -> { order(:created_at) }, dependent: :destroy
   has_many :history_events, -> { order(:when) }, dependent: :destroy
 
-  enum status: [ :open, :integrating, :needs_rebase, :accepted, :abandoned ]
+  enum status: [:open, :integrating, :needs_rebase, :accepted, :abandoned]
 
   # Any status >= this is considered a closed MR
   CLOSE_LIMIT = 3
@@ -39,7 +39,7 @@ class MergeRequest < ActiveRecord::Base
     patch.diff = data[:diff]
     patch.linter_ok = data[:linter_ok]
     patch.description = data[:description]
-    self.patches << patch
+    patches << patch
     add_history_event(author, 'updated the merge request') if persisted?
   end
 
@@ -138,11 +138,11 @@ eot
   end
 
   def add_history_event who, what
-    self.history_events << HistoryEvent.new(who: who, what: what)
+    history_events << HistoryEvent.new(who: who, what: what)
   end
 
   def indent_comment comment
-    comment.each_line.map {|line| "    #{line}"}.join
+    comment.each_line.map { |line| "    #{line}" }.join
   end
 
   def author_cant_be_reviewer
@@ -180,7 +180,7 @@ eot
   end
 
   def git_prune_old_versions dir, patch
-    patches = self.patch_ids
+    patches = patch_ids
     patches.delete(patch.id)
     patches.each do |p|
       git_rm_branch(dir, gitlab_ci_branch_name(p))

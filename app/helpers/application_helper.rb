@@ -9,7 +9,8 @@ module ApplicationHelper
     return nil unless obj_instance.errors.any?
 
     errors = obj_instance.errors.inject('') do |script, error|
-      script + "Tipped.create('##{obj_str}_#{error[0]}', '#{escape_javascript(error[1])}', { position: 'topright', container: $('#error_tips')[0] });"
+      script + "Tipped.create('##{obj_str}_#{error[0]}', '#{escape_javascript(error[1])}'," \
+               "{ position: 'topright', container: $('#error_tips')[0] });"
     end
     script = "$(document).ready(function() {#{errors}});"
 

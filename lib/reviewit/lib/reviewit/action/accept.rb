@@ -1,6 +1,5 @@
 module Reviewit
   class Accept < Action
-
     def run
       api.accept_merge_request options[:mr]
       puts 'Merge request accepted, check later if the integration was successful.'

@@ -85,7 +85,7 @@ module Reviewit
       http.use_ssl = true if uri.scheme == 'https'
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
 
-      response = http.start {|h| h.request(req) }
+      response = http.start { |h| h.request(req) }
 
       if block_given?
         yield response
@@ -109,6 +109,5 @@ module Reviewit
       end
       raise 'You were using an old version of reviewit or the project configuration was changed. Reviewit was re-configured and nothing was changed on the server side.'
     end
-
   end
 end
