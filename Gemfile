@@ -15,7 +15,6 @@ gem 'will_paginate', '~> 3.0'
 
 group :development do
   gem 'awesome_print'
-  gem 'spring'
 end
 
 
