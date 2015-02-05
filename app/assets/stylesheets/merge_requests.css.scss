@@ -182,6 +182,11 @@ div.comment {
     font-weight: bold;
     text-align: left;
     font-size: 12px;
+
+    span {
+      font-weight: normal;
+      color: #ccc;
+    }
   }
 
   .comment-body {
