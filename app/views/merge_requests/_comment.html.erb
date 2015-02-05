@@ -1,0 +1,5 @@
+<div class="comment">
+  <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
+  <div class="comment-header"><%= comment.user.name %> <span>wrote <%= time_ago_in_words(comment.created_at) %> ago</span></div>
+  <div class="comment-body"><%= comment.content %></div>
+</div>

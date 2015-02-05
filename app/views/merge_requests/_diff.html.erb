@@ -15,12 +15,8 @@
        <%= "\uf086 #{comments[line.location].count}" if comments[line.location].count > 1 %>
       </td>
       <td>
-        <% comments[line.location].each_with_index do |comment, i|  %>
-          <div class="comment">
-            <%= image_tag gravatar_url(comment.user), class: 'avatar' %>
-            <div class="comment-header"><%= comment.user.name %> <span>wrote <%= time_ago_in_words(comment.created_at) %> ago</span></div>
-            <div class="comment-body"><%= comment.content %></div>
-          </div>
+        <% comments[line.location].each do |comment|  %>
+          <%= render partial: 'comment', locals: { comment: comment } %>
         <% end %>
         <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
       </td>
