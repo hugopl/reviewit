@@ -20,6 +20,9 @@ module Reviewit
         mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch], linter_ok?)
         puts "Merge Request created at #{mr[:url]}"
         append_mr_id_to_commit(mr[:id])
+        puts 'Renaming local branch...'
+        branch = rename_local_branch(mr[:id])
+        puts "Local branch renamed to #{branch}"
       end
     end
 
@@ -46,6 +49,16 @@ module Reviewit
         git.write "\n\n#{MR_STAMP} #{mr_id}\n"
         git.close
       end
+    end
+
+    def rename_local_branch mr_id
+      branch = `git symbolic-ref -q HEAD`.gsub('refs/heads/', '').strip
+      name = branch.start_with?('mr-') ? branch.split('-')[2] : branch
+      new_name = "mr-#{mr_id}-#{name}"
+
+      ok = system("git branch -m #{branch} #{new_name}")
+      raise 'Branch rename failed' unless ok
+      new_name
     end
 
     def updating?
