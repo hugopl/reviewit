@@ -106,6 +106,7 @@ module Reviewit
 
         if selected_files.empty?
           puts 'No files to lint'
+          @linter_ok = true
           return true
         end
 
