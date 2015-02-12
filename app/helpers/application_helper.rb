@@ -30,6 +30,10 @@ module ApplicationHelper
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=#{size}"
   end
 
+  def version
+    Reviewit::VERSION
+  end
+
   private
 
   def path_info
