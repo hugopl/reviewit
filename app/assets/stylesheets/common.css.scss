@@ -229,3 +229,8 @@ input[type=checkbox]:checked + label:before {
   text-align: right;
   margin-top: 10px;
 }
+
+.required:after {
+  content: '*';
+  color: red;
+}

@@ -1,10 +1,10 @@
 <h1>Edit <%= resource_name.to_s.humanize %></h1>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <div><%= f.label :name %><br />
+  <div><%= f.label :name, class: 'required' %><br />
   <%= f.text_field :name, autofocus: true, placeholder: 'This will be used in your commits' %></div>
 
-  <div><%= f.label :email %><br />
+  <div><%= f.label :email, class: 'required' %><br />
   <%= f.email_field :email, autofocus: true %></div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
