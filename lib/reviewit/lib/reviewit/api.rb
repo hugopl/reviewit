@@ -107,7 +107,8 @@ module Reviewit
       send_request('setup', {}, :get) do |response|
         eval response.body
       end
-      raise 'You were using an old version of reviewit or the project configuration was changed. Reviewit was re-configured and nothing was changed on the server side.'
+      raise 'You were using an old version of reviewit or the project configuration was changed. ' \
+            'Reviewit was re-configured and nothing was changed on the server side.'
     end
   end
 end

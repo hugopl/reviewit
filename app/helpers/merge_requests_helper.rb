@@ -28,7 +28,8 @@ module MergeRequestsHelper
       line = it.next
       location += 1
       is_file_def = line.start_with?('+++') || line.start_with?('---')
-      next unless is_file_def and line !~ /\A(\-\-\-|\+\+\+) \/dev\/null$/
+      next unless is_file_def and line !~ %r{\A(\-\-\-|\+\+\+) /dev/null$}
+
       diff_file = DiffFile.new(line, it, location)
       yield diff_file
       location = diff_file.location

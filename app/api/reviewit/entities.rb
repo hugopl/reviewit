@@ -16,7 +16,6 @@ module Reviewit
       expose :email
     end
 
-
     class FullMergeRequest < Grape::Entity
       expose :id
       expose :status
@@ -29,6 +28,5 @@ module Reviewit
         object.git_format_patch
       end
     end
-
   end
 end

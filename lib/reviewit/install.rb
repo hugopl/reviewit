@@ -1,13 +1,13 @@
 require 'net/http'
 require 'openssl'
 
-# $base_url
-# $api_token
-# $project_name
-# $project_id
-# $gem_url
-# $linter
-# $gem_version
+# @base_url
+# @api_token
+# @project_name
+# @project_id
+# @gem_url
+# @linter
+# @gem_version
 
 def puts text
   STDOUT.puts "\033[0;32m#{text}\033[0m"
@@ -15,14 +15,14 @@ end
 
 def check_rme_gem
   puts 'Checking reviewit gem...'
-  `gem list reviewit -i -v #{$gem_version}`
+  `gem list reviewit -i -v #{@gem_version}`
   $?.success?
 end
 
 def install_rme_gem
-  gem_file = "/tmp/#{File.basename($gem_url)}"
+  gem_file = "/tmp/#{File.basename(@gem_url)}"
   puts 'Downloading reviewit gem...'
-  uri = URI($gem_url)
+  uri = URI(@gem_url)
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true if uri.scheme == 'https'
   http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
@@ -43,14 +43,14 @@ end
 
 def configure_git
   puts 'Configuring git...'
-  `git config --local reviewit.projectid #{$project_id}`
-  `git config --local reviewit.baseurl #{$base_url}` if $?.success?
-  `git config --local reviewit.apitoken #{$api_token}` if $?.success?
-  `git config --local reviewit.linter "#{$linter.gsub('"', '\"')}"` if $?.success?
+  `git config --local reviewit.projectid #{@project_id}`
+  `git config --local reviewit.baseurl #{@base_url}` if $?.success?
+  `git config --local reviewit.apitoken #{@api_token}` if $?.success?
+  `git config --local reviewit.linter "#{@linter.gsub('"', '\"')}"` if $?.success?
   abort 'Error configuring git for rme.' unless $?.success?
 end
 
-puts "reviewit command line interface installer for #{$project_name}\n"
+puts "reviewit command line interface installer for #{@project_name}\n"
 install_rme_gem unless check_rme_gem
 
 check_git_repository

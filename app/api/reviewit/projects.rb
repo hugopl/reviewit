@@ -18,13 +18,13 @@ module Reviewit
           gem_url = "#{root_url}/reviewit-#{Reviewit::VERSION}.gem"
 
           <<-eos
-          $base_url = "#{root_url}/api"
-          $api_token = #{current_user.api_token.inspect}
-          $gem_url = #{gem_url.inspect}
-          $project_name = #{project.name.inspect}
-          $project_id = #{project.id}
-          $linter = #{project.linter.inspect}
-          $gem_version = #{Reviewit::VERSION.inspect}
+          @base_url = "#{root_url}/api"
+          @api_token = #{current_user.api_token.inspect}
+          @gem_url = #{gem_url.inspect}
+          @project_name = #{project.name.inspect}
+          @project_id = #{project.id}
+          @linter = #{project.linter.inspect}
+          @gem_version = #{Reviewit::VERSION.inspect}
 
           #{File.read(Rails.root.join('lib', 'reviewit', 'install.rb'))}
           eos

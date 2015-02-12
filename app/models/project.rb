@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
   validates :name, presence: true
   validates :repository, presence: true
 
-  def has_gitlab_ci?
+  def gitlab_ci?
     !gitlab_ci_token.blank? and !gitlab_ci_project_url.blank?
   end
 

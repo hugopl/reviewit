@@ -1,12 +1,11 @@
 module Reviewit
   class MergeRequests < Grape::API
-
     helpers do
       def merge_request
         MergeRequest.find(params[:mr_id])
       end
 
-      def is_same_patch?
+      def same_patch?
         last_patch = merge_request.patch
         last_patch.diff == params[:diff] and last_patch.commit_message == params[:commit_message]
       end
@@ -26,12 +25,12 @@ module Reviewit
           mr.author = current_user
           mr.subject = params[:subject]
           mr.target_branch = params[:target_branch]
-          mr.add_patch({
+          mr.add_patch(
             commit_message: params[:commit_message],
             diff: params[:diff],
             linter_ok: params[:linter_ok],
             description: 'First version'
-          })
+          )
           mr.save!
           { mr_id: mr.id }
         end
@@ -50,7 +49,7 @@ module Reviewit
           raise 'You need to be the MR author to update it.' if mr.author != current_user
           raise "You can not update a #{mr.status} merge request." unless mr.can_update?
 
-          if is_same_patch?
+          if same_patch?
             raise 'Seems you are re-submitting the same patch.' if params[:target_branch].blank? or params[:target_branch] == mr.target_branch
             mr.target_branch = params[:target_branch].to_s.strip
             mr.save!
@@ -59,12 +58,12 @@ module Reviewit
               mr.subject = params[:subject]
               mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
               mr.status = :open
-              mr.add_patch({
+              mr.add_patch(
                 commit_message: params[:commit_message],
                 diff: params[:diff],
                 linter_ok: params[:linter_ok],
                 description: (params[:description] or '').lines.first.to_s
-              })
+              )
               mr.save!
             end
           end
@@ -87,7 +86,6 @@ module Reviewit
           ok
         end
       end
-
     end
   end
 end

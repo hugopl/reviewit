@@ -27,7 +27,7 @@ module Reviewit
     end
 
     before do
-      if not request.path =~ /\/api\/projects\/\d+\/setup/
+      if not request.path =~ %r{/api/projects/\d+/setup}
         raise Error.new("Version #{Reviewit::VERSION} required.", 426) if headers['X-Cli-Version'] != Reviewit::VERSION
       end
       @current_user = User.find_by_api_token(headers['X-Token'])
