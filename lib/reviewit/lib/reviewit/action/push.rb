@@ -74,12 +74,13 @@ module Reviewit
     end
 
     def changed_files
+      root = `git rev-parse --show-toplevel`.strip
       matches = `git show --format=short`.scan(/^--- (.*)\n\+\+\+ (.*)$/)
       matches.select! do |pair|
         pair[1] != '/dev/null'
       end
       matches.map do |pair|
-        pair[1][2..-1]
+        File.join(root, pair[1][2..-1])
       end
     end
 
