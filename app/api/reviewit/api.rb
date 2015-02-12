@@ -27,9 +27,6 @@ module Reviewit
     end
 
     before do
-      # FIXME: Remove this hack.
-      Kernel.load Rails.root.join('lib', 'reviewit', 'lib', 'reviewit', 'version.rb') unless defined? VERSION
-
       if not request.path =~ /\/api\/projects\/\d+\/setup/
         raise Error.new("Version #{Reviewit::VERSION} required.", 426) if headers['X-Cli-Version'] != Reviewit::VERSION
       end
