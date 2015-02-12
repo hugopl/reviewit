@@ -20,9 +20,12 @@ module Reviewit
         mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch], linter_ok?)
         puts "Merge Request created at #{mr[:url]}"
         append_mr_id_to_commit(mr[:id])
-        puts 'Renaming local branch...'
-        branch = rename_local_branch(mr[:id])
-        puts "Local branch renamed to #{branch}"
+
+        if options[:rename]
+          puts 'Renaming local branch...'
+          branch = rename_local_branch(mr[:id])
+          puts "Local branch renamed to #{branch}. Use --no-rename to avoid this."
+        end
       end
     end
 
@@ -32,6 +35,7 @@ module Reviewit
       options = Trollop.options do
         opt :message, 'A message to the given action', type: String
         opt :linter, 'Run linter', default: true
+        opt :rename, 'Rename branch after push.', default: true
       end
       options[:branch] = ARGV.shift
       options
