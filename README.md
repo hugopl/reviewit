@@ -87,7 +87,3 @@ You can do it on web interface or by running `review cancel`.
 ### Applying a patch from some MR on your working copy
 
 Sometimes you aren't a believer and want to try the patch yourself, this is easy, just run `review apply X` where X is the MR id.
-
-## Wish list
-
-1. CI integration
