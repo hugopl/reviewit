@@ -43,6 +43,25 @@ class MergeRequest < ActiveRecord::Base
     add_history_event(author, 'updated the merge request') if persisted?
   end
 
+  def add_comments author, patch, comments
+    return if comments.nil?
+
+    count = 0
+    transaction do
+      comments.each do |location, text|
+        next if text.strip.empty?
+        comment = Comment.new
+        comment.user = author
+        comment.patch = patch
+        comment.content = text
+        comment.location = location
+        comment.save!
+        count += 1
+      end
+    end
+    add_history_event(author, count == 1 ? 'added a comment.' : "added #{count} comments.") unless count.zero?
+  end
+
   def abandon! reviewer
     add_history_event reviewer, 'abandoned the merge request'
     self.status = :abandoned

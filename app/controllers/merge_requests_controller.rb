@@ -4,9 +4,7 @@ class MergeRequestsController < ApplicationController
 
   def update
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
-    MergeRequest.transaction do
-      create_comments params[:comments]
-    end
+    merge_request.add_comments(current_user, @patch, params[:comments])
 
     case params[:mr_action]
     when 'Accept' then accept
@@ -62,19 +60,5 @@ class MergeRequestsController < ApplicationController
   def abandon
     @mr.abandon! current_user
     redirect_to action: :index
-  end
-
-  def create_comments comments
-    return if comments.nil?
-
-    comments.each do |location, text|
-      next if text.strip.empty?
-      comment = Comment.new
-      comment.user = current_user
-      comment.patch = @patch
-      comment.content = text
-      comment.location = location
-      comment.save!
-    end
   end
 end
