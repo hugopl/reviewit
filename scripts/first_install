@@ -21,8 +21,21 @@ File.open('config/reviewit.yml', 'w') do |file|
 # Changing this key will render invalid all existing confirmation,
 # reset password and unlock tokens in the database.
 secret_key: #{SecureRandom.hex(64)}
-# Configure the e-mail address which will be shown in emails sent by Review it!
-mail_sender:
+# E-mail configuration, for more info see:
+# http://edgeguides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
+mail:
+  sender: foo@bar.com
+  host: foo.bar.com
+  delivery_method: file
+  address:
+  port:
+  domain:
+  authentication:
+  user_name:
+  password:
+  openssl_verify_mode:
+  enable_starttls_auto:
+  store_location: /tmp/mails
 eos
 end
 
