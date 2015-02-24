@@ -57,11 +57,9 @@ module Reviewit
 
     def rename_local_branch mr_id
       branch = `git symbolic-ref -q HEAD`.gsub('refs/heads/', '').strip
-      name = branch.start_with?('mr-') ? branch.split('-')[2] : branch
-      new_name = "mr-#{mr_id}-#{name}"
+      new_name = "mr-#{mr_id}-#{branch}"
 
-      ok = system("git branch -m #{branch} #{new_name}")
-      raise 'Branch rename failed' unless ok
+      system("git branch -m #{new_name}") or raise 'Branch rename failed'
       new_name
     end
 
