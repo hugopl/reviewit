@@ -15,6 +15,7 @@
 //= require turbolinks
 //= require_tree .
 
+// "It's not advisable to add code directly here..." bla bla bla... but I did it!! Yeah!!
 var ready = function() {
   var func = window[document.body.dataset.whoAmI];
   if (func)
@@ -22,6 +23,10 @@ var ready = function() {
 
   $(".tipped").each(function(idx, item) {
     Tipped.create(item, item.dataset.tip);
+  });
+
+  $(".markdown").each(function(idx, item) {
+      item.innerHTML = marked(item.textContent);
   });
 }
 $(document).ready(ready);

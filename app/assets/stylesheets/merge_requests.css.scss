@@ -192,8 +192,15 @@ div.comment {
   .comment-body {
     text-align: left;
     font-size: 12px;
-    white-space: pre-wrap;
     padding-left: 50px;
+
+    p {
+      margin-top: 0px;
+    }
+
+    p+p {
+      margin-top: 10px;
+    }
   }
 }
 
