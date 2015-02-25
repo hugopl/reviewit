@@ -18,7 +18,9 @@
         <% comments[line.location].each do |comment|  %>
           <%= render partial: 'comment', locals: { comment: comment } %>
         <% end %>
+        <% if @mr.open? %>
         <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
+        <% end %>
       </td>
     </tr>
     <% end %>
