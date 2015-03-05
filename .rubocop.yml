@@ -6,6 +6,9 @@ Lint/Eval:
   Enabled: false
 Metrics/LineLength:
   Max: 125
+Rails/Output:
+  Exclude:
+    - 'lib/reviewit/**/*'
 Style/Documentation:
   Enabled: false
 Style/Not:
