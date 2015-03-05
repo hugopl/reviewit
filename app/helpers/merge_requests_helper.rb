@@ -20,6 +20,15 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
+  def gitlab_ci_icon mr
+    patch = mr.patch
+    if patch.pass?
+      content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI build passed!')
+    elsif patch.failed?
+      content_tag(:i, '', class: 'tipped fa fa-remove fail', 'data-tip' => 'CI build failed!')
+    end
+  end
+
   # TODO: Refactor this shitty code
   def process_diff diff
     it = diff.each_line

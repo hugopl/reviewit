@@ -5,9 +5,14 @@ module Reviewit
       expose :subject
       expose :author
       expose :status
+      expose :ci_status
 
       def author
         object.author.name
+      end
+
+      def ci_status
+        object.patch.gitlab_ci_status
       end
     end
 

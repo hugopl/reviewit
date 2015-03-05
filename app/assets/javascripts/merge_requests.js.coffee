@@ -37,7 +37,7 @@ window.update_ci_status = (data) ->
   ci_status.removeClass('fa-refresh fa-spin ')
   switch data['status']
     when 'failed'
-      ci_status.addClass('fa-bug fail')
+      ci_status.addClass('fa-remove fail')
     when 'success'
       ci_status.addClass('fa-check ok')
     when 'unknown'

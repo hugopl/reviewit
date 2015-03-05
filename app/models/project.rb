@@ -16,6 +16,8 @@ class Project < ActiveRecord::Base
       raw_result = Net::HTTP.get(ci_status_url_for(patch))
       result = JSON.parse(raw_result)
       result['url'] = "#{gitlab_ci_project_url}/builds/#{result['id']}"
+
+      cache_status(patch, result['status']) unless patch.pass?
       result
     end
   rescue
@@ -27,5 +29,12 @@ class Project < ActiveRecord::Base
 
   def ci_status_url_for patch
     URI("#{gitlab_ci_project_url}/builds/#{patch.gitlab_ci_hash}/status.json?token=#{gitlab_ci_token}")
+  end
+
+  def cache_status patch, status
+    case status
+    when 'success' then patch.pass!
+    when 'failed' then patch.failed!
+    end
   end
 end

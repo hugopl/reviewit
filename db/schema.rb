@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206204123) do
+ActiveRecord::Schema.define(version: 20150305030728) do
 
-  create_table "comments", force: true do |t|
+  create_table "comments", force: :cascade do |t|
     t.integer  "user_id",                 null: false
     t.integer  "patch_id"
     t.text     "content",    default: "", null: false
@@ -24,23 +24,23 @@ ActiveRecord::Schema.define(version: 20141206204123) do
 
   add_index "comments", ["patch_id"], name: "index_comments_on_patch_id"
 
-  create_table "history_events", force: true do |t|
-    t.integer  "merge_request_id", null: false
+  create_table "history_events", force: :cascade do |t|
+    t.integer  "merge_request_id",             null: false
     t.integer  "who_id"
     t.datetime "when"
-    t.string   "what",             null: false
+    t.string   "what",             limit: 255, null: false
   end
 
   add_index "history_events", ["merge_request_id"], name: "index_history_events_on_merge_request_id"
   add_index "history_events", ["who_id"], name: "index_history_events_on_who_id"
 
-  create_table "merge_requests", force: true do |t|
+  create_table "merge_requests", force: :cascade do |t|
     t.integer  "project_id"
     t.integer  "author_id"
     t.integer  "reviewer_id"
-    t.integer  "status",        default: 0, null: false
-    t.string   "target_branch",             null: false
-    t.string   "subject",                   null: false
+    t.integer  "status",                    default: 0, null: false
+    t.string   "target_branch", limit: 255,             null: false
+    t.string   "subject",       limit: 255,             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -49,32 +49,33 @@ ActiveRecord::Schema.define(version: 20141206204123) do
   add_index "merge_requests", ["project_id"], name: "index_merge_requests_on_project_id"
   add_index "merge_requests", ["reviewer_id"], name: "index_merge_requests_on_reviewer_id"
 
-  create_table "patches", force: true do |t|
+  create_table "patches", force: :cascade do |t|
     t.integer  "merge_request_id"
-    t.text     "description",      default: ""
-    t.text     "commit_message",                   null: false
-    t.text     "diff",             default: "",    null: false
-    t.boolean  "linter_ok",        default: false, null: false
+    t.text     "description",                  default: ""
+    t.text     "commit_message",                               null: false
+    t.text     "diff",                         default: "",    null: false
+    t.boolean  "linter_ok",                    default: false, null: false
     t.text     "integration_log"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "gitlab_ci_hash"
+    t.string   "gitlab_ci_hash",   limit: 255
+    t.integer  "gitlab_ci_status",             default: 0
   end
 
   add_index "patches", ["merge_request_id"], name: "index_patches_on_merge_request_id"
 
-  create_table "projects", force: true do |t|
-    t.string   "name",                               null: false
-    t.string   "description",           default: "", null: false
-    t.string   "repository",                         null: false
-    t.string   "linter",                default: "", null: false
+  create_table "projects", force: :cascade do |t|
+    t.string   "name",                  limit: 255,              null: false
+    t.string   "description",           limit: 255, default: "", null: false
+    t.string   "repository",            limit: 255,              null: false
+    t.string   "linter",                limit: 255, default: "", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "gitlab_ci_project_url"
-    t.string   "gitlab_ci_token"
+    t.string   "gitlab_ci_project_url", limit: 255
+    t.string   "gitlab_ci_token",       limit: 255
   end
 
-  create_table "projects_users", id: false, force: true do |t|
+  create_table "projects_users", id: false, force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "user_id",    null: false
   end
@@ -83,19 +84,19 @@ ActiveRecord::Schema.define(version: 20141206204123) do
   add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id"
   add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id"
 
-  create_table "users", force: true do |t|
-    t.string   "name",                                null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+  create_table "users", force: :cascade do |t|
+    t.string   "name",                   limit: 255,              null: false
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "api_token"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "api_token",              limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end

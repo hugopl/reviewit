@@ -5,7 +5,10 @@
     <div class="review-list-header"><%= pluralize(mrs.count, *title) %></div>
     <%- mrs.each do |mr| %>
       <div class="review-list">
-        <div class="subject"><%= link_to mr.subject, project_merge_request_path(@project, mr) %></div>
+        <div class="subject">
+          <%= link_to mr.subject, project_merge_request_path(@project, mr) %>
+          <%= gitlab_ci_icon(mr) %>
+        </div>
         <div class="summary">#<%= mr.id %> <%= merge_request_pending_since(mr) %>, opened by <%= mr.author.name %>, <span class="<%= mr.status %>"><%= mr.status.humanize %></span>
         <span class="target_branch"><%= mr.target_branch %></span>
         </div>
