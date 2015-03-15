@@ -16,6 +16,3 @@ gem 'will_paginate', '~> 3.0'
 group :development do
   gem 'awesome_print'
 end
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
