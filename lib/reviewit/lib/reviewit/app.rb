@@ -16,6 +16,7 @@ module Reviewit
 
     def run
       return show_help if ARGV == ['--help']
+      return show_version if ARGV == ['--version']
 
       load_configuration
       api = Api.new(@base_url, @project_id, @api_token)
@@ -50,6 +51,10 @@ review actions:
 eot
       puts help
       abort if should_abort
+    end
+
+    def show_version
+      puts "Review It v#{Reviewit::VERSION}"
     end
 
     def load_configuration
