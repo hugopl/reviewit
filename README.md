@@ -1,4 +1,5 @@
 [![Code Climate](https://codeclimate.com/github/hugopl/reviewit/badges/gpa.svg)](https://codeclimate.com/github/hugopl/reviewit)
+
 ![Logo](app/assets/images/logo.png)
 
 # Review it!
