@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/hugopl/reviewit.svg?branch=master)](https://travis-ci.org/hugopl/reviewit)
 [![Code Climate](https://codeclimate.com/github/hugopl/reviewit/badges/gpa.svg)](https://codeclimate.com/github/hugopl/reviewit)
 
 ![Logo](app/assets/images/logo.png)

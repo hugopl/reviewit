@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - '2.1.5'
+  - '2.2.1'
+
+before_script:
+  - cp config/reviewit.travis.yml config/reviewit.yml
+  - cp config/database.travis.yml config/database.yml
+  - bundle exec rake db:create db:migrate
