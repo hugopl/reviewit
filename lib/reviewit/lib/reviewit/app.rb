@@ -23,7 +23,7 @@ module Reviewit
 
       action = action_class.new(self, api)
       action.run
-    rescue RuntimeError
+    rescue RuntimeError, Errno::ECONNREFUSED
       abort $!.message
     end
 
