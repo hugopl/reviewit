@@ -22,6 +22,7 @@ class MergeRequest < ActiveRecord::Base
   validates :subject, presence: true
   validates :author, presence: true
   validate :author_cant_be_reviewer
+  validates_format_of :target_branch, with: /\A[\w\d,\.-]+[^.](?<!\.lock)\z/
 
   before_save :write_history
 
