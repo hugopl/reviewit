@@ -76,45 +76,12 @@ class MergeRequest < ActiveRecord::Base
     self.status = :integrating
     save!
 
-    Thread.new do
-      begin
-        on_git_repository(patch) do |dir|
-          if git_am(dir, patch) and git_push(dir, target_branch)
-            accepted!
-          else
-            add_history_event reviewer, 'failed to integrate merge request'
-            needs_rebase!
-          end
-
-          git_rm_branch(dir, gitlab_ci_branch_name(patch)) unless patch.gitlab_ci_hash.blank?
-        end
-      rescue
-        output.puts "\n\n******** Stupid error from Review it! programmer ******** \n\n"
-        output.puts $!.inspect
-        output.puts $!.backtrace
-        open!
-      ensure
-        patch.integration_log = output.string
-        patch.save
-        ActiveRecord::Base.connection.close
-      end
-    end
-  end
-
-  def push_to_gitlab_ci(patch)
-    Thread.new do
-      begin
-        on_git_repository(patch) do |dir|
-          git_prune_old_versions(dir, patch)
-          if git_am(dir, patch) and git_push(dir, gitlab_ci_branch_name(patch))
-            patch.gitlab_ci_hash = git_hash(dir)
-            patch.save
-          end
-        end
-      rescue
-        Rails.logger.error $!.backtrace
-      ensure
-        ActiveRecord::Base.connection.close
+    patch.push do |success|
+      if success
+        accepted!
+      else
+        add_history_event reviewer, 'failed to integrate merge request'
+        needs_rebase!
       end
     end
   end
@@ -123,34 +90,11 @@ class MergeRequest < ActiveRecord::Base
     @patch ||= patches.last
   end
 
-  def git_format_patch(patch = nil)
-    patch ||= self.patch
-    return if patch.nil?
-
-    <<eot
-From: #{author.name} <#{author.email}>
-Date: #{patch.created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
-
-#{patch.commit_message}
-#{reviewer_stamp}
-#{patch.diff}
---
-review it!
-eot
+  def deprecated_patches
+    patches.where.not(id: patch.id)
   end
 
   private
-
-  def reviewer_stamp
-    return '' unless accepted? or integrating?
-    "\nReviewed by #{reviewer.name} on MR ##{id}\n"
-  end
-
-  # TODO: Move all these git related methods to a Git model.
-  def gitlab_ci_branch_name(patch)
-    patch = Patch.find(patch) if patch.is_a? Integer
-    "mr-#{id}-version-#{patches.index(patch) + 1}"
-  end
 
   def write_history
     add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed? and !target_branch_was.nil?
@@ -166,58 +110,5 @@ eot
 
   def author_cant_be_reviewer
     errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
-  end
-
-  def on_git_repository(patch)
-    base_dir = "#{Dir.tmpdir}/reviewit"
-    project_dir_name = "patch#{patch.id}_#{SecureRandom.hex}"
-    dir = "#{base_dir}/#{project_dir_name}"
-    FileUtils.rm_rf dir
-    FileUtils.mkdir_p dir
-
-    call "cd #{base_dir} && git clone --depth 1 #{project.repository} #{project_dir_name}"
-    call "cd #{dir} && git reset --hard origin/#{target_branch}"
-    yield dir
-  ensure
-    FileUtils.rm_rf dir
-  end
-
-  def git_am(dir, patch)
-    contents = git_format_patch(patch)
-    file = Tempfile.new 'patch'
-    file.puts contents
-    file.close
-    call "cd #{dir} && git am #{file.path}"
-  end
-
-  def git_push(dir, branch)
-    call "cd #{dir} && git push origin master:#{branch}"
-  end
-
-  def git_rm_branch(dir, branch)
-    call "cd #{dir} && git push origin :#{branch}"
-  end
-
-  def git_prune_old_versions(dir, patch)
-    patches = patch_ids
-    patches.delete(patch.id)
-    patches.each do |p|
-      git_rm_branch(dir, gitlab_ci_branch_name(p))
-    end
-  end
-
-  def git_hash(dir, branch = 'HEAD')
-    `cd #{dir} && git rev-parse #{branch}`.strip
-  end
-
-  def output
-    @output ||= StringIO.new
-  end
-
-  def call(command)
-    output.puts "$ #{command}"
-    res = `#{command} 2>&1`.strip
-    output.puts(res) unless res.empty?
-    $?.exitstatus.zero?
   end
 end

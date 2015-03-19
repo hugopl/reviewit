@@ -30,7 +30,7 @@ module Reviewit
       expose :reviewer, with: User
 
       def patch
-        object.git_format_patch
+        object.patch.formatted
       end
     end
   end
