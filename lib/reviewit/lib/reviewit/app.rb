@@ -38,7 +38,7 @@ module Reviewit
       Reviewit.const_get(action_name.capitalize)
     end
 
-    def show_help should_abort = nil
+    def show_help(should_abort = nil)
       help = <<eot
 review actions:
   push      Create or update a review.
@@ -65,7 +65,7 @@ eot
       raise 'This project seems not configured.' if @api_token.empty? or @project_id.empty? or @base_url.empty?
     end
 
-    def git_config key
+    def git_config(key)
       `git config --get #{key} 2>/dev/null`.strip
     end
   end

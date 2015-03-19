@@ -33,7 +33,7 @@ class MergeRequest < ActiveRecord::Base
     MergeRequest.statuses[status] >= CLOSE_LIMIT
   end
 
-  def add_patch data
+  def add_patch(data)
     patch = Patch.new
     patch.commit_message = data[:commit_message]
     patch.diff = data[:diff]
@@ -43,7 +43,7 @@ class MergeRequest < ActiveRecord::Base
     add_history_event(author, 'updated the merge request') if persisted?
   end
 
-  def add_comments author, patch, comments
+  def add_comments(author, patch, comments)
     return if comments.nil?
 
     count = 0
@@ -62,13 +62,13 @@ class MergeRequest < ActiveRecord::Base
     add_history_event(author, count == 1 ? 'added a comment.' : "added #{count} comments.") unless count.zero?
   end
 
-  def abandon! reviewer
+  def abandon!(reviewer)
     add_history_event reviewer, 'abandoned the merge request'
     self.status = :abandoned
     save!
   end
 
-  def integrate! reviewer
+  def integrate!(reviewer)
     return if %w(accepted integrating abandoned).include? status
     add_history_event reviewer, 'accepted the merge request'
 
@@ -101,7 +101,7 @@ class MergeRequest < ActiveRecord::Base
     end
   end
 
-  def push_to_gitlab_ci patch
+  def push_to_gitlab_ci(patch)
     Thread.new do
       begin
         on_git_repository(patch) do |dir|
@@ -123,7 +123,7 @@ class MergeRequest < ActiveRecord::Base
     @patch ||= patches.last
   end
 
-  def git_format_patch patch = nil
+  def git_format_patch(patch = nil)
     patch ||= self.patch
     return if patch.nil?
 
@@ -147,7 +147,7 @@ eot
   end
 
   # TODO: Move all these git related methods to a Git model.
-  def gitlab_ci_branch_name patch
+  def gitlab_ci_branch_name(patch)
     patch = Patch.find(patch) if patch.is_a? Integer
     "mr-#{id}-version-#{patches.index(patch) + 1}"
   end
@@ -156,11 +156,11 @@ eot
     add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed? and !target_branch_was.nil?
   end
 
-  def add_history_event who, what
+  def add_history_event(who, what)
     history_events << HistoryEvent.new(who: who, what: what)
   end
 
-  def indent_comment comment
+  def indent_comment(comment)
     comment.each_line.map { |line| "    #{line}" }.join
   end
 
@@ -168,7 +168,7 @@ eot
     errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
   end
 
-  def on_git_repository patch
+  def on_git_repository(patch)
     base_dir = "#{Dir.tmpdir}/reviewit"
     project_dir_name = "patch#{patch.id}_#{SecureRandom.hex}"
     dir = "#{base_dir}/#{project_dir_name}"
@@ -182,7 +182,7 @@ eot
     FileUtils.rm_rf dir
   end
 
-  def git_am dir, patch
+  def git_am(dir, patch)
     contents = git_format_patch(patch)
     file = Tempfile.new 'patch'
     file.puts contents
@@ -190,15 +190,15 @@ eot
     call "cd #{dir} && git am #{file.path}"
   end
 
-  def git_push dir, branch
+  def git_push(dir, branch)
     call "cd #{dir} && git push origin master:#{branch}"
   end
 
-  def git_rm_branch dir, branch
+  def git_rm_branch(dir, branch)
     call "cd #{dir} && git push origin :#{branch}"
   end
 
-  def git_prune_old_versions dir, patch
+  def git_prune_old_versions(dir, patch)
     patches = patch_ids
     patches.delete(patch.id)
     patches.each do |p|
@@ -206,7 +206,7 @@ eot
     end
   end
 
-  def git_hash dir, branch = 'HEAD'
+  def git_hash(dir, branch = 'HEAD')
     `cd #{dir} && git rev-parse #{branch}`.strip
   end
 
@@ -214,7 +214,7 @@ eot
     @output ||= StringIO.new
   end
 
-  def call command
+  def call(command)
     output.puts "$ #{command}"
     res = `#{command} 2>&1`.strip
     output.puts(res) unless res.empty?

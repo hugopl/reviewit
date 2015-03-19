@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
     !gitlab_ci_token.blank? and !gitlab_ci_project_url.blank?
   end
 
-  def ci_status patch
+  def ci_status(patch)
     fail if patch.gitlab_ci_hash.blank?
 
     Timeout.timeout(2) do
@@ -27,11 +27,11 @@ class Project < ActiveRecord::Base
 
   private
 
-  def ci_status_url_for patch
+  def ci_status_url_for(patch)
     URI("#{gitlab_ci_project_url}/builds/#{patch.gitlab_ci_hash}/status.json?token=#{gitlab_ci_token}")
   end
 
-  def cache_status patch, status
+  def cache_status(patch, status)
     case status
     when 'success' then patch.pass!
     when 'failed' then patch.failed!

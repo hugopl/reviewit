@@ -3,11 +3,11 @@
 require 'fileutils'
 require 'securerandom'
 
-def abort_if_exists file
+def abort_if_exists(file)
   abort "Remove #{file} to continue." if File.exist? file
 end
 
-def execute command
+def execute(command)
   puts command
   abort unless system command
 end

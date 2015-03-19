@@ -9,7 +9,7 @@ require 'openssl'
 # @linter
 # @gem_version
 
-def puts text
+def puts(text)
   STDOUT.puts "\033[0;32m#{text}\033[0m"
 end
 

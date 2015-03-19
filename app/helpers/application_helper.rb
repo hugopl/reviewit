@@ -1,7 +1,7 @@
 require 'digest/md5'
 
 module ApplicationHelper
-  def print_errors obj
+  def print_errors(obj)
     obj_str = obj.to_s
     obj_instance = instance_variable_get("@#{obj_str}")
     obj_instance = send(obj) if obj_instance.nil?
@@ -17,16 +17,16 @@ module ApplicationHelper
     javascript_tag(script)
   end
 
-  def under_index_of? section
+  def under_index_of?(section)
     path_info.include? section
   end
 
-  def under? section
+  def under?(section)
     index = path_info.index section
     index and index < (path_info.count - 1) and path_info[index + 1] =~ /\A\d+\z/
   end
 
-  def gravatar_url user, size = 40
+  def gravatar_url(user, size = 40)
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=#{size}"
   end
 

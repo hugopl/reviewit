@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true, allow_blank: false
 
-  def self.valid_token? token
+  def self.valid_token?(token)
     User.exists?(api_token: token)
   end
 

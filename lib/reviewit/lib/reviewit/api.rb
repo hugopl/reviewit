@@ -4,27 +4,27 @@ require 'json'
 
 module Reviewit
   class Api
-    def initialize base_url, project_id, api_token
+    def initialize(base_url, project_id, api_token)
       @base_url = base_url
       @project_id = project_id
       @api_token = api_token
     end
 
-    def update_merge_request id, subject, commit_message, diff, description, target_branch, linter_ok
+    def update_merge_request(id, subject, commit_message, diff, description, target_branch, linter_ok)
       patch("merge_requests/#{id}", subject: subject, commit_message: commit_message, diff: diff, description: description, target_branch: target_branch, linter_ok: linter_ok)
       mr_url(id)
     end
 
-    def create_merge_request subject, commit_message, diff, target_branch, linter_ok
+    def create_merge_request(subject, commit_message, diff, target_branch, linter_ok)
       res = post('merge_requests', subject: subject, commit_message: commit_message, diff: diff, target_branch: target_branch, linter_ok: linter_ok)
       { url: mr_url(res['mr_id']), id: res['mr_id'] }
     end
 
-    def abandon_merge_request id
+    def abandon_merge_request(id)
       delete("merge_requests/#{id}")
     end
 
-    def accept_merge_request id
+    def accept_merge_request(id)
       patch("merge_requests/#{id}/accept")
     end
 
@@ -41,35 +41,35 @@ module Reviewit
       end
     end
 
-    def merge_request id
+    def merge_request(id)
       get "merge_requests/#{id}"
     end
 
-    def mr_url id
+    def mr_url(id)
       @base_url.gsub(/api\/?\z/, "mr/#{id}")
     end
 
     private
 
-    def url_for path
+    def url_for(path)
       "#{@base_url}/projects/#{@project_id}/#{path}"
     end
 
-    def post url, args
+    def post(url, args)
       send_request url, args
     end
 
-    def patch url, args = {}
+    def patch(url, args = {})
       args[:_method] = 'patch'
       send_request url, args
     end
 
-    def delete url
+    def delete(url)
       args = { _method: 'delete' }
       send_request url, args
     end
 
-    def get url
+    def get(url)
       send_request(url, {}, :get)
     end
 
@@ -95,7 +95,7 @@ module Reviewit
       end
     end
 
-    def process_response response
+    def process_response(response)
       upgrade_and_exit! if response.code == '426'
       raise response.body if response.code =~ /[^2]\d\d/
       data = JSON.load(response.body)

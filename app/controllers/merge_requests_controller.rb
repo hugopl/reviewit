@@ -44,7 +44,7 @@ class MergeRequestsController < ApplicationController
     version
   end
 
-  def patch_for version
+  def patch_for(version)
     merge_request.patches[version - 1] or raise ActiveRecord::RecordNotFound.new
   end
 

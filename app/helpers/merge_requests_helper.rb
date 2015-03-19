@@ -7,12 +7,12 @@ module MergeRequestsHelper
     @patch ||= patches.last
   end
 
-  def patch_name patch
+  def patch_name(patch)
     i = @mr.patches.index(patch) + 1
     patch.description.blank? ? "#{i.ordinalize} version" : patch.description
   end
 
-  def merge_request_pending_since mr
+  def merge_request_pending_since(mr)
     last_patch = mr.patches.last
     return '' unless last_patch.is_a? Patch
     time = (last_patch.updated_at or last_patch.created_at)
@@ -20,7 +20,7 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
-  def gitlab_ci_icon mr
+  def gitlab_ci_icon(mr)
     patch = mr.patch
     if patch.pass?
       content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI build passed!')
@@ -30,7 +30,7 @@ module MergeRequestsHelper
   end
 
   # TODO: Refactor this shitty code
-  def process_diff diff
+  def process_diff(diff)
     it = diff.each_line
     location = 0
     loop do
@@ -50,7 +50,7 @@ module MergeRequestsHelper
   private
 
   class DiffFile
-    def initialize line, it, location
+    def initialize(line, it, location)
       @it = it
       @location = location
       @name = line[6..-1]
@@ -84,7 +84,7 @@ module MergeRequestsHelper
       '+' => :add,
       ' ' => :nil
     }.freeze
-    def initialize line, old_ln, new_ln, location
+    def initialize(line, old_ln, new_ln, location)
       @type = (LINE_TYPES[line.first] or :nil)
       @location = location
 

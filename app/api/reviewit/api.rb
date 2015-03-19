@@ -1,6 +1,6 @@
 module Reviewit
   class Error < RuntimeError
-    def initialize msg, code
+    def initialize(msg, code)
       super msg
       @code = code
     end

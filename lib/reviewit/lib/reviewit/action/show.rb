@@ -18,7 +18,7 @@ module Reviewit
       { mr: mr }
     end
 
-    def print_colored_diff diff
+    def print_colored_diff(diff)
       line_to_end_intersection = 0
       diff.each_line do |line|
         if line.start_with? 'd'

@@ -27,11 +27,11 @@ module Reviewit
       options
     end
 
-    def inject_header list
+    def inject_header(list)
       list.unshift Hash[list.first.keys.map { |k| [k, k.to_s.capitalize] }]
     end
 
-    def row_color mr, i
+    def row_color(mr, i)
       case
       when i.zero? then WHITE
       when mr[:ci_status] == 'pass' then GREEN
@@ -39,7 +39,7 @@ module Reviewit
       end
     end
 
-    def compute_header_lengths list
+    def compute_header_lengths(list)
       length = {}
       list.each do |mr|
         mr.keys.each do |key|

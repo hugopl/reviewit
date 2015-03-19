@@ -39,7 +39,7 @@ module Reviewit
       @commit_message.strip!
     end
 
-    def read_user_single_line_message prompt
+    def read_user_single_line_message(prompt)
       print prompt
       STDIN.readline.strip
     end

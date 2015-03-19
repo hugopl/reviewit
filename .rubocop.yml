@@ -15,8 +15,6 @@ Style/Not:
   Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
-Style/MethodDefParentheses:
-  Enabled: false
 Style/NegatedIf:
   Enabled: false
 Style/SignalException:

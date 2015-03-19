@@ -47,7 +47,7 @@ module Reviewit
       @commit_diff = patch.strip + "\n"
     end
 
-    def append_mr_id_to_commit mr_id
+    def append_mr_id_to_commit(mr_id)
       open('|git commit --amend -F -', 'w+') do |git|
         git.write @commit_message
         git.write "\n\n#{MR_STAMP} #{mr_id}\n"
@@ -55,7 +55,7 @@ module Reviewit
       end
     end
 
-    def rename_local_branch mr_id
+    def rename_local_branch(mr_id)
       branch = `git symbolic-ref -q HEAD`.gsub('refs/heads/', '').strip
       new_name = "mr-#{mr_id}-#{branch}"
 
