@@ -14,8 +14,12 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     set_project_users
     if @project.save
+      flash[:success] = 'The project was successfully created.'
+
       redirect_to @project
     else
+      flash.now[:danger] = 'Please, review the form fields below before try again.'
+
       render 'new'
     end
   end
@@ -28,14 +32,20 @@ class ProjectsController < ApplicationController
     project.update_attributes(project_params)
     set_project_users
     if @project.save
+      flash[:success] = 'The project was successfully updated.'
+
       redirect_to @project
     else
+      flash.now[:danger] = 'Please, review the form fields below before try again.'
+
       render :new
     end
   end
 
   def destroy
     project.destroy
+    flash[:success] = 'The project was successfully destroyed.'
+
     redirect_to action: :index
   end
 
