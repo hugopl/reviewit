@@ -29,4 +29,11 @@ Rails.application.routes.draw do
   get :faq, controller: :application
 
   mount Reviewit::API => '/'
+
+  # Configure each error code to it's respective action on ErrorsController.
+  %w( 404 422 500).each do |code|
+    get code, :to => "errors#show", :code => code
+  end
+
+
 end
