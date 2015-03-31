@@ -6,7 +6,7 @@ require 'reviewit/action/action.rb'
 require 'reviewit/version.rb'
 
 module Reviewit
-  ACTIONS = %w(push list show apply accept cancel open).freeze
+  ACTIONS = %w(push list show apply accept cancel cleanup open).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end
@@ -45,6 +45,7 @@ review actions:
   list      List pending reviews.
   accept    Accept a merge request
   cancel    Cancel current review.
+  cleanup   Prune remote branches and their respective local branches.
   apply     Apply patch from a merge request on your tree.
   show      Show patch from a merge request.
   open      Open a merge request in your default browser.
