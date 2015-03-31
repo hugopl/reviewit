@@ -138,7 +138,7 @@ input, textarea {
 input[type=submit], input[type=button], .button {
   @include button;
 
-  &.accept {
+  &.accept, &.push-comments {
     @include button(white, #83c41a, #b8e356, #a5cc52)
   }
 

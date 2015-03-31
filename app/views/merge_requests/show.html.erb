@@ -15,7 +15,7 @@
     <% if @mr.open? or @mr.needs_rebase? %>
       <div class="merge-bar">
         <% if @mr.author != current_user %>
-          <%= submit_tag 'Accept', class: 'accept', name: 'mr_action', data: { confirm: "Are you sure?" } %>
+          <%= submit_tag 'Accept', name: 'mr_action', data: { confirm: "Are you sure?" } %>
         <% end %>
         <%= submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: "Are you sure?" } %>
 
