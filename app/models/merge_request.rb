@@ -34,6 +34,10 @@ class MergeRequest < ActiveRecord::Base
     MergeRequest.statuses[status] >= CLOSE_LIMIT
   end
 
+  def general_comments?
+    Comment.joins(:patch).where(patches: { merge_request_id: id }, comments: { location: 0 }).any?
+  end
+
   def add_patch(data)
     patch = Patch.new
     patch.commit_message = data[:commit_message]

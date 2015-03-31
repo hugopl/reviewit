@@ -1,4 +1,6 @@
+<% if @mr.open? or @mr.needs_rebase? or @mr.general_comments? %>
 <h2 class="comment">General Comments</h2>
+<% end %>
 
 <% has_many_versions = patches.count > 1 %>
 <% patches.each_with_index do |patch, i| %>
