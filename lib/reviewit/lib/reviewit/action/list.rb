@@ -21,10 +21,7 @@ module Reviewit
     private
 
     def parse_options
-      options = Trollop.options do
-        opt :all, 'Show all pending MRs including the ones created by me'
-      end
-      options
+      Trollop.options
     end
 
     def inject_header(list)
