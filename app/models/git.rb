@@ -1,5 +1,5 @@
 class Git
-  def clone(repository, branch)
+  def clone(repository, branch = 'master')
     background do
       base_dir = "#{Dir.tmpdir}/reviewit"
       project_dir_name = "#{branch}_#{SecureRandom.hex}"

@@ -67,6 +67,7 @@ class MergeRequest < ActiveRecord::Base
     add_history_event reviewer, 'abandoned the merge request'
     self.status = :abandoned
     save!
+    patch.remove_ci_branch
   end
 
   def integrate!(reviewer)

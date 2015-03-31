@@ -58,6 +58,14 @@ eot
     end
   end
 
+  def remove_ci_branch
+    return if gitlab_ci_hash.blank?
+    Git.new.clone(project.repository) do |git|
+      next unless git.ready?
+      git.rm_branch(ci_branch_name)
+    end
+  end
+
   private
 
   def push_to_ci
