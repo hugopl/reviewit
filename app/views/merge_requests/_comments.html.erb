@@ -1,9 +1,14 @@
-<% if @patch.comments.general.any? or @mr.open? or @mr.needs_rebase? %>
 <h2 class="comment">General Comments</h2>
-<% end %>
 
-<% patch.comments.general.each do |comment|  %>
-  <%= render partial: 'comment', locals: { comment: comment } %>
+<% has_many_versions = patches.count > 1 %>
+<% patches.each_with_index do |patch, i| %>
+  <% if i != 0 and has_many_versions and !patch.comments.general.empty? %>
+    <h3 class="comment-patch-update"><span>Patch updated, <%= patch_name(patch) %></span></h2>
+  <% end %>
+
+  <% patch.comments.general.each do |comment|  %>
+    <%= render partial: 'comment', locals: { comment: comment } %>
+  <% end %>
 <% end %>
 
 <% if @mr.open? or @mr.needs_rebase? %>

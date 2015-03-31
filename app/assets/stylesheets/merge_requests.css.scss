@@ -159,6 +159,20 @@ h2.comment {
   margin-bottom: 20px;
 }
 
+h3.comment-patch-update {
+  font-size: 12px;
+  text-align: center;
+  color: #ccc;
+  border-bottom: 1px dashed #ccc;
+  line-height:1px;
+  span {
+    font-weight: normal;
+    font-style: italic;
+    background:#fff;
+    padding:0 10px;
+  }
+}
+
 textarea.comment {
   clear: both;
   width: 100%;
