@@ -14,15 +14,21 @@ class ApplicationController < ActionController::Base
   }
 
   def project
-    @project ||= current_user.projects.find(params.include?(:project_id) ? params[:project_id] : params[:id])
+    @project ||= current_user.projects.find(widget_id(:project_id))
   end
 
   def merge_request
-    @mr ||= project.merge_requests.find(params.include?(:merge_request_id) ? params[:merge_request_id] : params[:id])
+    @mr ||= project.merge_requests.find(widget_id(:merge_request_id))
   end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
     devise_parameter_sanitizer.for(:account_update) << :name
+  end
+
+  private
+
+  def widget_id(widget)
+    params.include?(widget) ? params[widget] : params[:id]
   end
 end
