@@ -75,10 +75,10 @@ eot
       next unless git.ready?
 
       merge_request.deprecated_patches.each { |p| git.rm_branch(p.ci_branch_name) }
-
-      if git.am(patch) and git.push(patch.ci_branch_name)
-        patch.gitlab_ci_hash = git.sha1
-        patch.save
+      if git.am(self)
+        update_attribute(:gitlab_ci_hash, git.sha1) if git.push(ci_branch_name)
+      else
+        merge_request.needs_rebase!
       end
     end
   end
