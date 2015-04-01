@@ -30,7 +30,7 @@ class Patch < ActiveRecord::Base
 
   def ci_branch_name
     index = merge_request.patches.index(self) + 1
-    "mr-#{id}-version-#{index}"
+    "mr-#{merge_request.id}-version-#{index}"
   end
 
   def formatted
@@ -85,6 +85,6 @@ eot
 
   def reviewer_stamp
     return '' unless merge_request.accepted? or merge_request.integrating?
-    "\nReviewed by #{reviewer.name} on MR ##{id}\n"
+    "\nReviewed by #{reviewer.name} on MR ##{merge_request.id}\n"
   end
 end
