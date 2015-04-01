@@ -69,7 +69,7 @@ eot
   private
 
   def push_to_ci
-    return if gitlab_ci_hash.blank?
+    return unless project.gitlab_ci?
 
     Git.new.clone(project.repository, target_branch) do |git|
       next unless git.ready?
