@@ -41,7 +41,7 @@ class Git
   end
 
   def sha1(branch = 'HEAD')
-    call("git rev-parse #{branch}")
+    `git rev-parse #{branch}`.strip
   end
 
   protected
