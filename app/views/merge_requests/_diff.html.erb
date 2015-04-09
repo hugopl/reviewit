@@ -7,7 +7,7 @@
     <tr class="<%= line.type %>" data-location="<%= line.location %>">
       <td><%= line.old_ln %></td>
       <td><%= line.new_ln %></td>
-      <td><% if @mr.open? %><div class="add-comment"></div><% end %><%= line.data %></td>
+      <td><div class="add-comment"></div><%= line.data %></td>
     </tr>
     <% if comments.include? line.location %>
     <tr class="comment" data-location="<%= line.location %>">
@@ -18,9 +18,7 @@
         <% comments[line.location].each do |comment|  %>
           <%= render partial: 'comment', locals: { comment: comment } %>
         <% end %>
-        <% if @mr.open? %>
         <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
-        <% end %>
       </td>
     </tr>
     <% end %>
