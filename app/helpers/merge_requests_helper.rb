@@ -47,7 +47,22 @@ module MergeRequestsHelper
     return
   end
 
+  def summary_addons(patch)
+    addons = patch.project.summary_addons
+    return if addons.nil?
+    addons.each_line do |line|
+      label, template = line.split(':', 2)
+      template = parse_addons_template(template, patch)
+      yield label, template
+    end
+  end
+
   private
+
+  def parse_addons_template(template, patch)
+    template.gsub!('#{mr_id}', patch.merge_request.id.to_s)
+    template.gsub!('#{mr_version}', patch.version.to_s)
+  end
 
   class DiffFile
     def initialize(line, it, location)

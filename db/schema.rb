@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150305030728) do
+ActiveRecord::Schema.define(version: 20150415200726) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id",                 null: false
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20150305030728) do
     t.datetime "updated_at"
     t.string   "gitlab_ci_project_url", limit: 255
     t.string   "gitlab_ci_token",       limit: 255
+    t.text     "summary_addons"
   end
 
   create_table "projects_users", id: false, force: :cascade do |t|
