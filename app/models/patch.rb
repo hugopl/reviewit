@@ -29,8 +29,11 @@ class Patch < ActiveRecord::Base
   end
 
   def ci_branch_name
-    index = merge_request.patches.index(self) + 1
-    "mr-#{merge_request.id}-version-#{index}"
+    "mr-#{merge_request.id}-version-#{version}"
+  end
+
+  def version
+    merge_request.patches.index(self) + 1
   end
 
   def formatted
