@@ -100,6 +100,12 @@ class MergeRequest < ActiveRecord::Base
     patches.where.not(id: patch.id)
   end
 
+  def people_involved
+    people = User.joins(:comments).merge(Comment.joins(:patch).where(patches: { merge_request_id: 199 }).uniq)
+    people << reviewer if reviewer
+    (people << author).uniq
+  end
+
   private
 
   def write_history

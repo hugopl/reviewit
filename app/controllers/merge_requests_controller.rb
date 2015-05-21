@@ -6,6 +6,7 @@ class MergeRequestsController < ApplicationController
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
     merge_request.add_comments(current_user, @patch, params[:comments])
 
+    MergeRequestMailer.updated(current_user, merge_request, params).deliver
     case params[:mr_action]
     when 'Accept' then accept
     when 'Abandon' then abandon

@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :projects
 
   before_create :generate_api_token
+  has_many :comments
 
   validates :name, presence: true, allow_blank: false
 
@@ -15,6 +16,10 @@ class User < ActiveRecord::Base
 
   def self.all_names
     User.all.map(&:name)
+  end
+
+  def email_address
+    "#{name} <#{email}>"
   end
 
   private
