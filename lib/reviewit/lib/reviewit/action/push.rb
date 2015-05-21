@@ -8,6 +8,7 @@ module Reviewit
       read_commit_header
       read_commit_diff
       process_commit_message!
+      url = nil
 
       if updating?
         puts 'Updating merge request...'
@@ -18,7 +19,8 @@ module Reviewit
         abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?
         puts 'Creating merge request...'
         mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch], linter_ok?)
-        puts "Merge Request created at #{mr[:url]}"
+        url = mr[:url]
+        puts "Merge Request created at #{url}"
         append_mr_id_to_commit(mr[:id])
 
         if options[:rename]
@@ -27,6 +29,7 @@ module Reviewit
           puts "Local branch renamed to #{branch}. Use --no-rename to avoid this."
         end
       end
+      copy_to_clipboard(url)
     end
 
     private

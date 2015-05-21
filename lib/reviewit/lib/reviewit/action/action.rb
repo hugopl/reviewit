@@ -1,4 +1,5 @@
 require 'tempfile'
+require 'shellwords'
 
 module Reviewit
   class Action
@@ -66,6 +67,26 @@ module Reviewit
 
     def parse_options
       abort "Missing #{self.class}#parse_options implementation"
+    end
+
+    def copy_to_clipboard(text)
+      text = Shellwords.escape(text)
+      case RUBY_PLATFORM
+      when /linux/
+        copy_to_clipboard_linux(text)
+      when /darwin/
+        copy_to_clipboard_mac(text)
+      end
+    rescue
+      false
+    end
+
+    def copy_ruby_platform_linux(text)
+      IO.popen('xclip -selection clipboard', 'w') { |f| f << text }
+    end
+
+    def copy_ruby_platform_mac(text)
+      IO.popen('pbcopy', 'w') { |f| f << text }
     end
   end
 end
