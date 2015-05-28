@@ -239,3 +239,25 @@ img[src^="/assets/emojis/"] {
   width: 22px;
   height: 22px;
 }
+
+.markdown {
+  code {
+    color: #c25;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    padding: 0 3px
+  }
+
+  pre {
+    background-color: #fbfaf8;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 6px;
+
+    code {
+      color: #333;
+      border: none;
+      background-color: transparent;
+    }
+  }
+}
