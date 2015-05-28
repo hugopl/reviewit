@@ -3,40 +3,49 @@ module Reviewit
     REMOTE_WARNING = "Using a remote name different than \"origin\"? Tell reviewit:\n" \
                      '  git config --local reviewit.remote my_remote_name'
     def run
-      pruned_branches = prune_remote
-      return if pruned_branches.empty?
+      thread = Thread.new do
+        @active_mrs = api.pending_merge_requests.map { |mr| mr[:id].to_i }
+      end
+      puts 'Looking for outdated remote branches...'
+      `git remote prune #{remote}`
+      thread.join
 
-      puts 'Pruning local branches'
-      local_branches.each do |branch|
-        next unless branch =~ /^(mr-\d+)-.*/
-        remove_branch(branch) if pruned_branches.include?($1)
+      puts 'Looking for outdated local branches...'
+      outdated_branches = local_branches_ids - @active_mrs
+      outdated_branches.each do |mr_id|
+        remove_branch(branch_name(mr_id))
       end
     end
 
     private
 
+    def branch_name(mr_id)
+      local_branches.find { |branch| branch.start_with?("mr-#{mr_id}-") }
+    end
+
     def remove_branch(branch)
+      return if branch.nil?
+
       puts " * [pruned] #{branch}"
       `git branch -D #{branch}`
     end
 
-    def prune_remote
-      output = `git remote prune #{remote}`
-      abort(REMOTE_WARNING) unless $?.success?
-
-      output.each_line.inject([]) do |memo, line|
-        puts line
-        memo << $1 if line =~ /#{remote}\/(mr-\d+)-version-\d+$/
-        memo
-      end
+    def local_branches
+      @local_branches ||= fetch_local_branches
     end
 
-    def local_branches
+    def fetch_local_branches
       top = `git rev-parse --show-toplevel`.strip
       path = "#{top}/.git/refs/heads/"
       Dir["#{path}*"].map do |branch|
         branch.gsub(path, '')
       end
+    end
+
+    def local_branches_ids
+      local_branches.map do |branch|
+        $1.to_i if branch =~ /^mr-(\d+)-.*/
+      end.compact
     end
 
     def remote
