@@ -234,3 +234,8 @@ input[type=checkbox]:checked + label:before {
   content: '*';
   color: red;
 }
+
+img[src^="/assets/emojis/"] {
+  width: 22px;
+  height: 22px;
+}
