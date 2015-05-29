@@ -27,13 +27,7 @@ Rails.application.routes.draw do
 
   resources :mr, only: [:show]
   get :faq, controller: :application
+  get '/:id', to: 'errors#show', constraints: { id: /\d{3}/ }
 
   mount Reviewit::API => '/'
-
-  # Configure each error code to it's respective action on ErrorsController.
-  %w( 404 422 500).each do |code|
-    get code, :to => "errors#show", :code => code
-  end
-
-
 end

@@ -1,13 +1,7 @@
 class ErrorsController < ApplicationController
+  skip_before_action :authenticate_user!
 
   def show
-    render status_code.to_s, :status => status_code
+    @code = params[:id]
   end
-
-  protected
-
-  def status_code
-    params[:code] || 500
-  end
-
 end
