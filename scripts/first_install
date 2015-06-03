@@ -53,7 +53,7 @@ ENV['RAILS_ENV'] = 'production'
 execute 'rake db:migrate'
 execute 'rake db:seed'
 execute 'rake assets:precompile'
-execute 'cd lib/reviewit/ && gem build reviewit.gemspec && mv *.gem ../../public -v'
+execute 'cd lib/reviewit/ && gem build reviewit.gemspec && mv -v *.gem ../../public'
 
 puts 'Now edit the missing configuration in config/reviewit.yml and call:'
 puts '  $ RAILS_ENV=production unicorn_rails'
