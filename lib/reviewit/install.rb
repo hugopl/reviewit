@@ -29,6 +29,7 @@ def install_rme_gem
   http.start do |h|
     request = Net::HTTP::Get.new(uri.request_uri)
     response = h.request(request)
+    abort 'Failed to retrieve reviewit gem' unless response.code.to_i == 200
     File.open(gem_file, 'wb') { |f| f.write(response.body) }
   end
 

@@ -3,5 +3,6 @@ class ErrorsController < ApplicationController
 
   def show
     @code = params[:id]
+    render :status => @code
   end
 end
