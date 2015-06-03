@@ -9,7 +9,7 @@ class MergeRequestMailer < ApplicationMailer
     cc = (mr.people_involved - [user]).map(&:email_address)
     to = cc.pop
 
-    mail(subject: subject, to: to, cc: cc)
+    mail(subject: subject, to: to, cc: cc) unless to.nil?
   end
 
   private
