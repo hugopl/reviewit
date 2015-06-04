@@ -16,9 +16,7 @@ Rails.application.configure do
     password:             yml['password'],
     openssl_verify_mode:  yml['openssl_verify_mode']
   }
-  config.action_mailer.file_settings = {
-    location: (yml['store_location'] || '/tmp/mails')
-  }
+
   config.action_mailer.default_url_options = {
     host: yml['host']
   }
