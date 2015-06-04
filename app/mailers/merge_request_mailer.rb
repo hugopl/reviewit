@@ -5,7 +5,7 @@ class MergeRequestMailer < ApplicationMailer
     @action = action(params)
     @comments = params[:comments]
 
-    subject = "#{mr.project.name}, mr-#{mr.id} - #{mr.subject}"
+    subject = "[#{mr.project.name}, MR-#{mr.id}] #{mr.subject}"
     cc = (mr.people_involved - [user]).map(&:email_address)
     to = cc.pop
 
