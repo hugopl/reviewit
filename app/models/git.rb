@@ -8,10 +8,8 @@ class Git
       FileUtils.mkdir_p dir
 
       @dir = base_dir
-      cloned = call("git clone --depth 1 #{repository} #{project_dir_name}")
+      @ready = call("git clone --branch #{branch} --depth 1 #{repository} #{project_dir_name}")
       @dir = dir
-      reseted = call("git reset --hard origin/#{branch}") if cloned
-      @ready = cloned && reseted
 
       yield(self)
       FileUtils.rm_rf(dir) if cloned
