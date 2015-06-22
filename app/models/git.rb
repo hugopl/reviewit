@@ -7,6 +7,7 @@ class Git
       FileUtils.rm_rf dir
       FileUtils.mkdir_p dir
 
+      @branch = branch
       @dir = base_dir
       @ready = call("git clone --branch #{branch} --depth 1 #{repository} #{project_dir_name}")
       @dir = dir
@@ -31,7 +32,7 @@ class Git
   end
 
   def push(branch)
-    call("git push origin master:#{branch}")
+    call("git push origin #{@branch}:#{branch}")
   end
 
   def rm_branch(branch)
