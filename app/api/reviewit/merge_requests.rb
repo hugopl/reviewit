@@ -32,6 +32,7 @@ module Reviewit
             description: 'First version'
           )
           mr.save!
+          MergeRequestMailer.created(mr).deliver_now
           { mr_id: mr.id }
         end
       end

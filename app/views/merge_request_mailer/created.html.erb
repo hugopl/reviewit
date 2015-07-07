@@ -1,0 +1,7 @@
+<p>Hi,</p>
+
+<p><%= @author.name %> just pushed a new merge request to <%= @mr.project.name %>, <%= link_to @mr.subject, project_merge_request_url(@mr.project, @mr) %>.
+
+<p>--<br>
+Review it!
+</p>
