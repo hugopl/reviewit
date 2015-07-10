@@ -21,7 +21,6 @@ class Project < ActiveRecord::Base
       result
     end
   rescue
-    Rails.logger.error "Failed to get CI status: #{$!.message}"
     { status: 'unknown' }
   end
 

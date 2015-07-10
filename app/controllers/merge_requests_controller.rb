@@ -28,12 +28,23 @@ class MergeRequestsController < ApplicationController
   end
 
   def show
-    @version = version_from_params
-    @patch = patch_for(@version)
+    @from = params[:from].to_i
+    @to = params[:to].to_i
+    @to = merge_request.patches.count if @to.zero?
+    @diff = merge_request.patch_diff(@from, @to)
+
+    if @from.zero?
+      @patch = merge_request.patches[@to - 1]
+      @comments = @patch.comments_by_location
+    else
+      @patch = merge_request.patch
+      @comments = []
+      @disable_comments = true
+    end
   end
 
   def ci_status
-    render json: project.ci_status(patch_for(version_from_params)), callback: 'update_ci_status'
+    render json: project.ci_status(patch_for(version_from_params))
   end
 
   private

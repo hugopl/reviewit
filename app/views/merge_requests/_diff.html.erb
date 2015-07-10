@@ -1,5 +1,7 @@
-<% comments = patch.comments_by_location %>
-<% process_diff(patch.diff) do |file| %>
+<% if @diff.empty? %>
+  <div class="alert info">No enough information to detect difference between these two versions, blame <a href="http://cyberelk.net/tim/software/patchutils/">interdiff</a>.</div>
+<% else %>
+<% process_diff(@diff) do |file| %>
   <div class="code-review-header"><%= file.name %></div>
   <div class="code-review-container">
     <table class="code-review">
@@ -7,15 +9,15 @@
     <tr class="<%= line.type %>" data-location="<%= line.location %>">
       <td><%= line.old_ln %></td>
       <td><%= line.new_ln %></td>
-      <td><div class="add-comment"></div><%= line.data %></td>
+      <td><% unless @disable_comments %><div class="add-comment"></div><% end %><%= line.data %></td>
     </tr>
-    <% if comments.include? line.location %>
+    <% if @comments.include? line.location %>
     <tr class="comment" data-location="<%= line.location %>">
       <td colspan="2">
-       <%= "\uf086 #{comments[line.location].count}" if comments[line.location].count > 1 %>
+       <%= "\uf086 #{@comments[line.location].count}" if @comments[line.location].count > 1 %>
       </td>
       <td>
-        <% comments[line.location].each do |comment|  %>
+        <% @comments[line.location].each do |comment|  %>
           <%= render partial: 'comment', locals: { comment: comment } %>
         <% end %>
         <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
@@ -25,4 +27,5 @@
   <% end %>
   </table>
   </div>
+<% end %>
 <% end %>

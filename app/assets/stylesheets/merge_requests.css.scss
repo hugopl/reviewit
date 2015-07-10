@@ -243,18 +243,58 @@ h2 {
   padding: 0px;
   font-size: 16px;
 }
-.patch-history {
-  ol {
-    padding: 0px;
-    margin: 0px;
-    list-style-position: inside;
 
-    li  {
-      font-size: 14px;
-      line-height: 18px;
-      margin: 0px;
-      padding: 0px;
+.patch-history {
+  min-width: 980px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  border-spacing: 0px;
+  clear: both;
+
+  tr:nth-child(odd) {
+    background-color: whitesmoke;
+  }
+  th {
+    font-size: 12px;
+    line-height: 12px;
+    border-bottom: 1px solid #ccc;
+    padding: 0px 4px 0px 4px;
+  }
+  td {
+    font-size: 12px;
+    line-height: 12px;
+    padding: 0px 2px 0px 2px;
+    margin: 0px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  td:nth-child(1) {
+    text-align: left;
+
+    &.patch-history-submit {
+      text-align: right;
     }
+  }
+  td:nth-child(2) {
+    white-space: nowrap;
+    text-align: center;
+    width: 1px;
+  }
+  td:nth-child(3), td:nth-child(4) {
+    width: 1px;
+  }
+  td:nth-child(5), td:nth-child(6) {
+    width: 1px;
+  }
+}
+
+.patch-history-submit {
+  text-align: right;
+
+  input {
+    font-size: 10px;
+    margin: 0px;
+    padding: 4px;
   }
 }
 

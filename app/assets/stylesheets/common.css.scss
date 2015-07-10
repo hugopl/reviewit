@@ -200,6 +200,11 @@ label {
   font-weight: bold;
 }
 
+input[type=radio] {
+  min-width: 0px;
+  border: 1px solid red;
+}
+
 input[type=checkbox] {
   display: none;
 }

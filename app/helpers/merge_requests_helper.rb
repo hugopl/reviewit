@@ -12,6 +12,10 @@ module MergeRequestsHelper
     patch.description.blank? ? "#{i.ordinalize} version" : patch.description
   end
 
+  def patch_linter_status(patch)
+    content_tag(:span, '', class: "fa #{patch.linter_ok? ? 'fa-check ok' : 'fa-remove fail'}")
+  end
+
   def merge_request_pending_since(mr)
     last_patch = mr.patches.last
     return '' unless last_patch.is_a? Patch
@@ -20,12 +24,18 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
-  def gitlab_ci_icon(mr)
-    patch = mr.patch
+  def patch_ci_icon(patch)
     if patch.pass?
       content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI build passed!')
     elsif patch.failed?
       content_tag(:i, '', class: 'tipped fa fa-remove fail', 'data-tip' => 'CI build failed!')
+    elsif patch.unknown?
+      return '' if @mr.nil?
+      content_tag(:i, '', class: 'tipped fa fa-refresh fa-spin',
+                          'data-tip' => 'Fetching CI status!',
+                          'data-ci-status-url' => ci_status_project_merge_request_path(@project, @mr,
+                                                                                       format: :json,
+                                                                                       version: patch.version))
     end
   end
 

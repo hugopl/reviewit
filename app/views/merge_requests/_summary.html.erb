@@ -2,12 +2,6 @@
   Status: <span class="<%= @mr.status %>"><%= @mr.status.humanize %></span><br>
   Author: <span><%= @mr.author.name %></span><br>
   Branch: <span><%= @mr.target_branch %></span><br>
-  Created at: <span><%= @mr.created_at.to_formatted_s(:short) %></span><br>
-  Linter: <span class="fa <%= @patch.linter_ok? ? 'fa-check ok' : 'fa-remove fail' %>"></span><br>
-  <% if @project.gitlab_ci? and not @patch.gitlab_ci_hash.blank? %>
-  CI: <i id="ci_status" class="clickable fa fa-refresh fa-spin"></i><br>
-  <script type="text/javascript" async src="<%= ci_status_project_merge_request_path(@project, @mr, version: @version) %>"></script>
-  <% end %>
   <% summary_addons(@patch) do |label, url| %>
     <%= link_to label, url %><br>
   <% end %>

@@ -96,6 +96,18 @@ class MergeRequest < ActiveRecord::Base
     @patch ||= patches.last
   end
 
+  def patch_diff(from = 0, to = nil)
+    to ||= patches.count
+    raise ActiveRecord::RecordNotFound, 'Patch diff not found' if from >= to
+    # convert to zero based index.
+    from -= 1
+    to -= 1
+
+    return patches[to].diff if from < 0
+
+    interdiff(patches[from].diff, patches[to].diff)
+  end
+
   def deprecated_patches
     patches.where.not(id: patch.id)
   end
@@ -107,6 +119,45 @@ class MergeRequest < ActiveRecord::Base
   end
 
   private
+
+  def interdiff(diff1, diff2)
+    prune_git_headers!(diff1)
+    prune_git_headers!(diff2)
+
+    file1 = Tempfile.open('diff1') do |f|
+      f.puts(diff1)
+      f
+    end
+    file2 = Tempfile.open('diff2') do |f|
+      f.puts(diff2)
+      f
+    end
+    `interdiff #{file1.path} #{file2.path} < /dev/null`.tap do
+      file1.unlink
+      file2.unlink
+    end
+  end
+
+  GIT_HEADERS = [/old mode .+\n/,
+                 /new mode .+\n/,
+                 /deleted file mode .+\n/,
+                 /new file mode .+\n/,
+                 /copy from .+\n/,
+                 /copy to .+\n/,
+                 /rename from .+\n/,
+                 /rename to .+\n/,
+                 /similarity index .+\n/,
+                 /dissimilarity index .+\n/,
+                 /index .+\n/]
+  # interdiff has a bug with some git headers in the patch, the bug was already fixed
+  # but most distro doesn't have this fix yet.
+  # https://github.com/twaugh/patchutils/commit/14261ad5461e6c4b3ffc2f87131601ff79e2a0fc
+  def prune_git_headers!(diff)
+    GIT_HEADERS.each do |header|
+      diff.gsub!(header, '')
+    end
+    diff
+  end
 
   def write_history
     add_history_event author, "changed the target branch from #{target_branch_was} to #{target_branch}" if target_branch_changed? and !target_branch_was.nil?
