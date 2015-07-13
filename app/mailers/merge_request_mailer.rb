@@ -3,7 +3,7 @@ class MergeRequestMailer < ApplicationMailer
     @author = mr.author
     @mr = mr
 
-    send_email(User.all)
+    send_email(mr.project.users)
   end
 
   def updated(user, mr, params)
