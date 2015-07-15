@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def gravatar_url(user, size = 40)
-    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=#{size}"
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=#{size}"
   end
 
   def version
