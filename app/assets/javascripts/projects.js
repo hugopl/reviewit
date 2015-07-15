@@ -14,17 +14,17 @@ window.projects = function() {
             alert('You need to participate on your own project.');
         return !its_me;
     };
-    return tag.tagit({
-                         fieldName: 'project[users][]',
-                         availableTags: users,
-                         autocomplete: {
-                             delay: 0,
-                             minLength: 1
-                         },
-                         allowDuplicates: false,
-                         removeConfirmation: true,
-                         beforeTagAdded: before_add,
-                         beforeTagRemoved: before_remove,
-                         placeholderText: 'Type the user names'
-                     });
+    tag.tagit({
+                  fieldName: 'project[users][]',
+                  availableTags: users,
+                  autocomplete: {
+                      delay: 0,
+                      minLength: 1
+                  },
+                  allowDuplicates: false,
+                  removeConfirmation: true,
+                  beforeTagAdded: before_add,
+                  beforeTagRemoved: before_remove,
+                  placeholderText: 'Type the user names'
+              });
 };

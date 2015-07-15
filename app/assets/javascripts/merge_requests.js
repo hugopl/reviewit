@@ -1,6 +1,6 @@
 function merge_requests() {
     return $("td > div.add-comment").on('click', function(event) {
-        return show_comment_box(event.target.parentElement.parentElement);
+        show_comment_box(event.target.parentElement.parentElement);
     });
 };
 
@@ -21,13 +21,13 @@ function show_comment_box(tr) {
             + "<input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>"
             + "</td></tr>";
     $(html).insertAfter(tr);
-    return $(tr.nextSibling).find('textarea').focus();
+    $(tr.nextSibling).find('textarea').focus();
 };
 
 function hide_comment_box(cancelLink) {
     var tr = cancelLink.parentElement.parentElement;
     tr.previousSibling.dataset.expanded = false;
-    return $(tr).remove();
+    $(tr).remove();
 };
 
 function update_ci_status(data) {
@@ -48,9 +48,9 @@ function update_ci_status(data) {
     }
     return ciStatus.on('click', function(event) {
         if (data['url'])
-            return window.open(data['url'], data['url']);
+            window.open(data['url'], data['url']);
         else
-            return alert('Unable to connect to CI.');
+            alert('Unable to connect to CI.');
     });
 };
 
