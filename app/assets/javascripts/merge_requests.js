@@ -100,7 +100,9 @@ function update_ci_status(elem, status, url) {
     default:
         ciStatus.addClass('fa-cog fa-spin');
     }
-    if (url)
+    if (url) {
+        ciStatus.addClass('ci-link');
         ciStatus.on('click', function(event) { window.open(url, url); });
+    }
 }
 
