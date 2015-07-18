@@ -31,8 +31,8 @@ class Git
     call("git am #{file.path}")
   end
 
-  def push(branch)
-    call("git push origin #{@branch}:#{branch}")
+  def push(branch, forced = nil)
+    call("git push #{forced ? '-f' : ''} origin #{@branch}:#{branch}")
   end
 
   def rm_branch(branch)

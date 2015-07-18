@@ -69,8 +69,6 @@ eot
     end
   end
 
-  private
-
   def push_to_ci
     return unless project.gitlab_ci?
 
@@ -79,12 +77,14 @@ eot
 
       merge_request.deprecated_patches.each { |p| git.rm_branch(p.ci_branch_name) }
       if git.am(self)
-        update_attribute(:gitlab_ci_hash, git.sha1) if git.push(ci_branch_name)
+        update_attribute(:gitlab_ci_hash, git.sha1) if git.push(ci_branch_name, :forced)
       else
         merge_request.needs_rebase!
       end
     end
   end
+
+  private
 
   def reviewer_stamp
     return '' unless merge_request.accepted? or merge_request.integrating?
