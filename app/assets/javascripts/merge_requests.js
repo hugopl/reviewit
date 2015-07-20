@@ -97,6 +97,9 @@ function update_ci_status(elem, status, url) {
     case 'pending':
         ciStatus.addClass('fa-clock-o');
         break;
+    case 'canceled':
+        ciStatus.addClass('fa-ban');
+        break;
     default:
         ciStatus.addClass('fa-cog fa-spin');
     }
