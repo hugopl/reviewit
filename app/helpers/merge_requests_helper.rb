@@ -27,9 +27,7 @@ module MergeRequestsHelper
   def patch_ci_icon(patch)
     if patch.pass?
       content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI build passed!')
-    elsif patch.failed?
-      content_tag(:i, '', class: 'tipped fa fa-remove fail', 'data-tip' => 'CI build failed!')
-    elsif patch.unknown?
+    else
       return '' if @mr.nil?
       content_tag(:i, '', class: 'tipped fa fa-refresh fa-spin',
                           'data-tip' => 'Fetching CI status!',
