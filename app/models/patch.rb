@@ -71,6 +71,7 @@ eot
 
   def push_to_ci
     return unless project.gitlab_ci?
+    update_attribute(:gitlab_ci_hash, nil)
 
     Git.new.clone(project.repository, target_branch) do |git|
       next unless git.ready?
