@@ -34,6 +34,7 @@ class Project < ActiveRecord::Base
     case status
     when 'success' then patch.pass!
     when 'failed' then patch.failed!
+    when 'canceled' then patch.canceled!
     end
   end
 

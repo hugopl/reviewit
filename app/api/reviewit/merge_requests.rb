@@ -51,7 +51,7 @@ module Reviewit
           raise "You can not update a #{mr.status} merge request." unless mr.can_update?
 
           if same_patch?
-            if mr.needs_rebase? or (project.gitlab_ci? && mr.patch.failed?)
+            if mr.needs_rebase? or (project.gitlab_ci? && mr.patch.ok_to_retry_ci?)
               mr.patch.push_to_ci
             elsif params[:target_branch].blank? or params[:target_branch] == mr.target_branch
               raise 'Seems you are re-submitting the same patch.'

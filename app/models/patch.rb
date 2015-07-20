@@ -3,7 +3,7 @@ class Patch < ActiveRecord::Base
 
   has_many :comments, dependent: :destroy
 
-  enum gitlab_ci_status: %i(unknown failed pass)
+  enum gitlab_ci_status: %i(unknown failed pass canceled)
 
   order :location
 
@@ -16,6 +16,10 @@ class Patch < ActiveRecord::Base
   delegate :reviewer, to: :merge_request
   delegate :project, to: :merge_request
   delegate :target_branch, to: :merge_request
+
+  def ok_to_retry_ci?
+    failed? || canceled?
+  end
 
   def comments_by_location
     comments.to_a.inject({}) do |hash, comment|
