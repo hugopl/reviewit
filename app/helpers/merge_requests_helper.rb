@@ -26,11 +26,10 @@ module MergeRequestsHelper
 
   def patch_ci_icon(patch)
     if patch.pass?
-      content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI build passed!')
+      content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI passed')
     else
       return '' if @mr.nil?
       content_tag(:i, '', class: 'tipped fa fa-refresh fa-spin',
-                          'data-tip' => 'Fetching CI status!',
                           'data-ci-status-url' => ci_status_project_merge_request_path(@project, @mr,
                                                                                        format: :json,
                                                                                        version: patch.version))

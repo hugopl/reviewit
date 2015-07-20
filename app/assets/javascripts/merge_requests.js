@@ -82,27 +82,21 @@ function load_ci_status(elem) {
 }
 
 function update_ci_status(elem, status, url) {
-    Tipped.remove(elem); // I'm too lazy to re-write the tip on every use case.
     ciStatus = $(elem).removeClass('fa-refresh fa-spin');
-    switch (status) {
-    case 'failed':
-        ciStatus.addClass('fa-remove fail');
-        break;
-    case 'success':
-        ciStatus.addClass('fa-check ok');
-        break;
-    case 'unknown':
-        ciStatus.addClass('fa-question');
-        break;
-    case 'pending':
-        ciStatus.addClass('fa-clock-o');
-        break;
-    case 'canceled':
-        ciStatus.addClass('fa-ban');
-        break;
-    default:
-        ciStatus.addClass('fa-cog fa-spin');
+
+    var ci = {
+        'failed'  : ['fa-remove fail', 'CI failed'],
+        'success' : ['fa-check ok', 'CI passed'],
+        'unknown' : ['fa-question', 'Unknow CI status'],
+        'pending' : ['fa-clock-o', 'CI pending'],
+        'canceled': ['fa-ban', 'CI canceled'],
+        'running' : ['fa-cog fa-spin', 'CI running']
     }
+
+    ciStatus.addClass(ci[status][0]);
+    Tipped.remove(elem);
+    Tipped.create(elem, ci[status][1]);
+
     if (url) {
         ciStatus.addClass('ci-link');
         ciStatus.on('click', function(event) { window.open(url, url); });
