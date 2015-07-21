@@ -26,8 +26,8 @@ module Reviewit
     attr_reader :linter
 
     def read_commit_header
-      @subject = `git show -s --format="%s"`.strip
       @commit_message = `git show -s --format="%B"`.strip
+      @subject = @commit_message.each_line.first.strip
     end
 
     def process_commit_message!
