@@ -11,7 +11,7 @@ function merge_requests() {
     $("i[data-ci-status-url]").each(function(i, elem) {
         load_ci_status(elem);
     });
-    new_editor($('textarea').get(0));
+    new_editor($('textarea').get(0), false);
 }
 
 function request_patch_diff() {
@@ -50,11 +50,11 @@ function handle_history_radios(radio) {
     }
 }
 
-function new_editor(elem) {
+function new_editor(elem, autofocus) {
     var editor = new SimpleMDE({ element: elem,
                                  status: false,
                                  indentWithTabs: false,
-                                 autofocus: true,
+                                 autofocus: (typeof(autofocus) === 'undefined' ? true : autofocus),
                                  spellChecker: false});
     editor.render();
 }
