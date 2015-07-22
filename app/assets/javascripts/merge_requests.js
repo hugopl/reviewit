@@ -11,6 +11,7 @@ function merge_requests() {
     $("i[data-ci-status-url]").each(function(i, elem) {
         load_ci_status(elem);
     });
+    new_editor($('textarea').get(0));
 }
 
 function request_patch_diff() {
@@ -49,6 +50,15 @@ function handle_history_radios(radio) {
     }
 }
 
+function new_editor(elem) {
+    var editor = new SimpleMDE({ element: elem,
+                                 status: false,
+                                 indentWithTabs: false,
+                                 autofocus: true,
+                                 spellChecker: false});
+    editor.render();
+}
+
 function show_comment_box(tr) {
     var extraCss = '';
     if ($(tr).next().hasClass('comment')) {
@@ -66,7 +76,8 @@ function show_comment_box(tr) {
             + "<input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>"
             + "</td></tr>";
     $(html).insertAfter(tr);
-    $(tr.nextSibling).find('textarea').focus();
+    var textArea = $(tr.nextSibling).find('textarea').get(0);
+    new_editor(textArea);
 };
 
 function hide_comment_box(cancelLink) {
