@@ -227,7 +227,7 @@ div.comment {
   background-color: whitesmoke;
 }
 
-span {
+.mr-summary span {
   font-weight: bold;
   &.accepted { color: green; }
   &.abandoned { color: red; }
