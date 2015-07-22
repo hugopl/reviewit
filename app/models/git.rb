@@ -13,7 +13,7 @@ class Git
       @dir = dir
 
       yield(self)
-      FileUtils.rm_rf(dir) if cloned
+      FileUtils.rm_rf(dir) if @ready
     end
   end
 
