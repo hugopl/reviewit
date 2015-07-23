@@ -152,7 +152,7 @@
   margin-bottom: 10px;
 }
 
-.editor-preview table td, table th {
+.editor-preview table td, .editor-preview table th {
   border: 1px solid #ddd;
   padding: 5px;
 }
