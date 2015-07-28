@@ -207,7 +207,6 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
-  coffee-rails (~> 4.0.0)
   database_rewinder
   devise
   factory_girl_rails

@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'coffee-rails',  '~> 4.0.0'
 gem 'devise'
 gem 'grape',         '~> 0.9'
 gem 'grape-entity',  '~> 0.4'
