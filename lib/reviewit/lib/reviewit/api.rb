@@ -3,11 +3,15 @@ require 'openssl'
 require 'json'
 
 module Reviewit
+  class RetryExpected < RuntimeError
+  end
+
   class Api
-    def initialize(base_url, project_id, api_token)
+    def initialize(base_url, project_id, api_token, project_hash)
       @base_url = base_url
       @project_id = project_id
       @api_token = api_token
+      @project_hash = project_hash
     end
 
     def update_merge_request(id, subject, commit_message, diff, description, target_branch, linter_ok)
@@ -80,6 +84,7 @@ module Reviewit
       req = klass.new(uri.to_s)
       req['X-Token'] = @api_token
       req['X-Cli-Version'] = VERSION
+      req['X-Project-Hash'] = @project_hash
       req.set_form_data(params) unless params.empty?
 
       http = Net::HTTP.new(uri.hostname, uri.port)
@@ -97,6 +102,8 @@ module Reviewit
 
     def process_response(response)
       upgrade_and_exit! if response.code == '426'
+      update_configuration_and_exit! if response.code == '460'
+
       raise response.body if response.code =~ /[^2]\d\d/
       data = JSON.load(response.body)
       return data
@@ -108,8 +115,14 @@ module Reviewit
       send_request('setup', {}, :get) do |response|
         eval response.body
       end
-      raise 'You were using an old version of reviewit or the project configuration was changed. ' \
-            'Reviewit was re-configured and nothing was changed on the server side.'
+      raise RetryExpected, 'New version of reviewit installed!'
+    end
+
+    def update_configuration_and_exit!
+      send_request('setup', { no_install: true }, :get) do |response|
+        eval response.body
+      end
+      raise RetryExpected, 'Project configuration updated!'
     end
   end
 end

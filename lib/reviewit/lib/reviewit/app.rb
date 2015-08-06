@@ -18,11 +18,24 @@ module Reviewit
       return show_help if ARGV == ['--help']
       return show_version if ARGV == ['--version']
 
+      # Due to a bad decision in the past this entire gem modifies the ARGV
+      # This should be fixed later... some day.
+      cached_argv ||= ARGV.dup
+
+      no_retry = ARGV.first == '--no-retry'
+      ARGV.shift if no_retry
+
       load_configuration
-      api = Api.new(@base_url, @project_id, @api_token)
+      api = Api.new(@base_url, @project_id, @api_token, @project_hash)
 
       action = action_class.new(self, api)
       action.run
+    rescue RetryExpected
+      if no_retry
+        abort('Something bad happened.')
+      else
+        exec("#{$PROGRAM_NAME} --no-retry #{cached_argv.join(' ')}")
+      end
     rescue RuntimeError, Errno::ECONNREFUSED
       abort $!.message
     end
@@ -63,6 +76,7 @@ eot
       @project_id = git_config 'reviewit.projectid'
       @base_url = git_config 'reviewit.baseurl'
       @linter = git_config 'reviewit.linter'
+      @project_hash = git_config('reviewit.projecthash')
       raise 'This project seems not configured.' if @api_token.empty? or @project_id.empty? or @base_url.empty?
     end
 

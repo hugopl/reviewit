@@ -24,6 +24,10 @@ class Project < ActiveRecord::Base
     { status: 'unknown' }
   end
 
+  def configuration_hash
+    linter.hash.to_s
+  end
+
   private
 
   def ci_status_url_for(patch)

@@ -7,7 +7,9 @@ require 'openssl'
 # @project_id
 # @gem_url
 # @linter
+# @project_hash
 # @gem_version
+# @should_install
 
 def puts(text)
   STDOUT.puts "\033[0;32m#{text}\033[0m"
@@ -48,12 +50,15 @@ def configure_git
   `git config --local reviewit.baseurl #{@base_url}` if $?.success?
   `git config --local reviewit.apitoken #{@api_token}` if $?.success?
   `git config --local reviewit.linter "#{@linter.gsub('"', '\"')}"` if $?.success?
+  `git config --local reviewit.projecthash #{@project_hash}`
   abort 'Error configuring git for rme.' unless $?.success?
 end
 
-puts "reviewit command line interface installer for #{@project_name}\n"
-install_rme_gem unless check_rme_gem
+if @should_install
+  puts "reviewit command line interface installer for #{@project_name}\n"
+  install_rme_gem unless check_rme_gem
+end
 
 check_git_repository
 configure_git
-puts 'All done, type review --help to know what you can do.'
+puts 'All done, type review --help to know what you can do.' if @should_install

@@ -1,9 +1,6 @@
 module Reviewit
   class Projects < Grape::API
     helpers do
-      def project
-        @projects ||= Project.find(params[:project_id])
-      end
     end
 
     namespace :projects do
@@ -24,7 +21,10 @@ module Reviewit
           @project_name = #{project.name.inspect}
           @project_id = #{project.id}
           @linter = #{project.linter.inspect}
+          @project_hash = #{project.configuration_hash.inspect}
           @gem_version = #{Reviewit::VERSION.inspect}
+
+          @should_install = #{params[:no_install].nil?}
 
           #{File.read(Rails.root.join('lib', 'reviewit', 'install.rb'))}
           eos

@@ -31,11 +31,17 @@ module Reviewit
 
       @current_user = User.find_by_api_token(headers['X-Token'])
       raise Error.new('Sorry, invalid token.', 401) if @current_user.nil?
+
+      raise Error.new('Configuration changed.', 460) if configuration_changed?
     end
 
     helpers do
       def ok
         { message: :ok }
+      end
+
+      def project
+        @project ||= Project.find(params[:project_id])
       end
 
       def setup_request?
@@ -45,6 +51,11 @@ module Reviewit
       def version_changed?
         return false if setup_request?
         headers['X-Cli-Version'] != Reviewit::VERSION
+      end
+
+      def configuration_changed?
+        return false if setup_request?
+        headers['X-Project-Hash'] != project.configuration_hash
       end
 
       attr_reader :current_user
