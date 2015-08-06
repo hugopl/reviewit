@@ -36,10 +36,10 @@ module Reviewit
       list = get 'merge_requests'
       list.map do |item|
         {
-          id:      item['id'],
-          url:     mr_url(item['id']),
-          status:  item['status'],
-          subject: item['subject'],
+          id:        item['id'],
+          target:    item['target_branch'],
+          status:    item['status'],
+          subject:   item['subject'],
           ci_status: item['ci_status']
         }
       end

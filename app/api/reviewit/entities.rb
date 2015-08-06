@@ -6,6 +6,7 @@ module Reviewit
       expose :author
       expose :status
       expose :ci_status
+      expose :target_branch
 
       def author
         object.author.name

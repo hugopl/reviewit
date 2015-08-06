@@ -14,7 +14,7 @@ module Reviewit
 
       list.each_with_index do |mr, i|
         puts format("#{row_color(mr, i)}%#{length[:id]}s  %-#{length[:status]}s  %-#{length[:subject]}s  %s#{NO_COLOR}",
-                    mr[:id], mr[:status], mr[:subject], mr[:url])
+                    mr[:id], mr[:status], mr[:subject], mr[:target])
       end
     end
 
@@ -25,7 +25,7 @@ module Reviewit
     end
 
     def inject_header(list)
-      list.unshift Hash[list.first.keys.map { |k| [k, k.to_s.capitalize] }]
+      list.unshift Hash[list.first.keys.map { |k| [k, k.to_s.capitalize.gsub('_', ' ')] }]
     end
 
     def row_color(mr, i)
