@@ -107,9 +107,14 @@ pre.message {
     content: '✚';
   }
 
-  tr:hover.del, tr:hover.add {
+  tr[data-location]:hover {
     > td > div.add-comment {
      visibility: visible;
+    }
+  }
+  tr[class=info]:hover {
+    > td > div.add-comment {
+      visibility: hidden;
     }
   }
 
