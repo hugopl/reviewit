@@ -27,9 +27,8 @@ module Reviewit
     end
 
     before do
-      if not request.path =~ %r{/api/projects/\d+/setup}
-        raise Error.new("Version #{Reviewit::VERSION} required.", 426) if headers['X-Cli-Version'] != Reviewit::VERSION
-      end
+      raise Error.new("Version #{Reviewit::VERSION} required.", 426) if version_changed?
+
       @current_user = User.find_by_api_token(headers['X-Token'])
       raise Error.new('Sorry, invalid token.', 401) if @current_user.nil?
     end
@@ -37,6 +36,15 @@ module Reviewit
     helpers do
       def ok
         { message: :ok }
+      end
+
+      def setup_request?
+        request.path =~ %r{/api/projects/\d+/setup}
+      end
+
+      def version_changed?
+        return false if setup_request?
+        headers['X-Cli-Version'] != Reviewit::VERSION
       end
 
       attr_reader :current_user
