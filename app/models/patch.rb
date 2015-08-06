@@ -40,6 +40,16 @@ class Patch < ActiveRecord::Base
     merge_request.patches.index(self) + 1
   end
 
+  def subject
+    commit_message.each_line.first
+  end
+
+  def commit_message(options = nil)
+    msg = read_attribute(:commit_message)
+    return msg.lines[1..-1].join.strip if options == :no_title
+    msg
+  end
+
   def formatted
     <<eot
 From: #{author.name} <#{author.email}>
