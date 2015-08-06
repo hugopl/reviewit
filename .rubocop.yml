@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'db/**/*'
     - 'bin/**/*'
+  DisplayCopNames: true
 Lint/Eval:
   Enabled: false
 Metrics/LineLength:

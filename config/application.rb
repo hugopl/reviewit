@@ -42,7 +42,7 @@ module Reviewit
     config.active_record.raise_in_transactional_callbacks = true
 
     # Configure the status code templates to be served by the app instead of Rack exception application.
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
 
     # Generic email configuration
     unless Rails.env.test?
