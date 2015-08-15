@@ -1,6 +1,5 @@
 module Reviewit
   class Push < Action
-
     def run
       check_dirty_working_copy!
 

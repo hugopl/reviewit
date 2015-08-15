@@ -6,7 +6,7 @@ class MrController < ApplicationController
     if project.users.include? current_user
       redirect_to "/projects/#{project.id}/merge_requests/#{params[:id]}"
     else
-      raise ActiveRecord::RecordNotFound.new
+      raise ActiveRecord::RecordNotFound, 'Merge request not found.'
     end
   end
 end
