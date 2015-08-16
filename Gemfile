@@ -13,15 +13,11 @@ gem 'unicorn'
 gem 'will_paginate', '~> 3.0'
 
 group :development, :test do
-  gem 'faker'
-  gem 'rspec-rails'
-end
-
-group :development do
   gem 'awesome_print'
 end
 
 group :test do
-  gem 'database_rewinder'
   gem 'factory_girl_rails'
+  gem 'faker'
+  gem 'minitest-reporters'
 end
