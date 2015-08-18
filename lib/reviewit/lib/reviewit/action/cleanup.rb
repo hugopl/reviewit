@@ -35,11 +35,9 @@ module Reviewit
     end
 
     def fetch_local_branches
-      top = `git rev-parse --show-toplevel`.strip
-      path = "#{top}/.git/refs/heads/"
-      Dir["#{path}*"].map do |branch|
-        branch.gsub(path, '')
-      end
+      branches = `git branch --no-color --list`.split
+      branches.delete('*')
+      branches
     end
 
     def local_branches_ids
