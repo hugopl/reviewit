@@ -38,6 +38,8 @@ module Reviewit
       end
     rescue RuntimeError, Errno::ECONNREFUSED
       abort $!.message
+    rescue Interrupt
+      abort "\nInterruped! Bye!"
     end
 
     private
