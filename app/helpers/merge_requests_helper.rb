@@ -13,9 +13,11 @@ module MergeRequestsHelper
   end
 
   def merge_request_pending_since(mr)
-    last_patch = mr.patches.last
-    return '' unless last_patch.is_a? Patch
-    time = (last_patch.updated_at or last_patch.created_at)
+    last_patch = mr.patch
+    return if last_patch.nil?
+    time = last_patch.updated_at
+    last_comment = last_patch.comments.order('id DESC').limit(1).first
+    time = last_comment.created_at if last_comment
     time = distance_of_time_in_words(Time.now, time)
     "pending for #{time}"
   end
