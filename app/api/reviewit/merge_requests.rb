@@ -74,6 +74,7 @@ module Reviewit
               raise 'Seems you are re-submitting the same patch.'
             else
               mr.target_branch = params[:target_branch].to_s.strip
+              mr.patch.push_to_ci
               mr.save!
             end
           else
