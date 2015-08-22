@@ -10,7 +10,7 @@ class Patch < ActiveRecord::Base
   validates :diff, presence: true
   validates :commit_message, presence: true
 
-  after_create :push_to_ci
+  after_create :push_to_ci_if_neded
 
   delegate :author, to: :merge_request
   delegate :reviewer, to: :merge_request
@@ -84,7 +84,7 @@ eot
   end
 
   def push_to_ci
-    return if canceled? || !project.gitlab_ci?
+    return unless project.gitlab_ci?
 
     self.gitlab_ci_hash = nil
     self.gitlab_ci_status = :unknown
@@ -103,6 +103,10 @@ eot
   end
 
   private
+
+  def push_to_ci_if_neded
+    push_to_ci unless canceled?
+  end
 
   def reviewer_stamp
     return '' unless merge_request.accepted? or merge_request.integrating?
