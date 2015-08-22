@@ -84,7 +84,7 @@ eot
   end
 
   def push_to_ci
-    return unless project.gitlab_ci?
+    return if canceled? || !project.gitlab_ci?
 
     self.gitlab_ci_hash = nil
     self.gitlab_ci_status = :unknown

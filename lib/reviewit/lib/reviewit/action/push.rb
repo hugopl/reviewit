@@ -12,12 +12,23 @@ module Reviewit
       if updating?
         puts 'Updating merge request...'
         description = (options[:message] or read_user_single_line_message('Type a single line description of the change: '))
-        url = api.update_merge_request(@mr_id, @subject, @commit_message, @commit_diff, description, options[:branch], linter_ok?)
+        url = api.update_merge_request(@mr_id, subject: @subject,
+                                               commit_message: @commit_message,
+                                               diff: @commit_diff,
+                                               description: description,
+                                               target_branch: options[:branch],
+                                               linter_ok: linter_ok?,
+                                               ci: should_run_ci?)
         puts "Merge Request updated at #{url}"
       else
         abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?
         puts 'Creating merge request...'
-        mr = api.create_merge_request(@subject, @commit_message, @commit_diff, options[:branch], linter_ok?)
+        mr = api.create_merge_request(subject: @subject,
+                                      commit_message: @commit_message,
+                                      diff: @commit_diff,
+                                      target_branch: options[:branch],
+                                      linter_ok: linter_ok?,
+                                      ci: should_run_ci?)
         url = mr[:url]
         puts "Merge Request created at #{url}"
         append_mr_id_to_commit(mr[:id])
@@ -38,6 +49,7 @@ module Reviewit
         opt :message, 'A message to the given action', type: String
         opt :linter, 'Run linter', default: true
         opt :rename, 'Rename branch after push.', default: true
+        opt :ci, 'Push code to CI.', default: true
       end
       options[:branch] = ARGV.shift
       options
@@ -71,6 +83,10 @@ module Reviewit
 
     def linter_ok?
       @linter_ok ||= false
+    end
+
+    def should_run_ci?
+      options[:ci]
     end
 
     def changed_files

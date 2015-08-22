@@ -1,3 +1,19 @@
+require 'set'
+
+class String
+  TRUES = Set.new([true, 1, '1', 't', 'T', 'true', 'TRUE', 'on', 'ON']).freeze
+
+  def true?
+    TRUES.include?(self)
+  end
+end
+
+class Object
+  def true?
+    self
+  end
+end
+
 module Reviewit
   class MergeRequests < Grape::API
     helpers do
@@ -28,8 +44,9 @@ module Reviewit
           mr.add_patch(
             commit_message: params[:commit_message],
             diff: params[:diff],
-            linter_ok: params[:linter_ok],
-            description: 'First version'
+            linter_ok: params[:linter_ok].true?,
+            description: 'First version',
+            ci: params[:ci].true?
           )
           mr.save!
           MergeRequestMailer.created(mr).deliver_now
@@ -67,8 +84,9 @@ module Reviewit
               mr.add_patch(
                 commit_message: params[:commit_message],
                 diff: params[:diff],
-                linter_ok: params[:linter_ok],
-                description: (params[:description] or '').lines.first.to_s
+                linter_ok: params[:linter_ok].true?,
+                description: (params[:description] or '').lines.first.to_s,
+                ci: params[:ci].true?
               )
               mr.save!
             end

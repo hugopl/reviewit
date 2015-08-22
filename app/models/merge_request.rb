@@ -44,6 +44,7 @@ class MergeRequest < ActiveRecord::Base
     patch.diff = data[:diff]
     patch.linter_ok = data[:linter_ok]
     patch.description = data[:description]
+    patch.gitlab_ci_status = :canceled unless data[:ci]
     patches << patch
     add_history_event(author, 'updated the merge request') if persisted?
   end

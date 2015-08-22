@@ -14,22 +14,13 @@ module Reviewit
       @project_hash = project_hash
     end
 
-    def update_merge_request(id, subject, commit_message, diff, description, target_branch, linter_ok)
-      patch("merge_requests/#{id}", subject: subject,
-                                    commit_message: commit_message,
-                                    diff: diff,
-                                    description: description,
-                                    target_branch: target_branch,
-                                    linter_ok: linter_ok)
+    def update_merge_request(id, data)
+      patch("merge_requests/#{id}", data)
       mr_url(id)
     end
 
-    def create_merge_request(subject, commit_message, diff, target_branch, linter_ok)
-      res = post('merge_requests', subject: subject,
-                                   commit_message: commit_message,
-                                   diff: diff,
-                                   target_branch: target_branch,
-                                   linter_ok: linter_ok)
+    def create_merge_request(data)
+      res = post('merge_requests', data)
       { url: mr_url(res['mr_id']), id: res['mr_id'] }
     end
 
