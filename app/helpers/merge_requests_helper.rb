@@ -3,10 +3,6 @@ module MergeRequestsHelper
     @patches ||= @mr.patches
   end
 
-  def patch
-    @patch ||= patches.last
-  end
-
   def patch_name(patch)
     i = @mr.patches.index(patch) + 1
     patch.description.blank? ? "#{i.ordinalize} version" : patch.description

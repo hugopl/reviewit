@@ -8,7 +8,7 @@
   <%= form_tag nil, method: 'patch' do %>
     <%= hidden_field_tag(:patch_id, @patch.id) %>
 
-    <%= render partial: 'diff', locals: { patch: patch } %>
+    <%= render partial: 'diff', locals: { patch: @patch } %>
 
     <%= render 'comments' %>
 
