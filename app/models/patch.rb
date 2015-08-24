@@ -50,13 +50,13 @@ class Patch < ActiveRecord::Base
     msg
   end
 
-  def formatted
+  def formatted(no_reviewer: false)
     <<eot
 From: #{author.name} <#{author.email}>
 Date: #{created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
 
 #{commit_message}
-#{reviewer_stamp}
+#{no_reviewer ? mr_stamp : reviewer_stamp}
 #{diff}
 --
 review it!
@@ -106,6 +106,10 @@ eot
 
   def push_to_ci_if_neded
     push_to_ci unless canceled?
+  end
+
+  def mr_stamp
+    "\nReviewit-MR-id: #{merge_request.id}\n"
   end
 
   def reviewer_stamp

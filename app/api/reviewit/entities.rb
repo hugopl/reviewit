@@ -31,7 +31,7 @@ module Reviewit
       expose :reviewer, with: User
 
       def patch
-        object.patch.formatted
+        object.patch.formatted(no_reviewer: true)
       end
     end
   end
