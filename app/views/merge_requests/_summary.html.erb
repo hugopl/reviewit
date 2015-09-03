@@ -10,4 +10,4 @@
 <br><%= @mr.status.humanize %> by: <%= @mr.reviewer.name %>
 <% end %>
 </div>
-<pre class="message markdown"><%= @patch.commit_message(:no_title) %></pre>
+<div class="message markdown"><%= @patch.commit_message(:no_title) %></div>
