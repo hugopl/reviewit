@@ -1,4 +1,6 @@
 class MergeRequestMailer < ApplicationMailer
+  add_template_helper(ApplicationHelper)
+
   def created(mr)
     @author = mr.author
     @mr = mr

@@ -34,6 +34,10 @@ module ApplicationHelper
     Reviewit::VERSION
   end
 
+  def markdown(text)
+    Rails.application.markdown_renderer.render(text).html_safe
+  end
+
   def emojify(text)
     text.gsub(/:([a-z0-9_+-]+):/i) do |emoji|
       if valid_emoji?($1)

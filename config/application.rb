@@ -27,7 +27,10 @@ module Reviewit
     config.exceptions_app = routes
 
     # Generic email configuration
-    unless Rails.env.test?
+    if Rails.env.test?
+      config.action_mailer.default_url_options = { host: 'example.com' }
+      config.action_mailer.default_options = { from: 'reviewit@example.com' }
+    else
       yml = YAML.load_file("#{Rails.root}/config/reviewit.yml")['mail']
       yml ||= {}
 
@@ -53,6 +56,10 @@ module Reviewit
       config.action_mailer.default_options = {
         from: yml['sender']
       }
+    end
+
+    def markdown_renderer
+      @markdown_renderer ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML)
     end
   end
 end

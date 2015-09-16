@@ -149,6 +149,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.15.0)
     rake (10.4.2)
+    redcarpet (3.3.2)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     ruby-prof (0.15.8)
@@ -206,6 +207,7 @@ DEPENDENCIES
   minitest-reporters
   rails (= 4.2.3)
   rails-perftest
+  redcarpet
   ruby-prof
   sass-rails (~> 4.0.3)
   sqlite3
