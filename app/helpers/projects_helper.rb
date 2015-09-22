@@ -42,7 +42,8 @@ module ProjectsHelper
       yAxis: {
         title: {
           text: 'Merge requests created'
-        }
+        },
+        min: 0
       },
       legend: {
         enabled: true
