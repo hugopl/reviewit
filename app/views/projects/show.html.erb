@@ -12,3 +12,11 @@
 <p><%= @project.users.map {|u| u.name }.to_sentence %></p>
 
 <p>Didn't like it!? So <%= link_to 'edit your project', edit_project_path(@project) %>.</p>
+
+<h2>Statistics</h2>
+
+<div id="project-mr-chart"></div>
+
+<script type="text/javascript">
+  $('#project-mr-chart').highcharts(<%= projects_mr_chart_data %>);
+</script>
