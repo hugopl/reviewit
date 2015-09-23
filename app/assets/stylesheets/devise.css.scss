@@ -12,31 +12,32 @@
     font-style: italic;
   }
 
- .content {
-   width: 400px;
-   margin: auto;
-   padding: 10px;
-   flex: 0;
-   -webkit-flex: 0;
+  .content {
+    width: 400px;
+    margin: auto;
+    padding: 10px;
+    flex: 0;
+    -webkit-flex: 0;
 
-  h1 {
-    text-align: center;
-  }
+    h1 {
+      text-align: center;
+    }
 
-  .submit {
-    text-align: center;
-  }
+    .submit {
+      text-align: center;
+    }
 
-  .links {
-    text-align: right;
-  }
+    .links {
+      text-align: right;
+    }
 
-  input[type=email], input[type=password], input[type=text] {
-    width: 100%;
-  }
+    input[type=email], input[type=password], input[type=text] {
+      width: 380px;
+      min-width: 0;
+    }
 
-  form > div:last-child {
-   text-align: right;
+    form > div:last-child {
+     text-align: right;
+    }
   }
- }
 }
