@@ -72,7 +72,9 @@ function show_comment_box(tr) {
     tr.dataset.expanded = true;
     var location = tr.dataset.location;
     var html = "<tr><td colspan='3' class='add-comment " + extraCss + "'>"
+            + "<div class='comment-box'>"
             + "<textarea placeholder='Leave a comment' name='comments[" + location + "]'></textarea>"
+            + "</div>"
             + "<input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>"
             + "</td></tr>";
     $(html).insertAfter(tr);
