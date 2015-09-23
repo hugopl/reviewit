@@ -25,7 +25,7 @@ class Project < ActiveRecord::Base
   end
 
   def configuration_hash
-    linter.hash.to_s
+    Digest::MD5.hexdigest(linter)
   end
 
   private
