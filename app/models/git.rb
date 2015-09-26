@@ -17,11 +17,8 @@ class Git
     end
   end
 
-  attr_reader :dir
-
-  def ready?
-    @ready
-  end
+  attr_reader :dir, :ready
+  alias_method :ready?, :ready
 
   def am(patch)
     contents = patch.formatted

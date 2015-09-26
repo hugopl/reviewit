@@ -25,7 +25,7 @@ module Reviewit
     end
 
     def inject_header(list)
-      list.unshift Hash[list.first.keys.map { |k| [k, k.to_s.capitalize.gsub('_', ' ')] }]
+      list.unshift Hash[list.first.keys.map { |k| [k, k.to_s.capitalize.tr('_', ' ')] }]
     end
 
     def row_color(mr, i)

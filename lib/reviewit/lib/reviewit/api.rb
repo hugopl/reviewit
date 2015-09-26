@@ -50,7 +50,7 @@ module Reviewit
     end
 
     def mr_url(id)
-      @base_url.gsub(/api\/?\z/, "mr/#{id}")
+      @base_url.gsub(%r{api/?\z}, "mr/#{id}")
     end
 
     private

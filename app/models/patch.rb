@@ -45,7 +45,7 @@ class Patch < ActiveRecord::Base
   end
 
   def commit_message(options = nil)
-    msg = read_attribute(:commit_message)
+    msg = self[:commit_message]
     return msg.lines[1..-1].join.strip if options == :no_title
     msg
   end
