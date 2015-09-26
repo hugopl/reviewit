@@ -18,5 +18,5 @@
 <div id="project-mr-chart"></div>
 
 <script type="text/javascript">
-  $('#project-mr-chart').highcharts(<%= projects_mr_chart_data %>);
+  $('#project-mr-chart').highcharts(<%= projects_mr_chart_data(@project) %>);
 </script>

@@ -11,8 +11,8 @@ module ProjectsHelper
     pluralize(count, 'merge request pending', 'merge requests pending')
   end
 
-  def projects_mr_chart_data
-    mrs = MergeRequest.group("strftime('%Y-%m-%d', created_at)").where('created_at > ?', 20.days.ago).count
+  def projects_mr_chart_data(project)
+    mrs = project.merge_requests.group("strftime('%Y-%m-%d', created_at)").where('created_at > ?', 20.days.ago).count
     last = nil
     mrs = mrs.inject({}) do |memo, (date, count)|
       year, month, day = date.split('-').map(&:to_i)
