@@ -20,7 +20,5 @@ class MergeRequestMailerTest < ActionMailer::TestCase
     assert_equal [user2.email], email.to
 
     assert_includes email.body.to_s, '<em>message</em>'
-
-    File.open('/tmp/foo.html', 'w') do |f| f.puts(email.body.to_s) end
   end
 end
