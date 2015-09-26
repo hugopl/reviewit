@@ -37,17 +37,14 @@ module Reviewit
       post do
         MergeRequest.transaction do
           mr = MergeRequest.new
+          diff = Diff.new(params[:diff])
           mr.project = project
           mr.author = current_user
-          mr.subject = params[:subject]
+          mr.subject = diff.subject
           mr.target_branch = params[:target_branch]
-          mr.add_patch(
-            commit_message: params[:commit_message],
-            diff: params[:diff],
-            linter_ok: params[:linter_ok].true?,
-            description: 'First version',
-            ci: params[:ci].true?
-          )
+          mr.add_patch(diff: diff,
+                       linter_ok: params[:linter_ok].true?,
+                       ci_enabled: params[:ci].true?)
           mr.save!
           MergeRequestMailer.created(mr).deliver_now
           { mr_id: mr.id }
@@ -79,16 +76,14 @@ module Reviewit
             end
           else
             MergeRequest.transaction do
-              mr.subject = params[:subject]
+              diff = Diff.new(params[:diff])
+              mr.subject = diff.subject
               mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
               mr.status = :open
-              mr.add_patch(
-                commit_message: params[:commit_message],
-                diff: params[:diff],
-                linter_ok: params[:linter_ok].true?,
-                description: (params[:description] or '').lines.first.to_s,
-                ci: params[:ci].true?
-              )
+              mr.add_patch(diff: diff,
+                           linter_ok: params[:linter_ok].true?,
+                           description: (params[:description] or '').lines.first.to_s,
+                           ci_enabled: params[:ci].true?)
               mr.save!
             end
           end

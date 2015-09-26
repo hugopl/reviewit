@@ -11,5 +11,14 @@ module ActiveSupport
     include FactoryGirl::Syntax::Methods
     include Warden::Test::Helpers
     extend MiniTest::Spec::DSL
+
+    def git_available?
+      `git rev-parse HEAD`
+      $?.success?
+    end
+
+    def git_diff(hash)
+      `git format-patch --stdout --no-stat -M #{hash}~1..#{hash}`
+    end
   end
 end

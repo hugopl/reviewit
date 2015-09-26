@@ -28,6 +28,36 @@ pre.message {
   border-radius: 4px 4px 0px 0px;
   margin-top: 40px;
   clear: both;
+
+  .flag {
+    font-weight: normal;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 2px;
+    font-size: 10px;
+    background-color: white;
+    margin-right: 2px;
+  }
+
+  .new {
+    color: green;
+    border-color: green;
+  }
+
+  .chmod-changed {
+    color: blue;
+    border-color: blue;
+  }
+
+  .deleted {
+    color: red;
+    border-color: red;
+  }
+
+  .renamed {
+    color: blue;
+    border-color: blue;
+  }
 }
 
 .code-review-container {

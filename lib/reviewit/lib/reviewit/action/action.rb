@@ -25,19 +25,13 @@ module Reviewit
     attr_reader :options
     attr_reader :linter
 
-    def read_commit_header
-      @commit_message = `git show -s --format="%B"`.strip
-      @subject = @commit_message.each_line.first.strip
+    def commit_message
+      @commit_message ||= `git show -s --format="%B"`.strip
     end
 
-    def process_commit_message!
-      match = MR_STAMP_REGEX.match @commit_message
-
-      if match
-        @commit_message["#{match}"] = ''
-        @mr_id = match[:id]
-      end
-      @commit_message.strip!
+    def mr_id_from_head
+      match = MR_STAMP_REGEX.match(commit_message)
+      match[:id] if match
     end
 
     def read_user_single_line_message(prompt)

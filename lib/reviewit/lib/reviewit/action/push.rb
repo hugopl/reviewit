@@ -4,40 +4,18 @@ module Reviewit
       check_dirty_working_copy!
 
       run_linter! if options[:linter]
-      read_commit_header
-      read_commit_diff
-      process_commit_message!
       url = nil
+      mr_id = mr_id_from_head
 
-      if updating?
+      if mr_id
         puts 'Updating merge request...'
-        description = (options[:message] or read_user_single_line_message('Type a single line description of the change: '))
-        url = api.update_merge_request(@mr_id, subject: @subject,
-                                               commit_message: @commit_message,
-                                               diff: @commit_diff,
-                                               description: description,
-                                               target_branch: options[:branch],
-                                               linter_ok: linter_ok?,
-                                               ci: should_run_ci?)
+        url = update_merge_request(mr_id)
         puts "Merge Request updated at #{url}"
       else
         abort 'You need to specify the target branch before creating a merge request.' if options[:branch].nil?
         puts 'Creating merge request...'
-        mr = api.create_merge_request(subject: @subject,
-                                      commit_message: @commit_message,
-                                      diff: @commit_diff,
-                                      target_branch: options[:branch],
-                                      linter_ok: linter_ok?,
-                                      ci: should_run_ci?)
-        url = mr[:url]
+        url = create_merge_request
         puts "Merge Request created at #{url}"
-        append_mr_id_to_commit(mr[:id])
-
-        if options[:rename]
-          puts 'Renaming local branch...'
-          branch = rename_local_branch(mr[:id])
-          puts "Local branch renamed to #{branch}. Use --no-rename to avoid this."
-        end
       end
       copy_to_clipboard(url)
     end
@@ -55,16 +33,39 @@ module Reviewit
       options
     end
 
-    def read_commit_diff
-      patch = `git show --format="%n"`
-      # git 2.1.x returns full patch on git show --format="", so we use %n and remove the lines
-      @commit_diff = patch.strip + "\n"
+    def update_merge_request(mr_id)
+      description = (options[:message] or read_user_single_line_message('Type a single line description of the change: '))
+      api.update_merge_request(mr_id, diff: commit_diff,
+                                      description: description,
+                                      target_branch: options[:branch],
+                                      linter_ok: linter_ok?,
+                                      ci: should_run_ci?)
+    end
+
+    def create_merge_request
+      mr = api.create_merge_request(diff: commit_diff,
+                                    target_branch: options[:branch],
+                                    linter_ok: linter_ok?,
+                                    ci: should_run_ci?)
+      append_mr_id_to_commit(mr[:id])
+      rename_local_branch(mr[:id]) if options[:rename]
+      mr[:url]
+    end
+
+    def commit_diff
+      @commit_diff ||= generate_commit_diff
+    end
+
+    def generate_commit_diff
+      diff = `git format-patch --stdout --no-stat -M HEAD~1`
+      diff.sub!(/^#{MR_STAMP} \d+\n\n/m, '')
+      diff
     end
 
     def append_mr_id_to_commit(mr_id)
       open('|git commit --amend -F -', 'w+') do |git|
-        git.write @commit_message
-        git.write "\n\n#{MR_STAMP} #{mr_id}\n"
+        git.write(commit_message)
+        git.write("\n\n#{MR_STAMP} #{mr_id}\n")
         git.close
       end
     end
@@ -74,11 +75,8 @@ module Reviewit
       new_name = "mr-#{mr_id}-#{branch}"
 
       system("git branch -m #{new_name}") or raise 'Branch rename failed'
+      puts "Local branch renamed to #{new_name}. Use --no-rename to avoid this."
       new_name
-    end
-
-    def updating?
-      not @mr_id.nil?
     end
 
     def linter_ok?

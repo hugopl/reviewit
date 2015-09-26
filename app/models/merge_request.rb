@@ -38,13 +38,14 @@ class MergeRequest < ActiveRecord::Base
     Comment.joins(:patch).where(patches: { merge_request_id: id }, comments: { location: 0 }).any?
   end
 
-  def add_patch(data)
+  def add_patch(diff:, linter_ok:, ci_enabled:, description: '')
     patch = Patch.new
-    patch.commit_message = data[:commit_message]
-    patch.diff = data[:diff]
-    patch.linter_ok = data[:linter_ok]
-    patch.description = data[:description]
-    patch.gitlab_ci_status = :canceled unless data[:ci]
+    patch.subject = diff.subject
+    patch.commit_message = diff.commit_message
+    patch.description = description
+    patch.diff = diff.raw
+    patch.linter_ok = linter_ok
+    patch.gitlab_ci_status = :canceled unless ci_enabled
     patches << patch
     add_history_event(author, 'updated the merge request') if persisted?
   end

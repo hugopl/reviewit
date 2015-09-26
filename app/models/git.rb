@@ -21,7 +21,7 @@ class Git
   alias_method :ready?, :ready
 
   def am(patch)
-    contents = patch.formatted
+    contents = patch.diff(stamp: true)
     file = Tempfile.new('patch')
     file.puts contents
     file.close

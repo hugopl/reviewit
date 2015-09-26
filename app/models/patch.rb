@@ -8,7 +8,7 @@ class Patch < ActiveRecord::Base
   order :location
 
   validates :diff, presence: true
-  validates :commit_message, presence: true
+  validates :commit_message, length: { minimum: 0 }, allow_nil: false
 
   after_create :push_to_ci_if_neded
 
@@ -16,6 +16,8 @@ class Patch < ActiveRecord::Base
   delegate :reviewer, to: :merge_request
   delegate :project, to: :merge_request
   delegate :target_branch, to: :merge_request
+
+  before_save :fix_author
 
   def ok_to_retry_ci?
     failed? || canceled?
@@ -40,27 +42,16 @@ class Patch < ActiveRecord::Base
     merge_request.patches.index(self) + 1
   end
 
-  def subject
-    commit_message.each_line.first
-  end
+  # Stamp can be: reviewer, reviewit or nil
+  # For Reviewed-by or Reviewit-MR-id
+  def diff(stamp: false)
+    # be compatible with old MRs
+    return old_formatted(no_reviewer: !stamp) if !new_record? && created_at < Time.new(2015, 9, 25)
+    return self[:diff] if !stamp || merge_request.nil?
 
-  def commit_message(options = nil)
-    msg = self[:commit_message]
-    return msg.lines[1..-1].join.strip if options == :no_title
-    msg
-  end
-
-  def formatted(no_reviewer: false)
-    <<eot
-From: #{author.name} <#{author.email}>
-Date: #{created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
-
-#{commit_message}
-#{no_reviewer ? mr_stamp : reviewer_stamp}
-#{diff}
---
-review it!
-eot
+    text = reviewer_stamp
+    text ||= mr_stamp
+    self[:diff].sub(/^diff --git /, "#{text}\ndiff --git ")
   end
 
   def push
@@ -104,16 +95,35 @@ eot
 
   private
 
+  def fix_author
+    self.diff = diff.sub(/^From: .*$/, "From: #{author.name} <#{author.email}>")
+  end
+
+  # TODO: Remove this old method in a near future.
+  def old_formatted(no_reviewer: false)
+    <<eot
+From: #{author.name} <#{author.email}>
+Date: #{created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
+
+#{commit_message}
+
+#{no_reviewer ? mr_stamp : reviewer_stamp}
+#{self[:diff]}
+--
+review it!
+eot
+  end
+
   def push_to_ci_if_neded
     push_to_ci unless canceled?
   end
 
   def mr_stamp
-    "\nReviewit-MR-id: #{merge_request.id}\n"
+    "Reviewit-MR-id: #{merge_request.id}\n"
   end
 
   def reviewer_stamp
-    return '' unless merge_request.accepted? or merge_request.integrating?
-    "\nReviewed by #{reviewer.name} on MR ##{merge_request.id}\n"
+    return unless merge_request.accepted? or merge_request.integrating?
+    "Reviewed by #{reviewer.name} on MR ##{merge_request.id}\n"
   end
 end

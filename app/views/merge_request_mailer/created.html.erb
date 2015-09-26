@@ -4,7 +4,7 @@
 
 <h1><%= link_to @mr.subject, project_merge_request_url(@mr.project, @mr) %></h1>
 
-<%= markdown(@mr.patch.commit_message(:no_title)) %>
+<%= markdown(@mr.patch.commit_message) %>
 
 <p>--<br>
 Review it!
