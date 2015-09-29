@@ -188,6 +188,8 @@ class Diff
       @file.index = @index + 1
     when /^GIT binary patch$/
       @file.binary = true
+      @file.index = @index + 1
+      @file.changes << 'This is a binary file, code to view it here is not done yet :-('
       self.state = :state_reading_file_changes
     end
   end
