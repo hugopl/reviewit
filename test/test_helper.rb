@@ -13,8 +13,8 @@ module ActiveSupport
     extend MiniTest::Spec::DSL
 
     def git_available?
-      `git rev-parse HEAD`
-      $?.success?
+      commit_count = `git rev-list HEAD --count`.to_i
+      $?.success? && commit_count >= 342
     end
 
     def git_diff(hash)
