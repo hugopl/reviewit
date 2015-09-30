@@ -5,8 +5,8 @@
   <th>Created at</th>
   <th>Lint</th>
   <th>CI</th>
-  <th><%= radio_button_tag('from', 0, @from.zero?) %></th>
-  <th></th>
+  <!--<th><%= radio_button_tag('from', 0, @from.zero?) %></th>
+  <th></th>-->
 </tr>
 <%
 patches = @mr.patches.to_a
@@ -19,15 +19,17 @@ patches.each_with_index do |patch, i|
   <td><%= patch.created_at.to_formatted_s(:short)%></td>
   <td><%= patch_linter_status(patch) %></td>
   <td><%= patch_ci_icon(patch) %></td>
-  <td><%= radio_button_tag('from', i, @from == i, disabled: (i >= @to)) if i != last_i %></td>
-  <td><%= radio_button_tag('to', i, @to == i, disabled: (i <= @from)) %></td>
+  <!--<td><%= radio_button_tag('from', i, @from == i, disabled: (i >= @to)) if i != last_i %></td>
+  <td><%= radio_button_tag('to', i, @to == i, disabled: (i <= @from)) %></td>-->
 </tr>
 <% end %>
+<!--
 <tr>
   <td colspan="6" class="patch-history-submit">
     <input type="button" value="Show diff">
   </td>
 </tr>
+-->
 </table>
 <% end %>
 
