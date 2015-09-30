@@ -45,8 +45,6 @@ class Patch < ActiveRecord::Base
   # Stamp can be: reviewer, reviewit or nil
   # For Reviewed-by or Reviewit-MR-id
   def diff(stamp: false)
-    # be compatible with old MRs
-    return old_formatted(no_reviewer: !stamp) if !new_record? && created_at < Time.new(2015, 9, 25)
     return self[:diff] if !stamp || merge_request.nil?
 
     text = reviewer_stamp
@@ -97,21 +95,6 @@ class Patch < ActiveRecord::Base
 
   def fix_author
     self.diff = diff.sub(/^From: .*$/, "From: #{author.name} <#{author.email}>")
-  end
-
-  # TODO: Remove this old method in a near future.
-  def old_formatted(no_reviewer: false)
-    <<eot
-From: #{author.name} <#{author.email}>
-Date: #{created_at.strftime('%a, %d %b %Y %H:%M:%S %z')}
-
-#{commit_message}
-
-#{no_reviewer ? mr_stamp : reviewer_stamp}
-#{self[:diff]}
---
-review it!
-eot
   end
 
   def push_to_ci_if_neded
