@@ -12,6 +12,19 @@
         <td><%= new_ln %></td>
         <td><% unless @disable_comments %><div class="add-comment"></div><% end %><%= change %></td>
       </tr>
+      <% if @comments.include?(location) %>
+      <tr class="comment" data-location="<%= location %>">
+        <td colspan="2">
+         <%= "\uf086 #{@comments[location].count}" if @comments[location].count > 1 %>
+        </td>
+        <td>
+          <% @comments[location].each do |comment|  %>
+            <%= render partial: 'comment', locals: { comment: comment } %>
+          <% end %>
+          <input type="button" value="Reply" onclick="show_comment_box(this.parentElement.parentElement)">
+        </td>
+      </tr>
+      <% end %>
     <% end %>
     </table>
   </div>
