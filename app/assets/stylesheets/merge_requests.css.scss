@@ -66,6 +66,40 @@ pre.message {
   border-radius: 0px 0px 4px 4px;
 }
 
+.del {
+  background-color: #fdd;
+}
+
+.add {
+  background-color: #cfd;
+}
+
+.info {
+  color: #ccc;
+  background-color: #fafafa;
+}
+
+.snippet {
+  font-family: monospace;
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;
+  font-size: 12px;
+  height: 18px;
+  line-height: 18px;
+  padding: 0px 6px 0px 6px;
+}
+
+.snippet-container {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.code-comment-recap {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
 .code-review {
   width: 100%;
   border-spacing: 0px;
@@ -92,23 +126,13 @@ pre.message {
   td:last-child {
     width: 100%;
   }
-  .add > td:nth-child(3) {
-    background-color: #cfd;
-  }
   .add > td:nth-child(1), .add > td:nth-child(2) {
     background-color: #cfc;
     border-right: 1px solid #b9e7b9;
   }
-  .del > td:nth-child(3) {
-    background-color: #fdd;
-  }
   .del > td:nth-child(1), .del > td:nth-child(2) {
     background-color: #fcc;
     border-right: 1px solid #e7baba;
-  }
-  .info > td:nth-child(3) {
-    color: #ccc;
-    background-color: #fafafa;
   }
 
   td > div.add-comment {

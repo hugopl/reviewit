@@ -4,11 +4,17 @@
 
 <% has_many_versions = patches.count > 1 %>
 <% patches.each_with_index do |patch, i| %>
-  <% if i != 0 and has_many_versions and !patch.comments.general.empty? %>
+  <% if i != 0 and has_many_versions and should_show_patch_comment_divisor(patch, @patch) %>
     <h3 class="comment-patch-update"><span>Patch updated, <%= patch_name(patch) %></span></h2>
   <% end %>
 
-  <% patch.comments.general.each do |comment|  %>
+  <% if patch != @patch %>
+    <% patch.comments.includes(:user).code.group_by(&:location).each do |_location, comments|  %>
+    <%= render partial: 'code_comment_recap', locals: { comments: comments, patch: patch } %>
+    <% end %>
+  <% end %>
+
+  <% patch.comments.includes(:user).general.each do |comment|  %>
     <%= render partial: 'comment', locals: { comment: comment } %>
   <% end %>
 <% end %>

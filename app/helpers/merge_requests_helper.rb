@@ -41,6 +41,17 @@ module MergeRequestsHelper
     end
   end
 
+  def should_show_patch_comment_divisor(patch, main_patch)
+    return patch.comments.general.any? if patch == main_patch
+    patch.comments.any?
+  end
+
+  def diff_snippet(patch, location)
+    patch.code_at((location - 2)..(location)).map do |line|
+      content_tag(:div, line, class: "#{code_line_type(line)} snippet")
+    end.join.html_safe
+  end
+
   def diff_file_status(file)
     flags = {}
     if file.new?
@@ -70,6 +81,14 @@ module MergeRequestsHelper
   end
 
   private
+
+  def code_line_type(line)
+    case line[0]
+    when '+' then 'add'
+    when '-' then 'del'
+    when '@' then 'info'
+    end
+  end
 
   def parse_addons_template(template, patch)
     template.gsub!('#{mr_id}', patch.merge_request.id.to_s)

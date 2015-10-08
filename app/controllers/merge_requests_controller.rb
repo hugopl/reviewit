@@ -35,7 +35,7 @@ class MergeRequestsController < ApplicationController
 
     if @from.zero?
       @patch = merge_request.patches[@to - 1]
-      @comments = @patch.comments_by_location
+      @comments = @patch.comments.group_by(&:location)
     else
       @patch = merge_request.patch
       @comments = []

@@ -23,23 +23,17 @@ class Patch < ActiveRecord::Base
     failed? || canceled?
   end
 
-  def comments_by_location
-    comments.to_a.inject({}) do |hash, comment|
-      location = comment.location.to_i
-      unless location.zero?
-        hash[location] ||= []
-        hash[location] << comment
-      end
-      hash
-    end
-  end
-
   def ci_branch_name
     "mr-#{merge_request.id}-version-#{version}"
   end
 
   def version
     merge_request.patches.index(self) + 1
+  end
+
+  def code_at(location)
+    @lines ||= diff.lines
+    @lines[location]
   end
 
   # Stamp can be: reviewer, reviewit or nil
