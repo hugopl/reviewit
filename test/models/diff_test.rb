@@ -15,7 +15,7 @@ class DiffTest < ActiveSupport::TestCase
                                    'commented on the merge request.'
     # Multiline subject
     diff = Diff.new(git_diff('60ec5b8cfc7bf2b22e4af9f04659de6b28aea364'))
-    diff.subject.must_equal "- API moved to it's own namespace. - Butons aren't links,they are now real buttons. - " \
+    diff.subject.must_equal "- API moved to it's own namespace. - Butons aren't links, they are now real buttons. - " \
                             "A lot of other things I don't really remember."
   end
 

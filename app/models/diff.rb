@@ -149,7 +149,7 @@ class Diff
   end
 
   def state_reading_subject(line)
-    @message_lines[-1] += $1 if line =~ /^ (.+)/
+    @message_lines[0] += $1 if line =~ /^( .+)/
     self.state = :state_reading_commit_message if line.blank?
   end
 
