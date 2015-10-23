@@ -7,7 +7,7 @@ module Reviewit
         @active_mrs = api.pending_merge_requests.map { |mr| mr[:id].to_i }
       end
       puts 'Looking for outdated remote branches...'
-      `git remote prune #{remote}`
+      system("git remote prune #{remote}")
       thread.join
 
       puts 'Looking for outdated local branches...'
