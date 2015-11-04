@@ -22,14 +22,18 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
-  def patch_ci_icon(patch, only_cached = nil)
+  def patch_ci_status(patch, only_cached = nil)
     if patch.pass?
-      content_tag(:i, '', class: 'tipped fa fa-check ok', 'data-tip' => 'CI passed')
+      'review-list--success'
     elsif patch.canceled?
-      content_tag(:i, '', class: 'tipped fa fa-ban', 'data-tip' => 'CI canceled')
-    elsif only_cached && patch.failed?
-      content_tag(:i, '', class: 'tipped fa fa-remove fail', 'data-tip' => 'CI failed')
-    elsif only_cached
+      'review-list--canceled'
+    else only_cached && patch.failed?
+      'review-list--failure'
+    end
+  end
+
+  def patch_ci_icon(patch, only_cached = nil)
+    if only_cached
       return ''
     elsif @mr.nil? || !patch.project.gitlab_ci?
       content_tag(:i, '', class: 'tipped fa fa-ban', 'data-tip' => 'CI not available.')
