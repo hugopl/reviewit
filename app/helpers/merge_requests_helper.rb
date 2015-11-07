@@ -27,7 +27,7 @@ module MergeRequestsHelper
       'review-list--success'
     elsif patch.canceled?
       'review-list--canceled'
-    else only_cached && patch.failed?
+    elsif only_cached && patch.failed?
       'review-list--failure'
     end
   end
