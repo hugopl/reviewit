@@ -8,9 +8,6 @@ function merge_requests() {
     $(".patch-history-submit input").on('click', function(event) {
         request_patch_diff();
     });
-    $("i[data-ci-status-url]").each(function(i, elem) {
-        load_ci_status(elem);
-    });
     new_editor($('textarea').get(0), false);
 }
 
@@ -86,33 +83,5 @@ function hide_comment_box(cancelLink) {
     var tr = cancelLink.parentElement.parentElement;
     tr.previousSibling.dataset.expanded = false;
     $(tr).remove();
-}
-
-function load_ci_status(elem) {
-    $.ajax(elem.dataset.ciStatusUrl).done(function(result) {
-        update_ci_status(elem, result['status'], result['url']);
-    });
-}
-
-function update_ci_status(elem, status, url) {
-    ciStatus = $(elem).removeClass('fa-refresh fa-spin');
-
-    var ci = {
-        'failed'  : ['fa-remove fail', 'CI failed'],
-        'success' : ['fa-check ok', 'CI passed'],
-        'unknown' : ['fa-question', 'Unknow CI status'],
-        'pending' : ['fa-clock-o', 'CI pending'],
-        'canceled': ['fa-ban', 'CI canceled'],
-        'running' : ['fa-cog fa-spin', 'CI running']
-    }
-
-    ciStatus.addClass(ci[status][0]);
-    Tipped.remove(elem);
-    Tipped.create(elem, ci[status][1]);
-
-    if (url) {
-        ciStatus.addClass('ci-link');
-        ciStatus.on('click', function(event) { window.open(url, url); });
-    }
 }
 

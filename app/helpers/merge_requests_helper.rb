@@ -38,10 +38,10 @@ module MergeRequestsHelper
     elsif @mr.nil? || !patch.project.gitlab_ci?
       content_tag(:i, '', class: 'tipped fa fa-ban', 'data-tip' => 'CI not available.')
     else
-      content_tag(:i, '', class: 'tipped fa fa-refresh fa-spin',
-                          'data-ci-status-url' => ci_status_project_merge_request_path(@project, @mr,
-                                                                                       format: :json,
-                                                                                       version: patch.version))
+      content_tag(:a, '', class: 'tipped fa fa-external-link',
+                          'data-tip' => 'Link to CI build page',
+                          target: "patch-#{patch.gitlab_ci_hash}",
+                          href: "#{patch.project.gitlab_ci_project_url}/#{patch.gitlab_ci_hash}")
     end
   end
 
