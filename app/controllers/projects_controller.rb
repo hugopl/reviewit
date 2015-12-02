@@ -60,6 +60,6 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :repository, :description, :linter,
-                                    :summary_addons, :gitlab_ci_project_url, :gitlab_ci_token)
+                                    :summary_addons, :gitlab_ci_project_url)
   end
 end

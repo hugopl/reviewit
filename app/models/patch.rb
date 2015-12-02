@@ -3,7 +3,7 @@ class Patch < ActiveRecord::Base
 
   has_many :comments, dependent: :destroy
 
-  enum gitlab_ci_status: %i(unknown failed pass canceled)
+  enum gitlab_ci_status: %i(unknown failed success canceled pending running)
 
   order :location
 

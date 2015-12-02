@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150926213246) do
+ActiveRecord::Schema.define(version: 20151202194250) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id",                 null: false
@@ -61,8 +61,10 @@ ActiveRecord::Schema.define(version: 20150926213246) do
     t.string   "gitlab_ci_hash",   limit: 255
     t.integer  "gitlab_ci_status",             default: 0
     t.text     "subject"
+    t.integer  "gitlab_ci_build"
   end
 
+  add_index "patches", ["gitlab_ci_hash"], name: "index_patches_on_gitlab_ci_hash"
   add_index "patches", ["merge_request_id"], name: "index_patches_on_merge_request_id"
 
   create_table "projects", force: :cascade do |t|
@@ -73,7 +75,6 @@ ActiveRecord::Schema.define(version: 20150926213246) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "gitlab_ci_project_url", limit: 255
-    t.string   "gitlab_ci_token",       limit: 255
     t.text     "summary_addons"
   end
 

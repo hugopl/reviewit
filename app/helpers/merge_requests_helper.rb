@@ -23,7 +23,7 @@ module MergeRequestsHelper
   end
 
   def patch_ci_status(patch, only_cached = nil)
-    if patch.pass?
+    if patch.success?
       'review-list--success'
     elsif patch.canceled?
       'review-list--canceled'
@@ -32,17 +32,15 @@ module MergeRequestsHelper
     end
   end
 
-  def patch_ci_icon(patch, only_cached = nil)
-    if only_cached
-      return ''
-    elsif @mr.nil? || !patch.project.gitlab_ci?
-      content_tag(:i, '', class: 'tipped fa fa-ban', 'data-tip' => 'CI not available.')
-    else
-      content_tag(:a, '', class: 'tipped fa fa-external-link',
-                          'data-tip' => 'Link to CI build page',
-                          target: "patch-#{patch.gitlab_ci_hash}",
-                          href: "#{patch.project.gitlab_ci_project_url}/#{patch.gitlab_ci_hash}")
-    end
+  def patch_ci_icon(patch)
+    return unless patch.project.gitlab_ci?
+
+    tag = patch.unknown? ? :i : :a
+    content_tag(tag, '', class: "tipped fa #{patch_ci_fa(patch)}",
+                         'data-tip' => patch_ci_tip(patch),
+                         target: "patch-#{patch.gitlab_ci_hash}",
+                         href: "#{patch.project.gitlab_ci_project_url}/builds/#{patch.gitlab_ci_build}")
+
   end
 
   def should_show_patch_comment_divisor(patch, main_patch)
@@ -97,5 +95,20 @@ module MergeRequestsHelper
   def parse_addons_template(template, patch)
     template.gsub!('#{mr_id}', patch.merge_request.id.to_s)
     template.gsub!('#{mr_version}', patch.version.to_s)
+  end
+
+  def patch_ci_tip(patch)
+    "CI #{patch.gitlab_ci_status}"
+  end
+
+  def patch_ci_fa(patch)
+    case patch.gitlab_ci_status
+    when 'failed' then 'fa-remove fail'
+    when 'success' then 'fa-check ok'
+    when 'unknown' then 'fa-question'
+    when 'pending' then 'fa-clock-o'
+    when 'canceled' then 'fa-ban'
+    when 'running' then 'fa-cog fa-spin'
+    end
   end
 end

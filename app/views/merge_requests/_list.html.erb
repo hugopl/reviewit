@@ -4,12 +4,9 @@
   <div class="review-list-container">
     <div class="review-list-header"><%= pluralize(mrs.count, *title) %></div>
     <%- mrs.each do |mr| %>
-      <%= link_to project_merge_request_path(@project, mr), class: "review-list #{patch_ci_status(mr.patch, :only_cached)}" do %>
+      <%= link_to project_merge_request_path(@project, mr), class: "review-list #{patch_ci_status(mr.patch)}" do %>
 
-        <div class="subject">
-          <%= mr.subject %>
-          <%= patch_ci_icon(mr.patch, :only_cached) %>
-        </div>
+        <div class="subject"><%= mr.subject %></div>
 
         <div class="summary">
           #<%= mr.id %> <%= merge_request_pending_since(mr) %>,

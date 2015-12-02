@@ -26,6 +26,8 @@ module Reviewit
       Rack::Response.new(e.message, 404).finish
     end
 
+    mount CI
+
     before do
       raise Error.new("Version #{Reviewit::VERSION} required.", 426) if version_changed?
 

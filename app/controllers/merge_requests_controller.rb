@@ -1,6 +1,5 @@
 class MergeRequestsController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :verify_authenticity_token, only: :ci_status
 
   def update
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
@@ -41,10 +40,6 @@ class MergeRequestsController < ApplicationController
       @comments = []
       @disable_comments = true
     end
-  end
-
-  def ci_status
-    render json: project.ci_status(patch_for(version_from_params))
   end
 
   private
