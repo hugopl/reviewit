@@ -104,31 +104,7 @@ module Reviewit
         return
       end
 
-      changed_files_regex = /\#{changed_files(?:\|(.*))?}/
-      linter_command = ''
-      if changed_files_regex =~ linter
-        globs = $1
-
-        selected_files = changed_files
-        if globs
-          globs = globs.split(',').map(&:strip)
-          selected_files.select! do |file|
-            globs.any? do |glob|
-              File.fnmatch? glob, file
-            end
-          end
-        end
-
-        if selected_files.empty?
-          puts 'No files to lint'
-          @linter_ok = true
-          return true
-        end
-
-        linter_command = linter.gsub(changed_files_regex, selected_files.join(' '))
-      else
-        linter_command = "git show | #{linter}"
-      end
+      linter_command = "./#{linter} #{changed_files.join(' ')}"
       puts linter_command
       @linter_ok = system(linter_command)
       raise 'Lint error' unless @linter_ok

@@ -8,8 +8,8 @@
   <label class="required">Git repository</label><br>
   <%= f.text_field :repository, :placeholder => 'The project git repository URL' %>
 
-  <label>Linter command</label>
-  <i>(#{changed_files|glob patterns} will be replaced by a list of changed files, e.g. to run rubocop lint against all ruby files use "rubocop #{changed_files|*.rb,*.rake}", if this string isn't found the CLI will send the git show output via stdin)</i><br>
+  <label>Linter</label>
+  <i>(a script in the project directory that will run before any MR creation or update)</i><br>
   <%= f.text_field :linter, :placeholder => 'Command run by CLI before create/update a MR' %>
 
   <label class="required">Users</label><br>

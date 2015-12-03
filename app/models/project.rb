@@ -3,6 +3,9 @@ class Project < ActiveRecord::Base
   has_many :merge_requests, dependent: :destroy
 
   validates :name, presence: true
+  validates :linter, format: { with: %r{\A[^\./](?!.*(\.\.|[&|<>])).*\z},
+                               message: "can't have pipes, dots, slashes, two dots, etc, try to use a script in your " \
+                                        'project directory' }
   validate :validate_repository
 
   def gitlab_ci?
