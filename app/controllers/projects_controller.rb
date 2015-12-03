@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
     else
       flash.now[:danger] = 'Please, review the form fields below before try again.'
 
-      render :new
+      render :edit
     end
   end
 
