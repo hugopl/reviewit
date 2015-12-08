@@ -106,17 +106,46 @@ class Diff
     }
 
     def path_diff(from, to)
-      from = from.split('/')
-      to = to.split('/')
+      old_parts = from.split('/')
+      new_parts = to.split('/')
       output = []
-      from.each_with_index do |f, i|
-        if f == to[i]
-          output << f
+      old_changed = []
+      new_changed = []
+      change_blocks = 0
+      i = -1
+      old_parts.reverse_each do |old_dir|
+        new_dir = new_parts[i]
+        if old_dir == new_dir
+          if old_changed.any?
+            output << "{#{old_changed.reverse.join('/')} → #{new_changed.reverse.join('/')}}" if new_changed.any?
+            change_blocks += 1
+          end
+          output << old_dir
+
+          old_changed = []
+          new_changed = []
+        elsif change_blocks == 1
+          change_blocks += 1
+          break
         else
-          output << "{#{f} → #{to[i]}}"
+          old_changed << old_dir
+          new_changed << new_dir
         end
+        i -= 1
       end
-      output.join('/')
+
+      missing_path_parts = -i <= new_parts.length
+      output.clear if old_changed.empty? && missing_path_parts
+
+      return "#{from} => #{to}" if change_blocks > 1 || output.empty?
+
+      if missing_path_parts
+        range = new_parts.length + i
+        new_changed += new_parts[0..range].reverse
+      end
+
+      output << "{#{old_changed.reverse.join('/')} → #{new_changed.reverse.join('/')}}" if new_changed.any?
+      output.reverse.join('/')
     end
   end
 
