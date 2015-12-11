@@ -31,7 +31,7 @@ module Reviewit
     def row_color(mr, i)
       case
       when i.zero? then WHITE
-      when mr[:ci_status] == 'pass' then GREEN
+      when mr[:ci_status] == 'success' then GREEN
       when mr[:ci_status] == 'failed' then RED
       end
     end
