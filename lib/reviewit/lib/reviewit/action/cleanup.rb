@@ -19,41 +19,16 @@ module Reviewit
 
     private
 
+    include GitUtil
+
     def branch_name(mr_id)
       local_branches.find { |branch| branch.start_with?("mr-#{mr_id}-") }
-    end
-
-    def remove_branch(branch)
-      return if branch.nil?
-
-      puts " * [pruned] #{branch}"
-      `git branch -D #{branch}`
-    end
-
-    def local_branches
-      @local_branches ||= fetch_local_branches
-    end
-
-    def fetch_local_branches
-      branches = `git branch --no-color --list`.split
-      branches.delete('*')
-      branches
     end
 
     def local_branches_ids
       local_branches.map do |branch|
         $1.to_i if branch =~ /^mr-(\d+)-.*/
       end.compact
-    end
-
-    def remote
-      @remote ||= fetch_remote
-    end
-
-    def fetch_remote
-      remote = `git config --get reviewit.remote 2>/dev/null`.strip
-      @custom_remote = !remote.empty?
-      @custom_remote ? remote : 'origin'
     end
 
     def parse_options
