@@ -22,12 +22,12 @@ module MergeRequestsHelper
     "pending for #{time}"
   end
 
-  def patch_ci_status(patch, only_cached = nil)
+  def patch_ci_status(patch)
     if patch.success?
       'review-list--success'
     elsif patch.canceled?
       'review-list--canceled'
-    elsif only_cached && patch.failed?
+    elsif patch.failed?
       'review-list--failure'
     end
   end
