@@ -29,6 +29,7 @@ module Reviewit
       expose :patch
       expose :author, with: User
       expose :reviewer, with: User
+      expose :subject
 
       def patch
         object.patch.diff(stamp: true)
