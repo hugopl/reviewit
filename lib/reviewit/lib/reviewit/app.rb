@@ -64,6 +64,9 @@ review actions:
   apply     Apply patch from a merge request on your tree.
   show      Show patch from a merge request.
   open      Open a merge request in your default browser.
+
+To get help on subcommands use for example:
+  review push --help
 eot
       puts help
       abort if should_abort
