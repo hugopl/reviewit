@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'devise'
-gem 'grape', '~> 0.9'
-gem 'grape-entity', '~> 0.4'
+gem 'grape', '~> 0.14'
+gem 'grape-entity', '~> 0.5'
 gem 'jquery-rails'
 gem 'rails', '4.2.4'
 gem 'redcarpet'
