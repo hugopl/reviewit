@@ -4,8 +4,7 @@ module Reviewit
       patch = api.merge_request(options[:mr])
 
       fetch_repository if options[:fetch]
-      create_branch(patch['target_branch'],
-                    "mr-#{options[:mr]}-#{patch['subject'].downcase.gsub(/\s/, '_')}") if options[:branch]
+      create_branch(patch['target_branch'], branch_name_for(options[:mr], patch['subject'])) if options[:branch]
 
       file = Tempfile.new 'patch'
       file.puts patch['patch']
@@ -18,6 +17,16 @@ module Reviewit
     private
 
     include GitUtil
+
+    def branch_name_for(mr, patch)
+      description = patch['subject'].downcase
+      description.gsub!(/\.lock$/, '')
+      description.gsub!(%r{[\[\]\s\./\\:^~]}, '_')
+      description.gsub!(/^_/, '')
+      description.gsub!('__', '_')
+
+      "mr-#{options[:mr]}-#{description}"
+    end
 
     def parse_options
       options = Trollop.options do
