@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module Reviewit
   module GitUtil
     def local_branches
@@ -8,7 +10,7 @@ module Reviewit
       return if branch.nil?
 
       puts " * [pruned] #{branch}"
-      `git branch -D #{branch}`
+      `git branch -D #{Shellwords.escape(branch)}`
     end
 
     def fetch_repository
@@ -33,7 +35,7 @@ module Reviewit
       name.gsub!(/^\./, '_') # replace other dots by underscore
       name.gsub!(%r{(\.lock|/)\z}, '_') # git restrictions
       name.gsub!(/[\s\\>:~^]/, '_') # more git restrictions
-      name
+      Shellwords.escape(name)
     end
 
     private
