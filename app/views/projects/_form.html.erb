@@ -23,6 +23,23 @@
   <i>(A very nice undocumented feature)</i>
   <%= f.text_area :summary_addons %>
 
+  <h1>Jira integration</h1>
+
+  <label>Jira user</label>
+  <%= f.text_field :jira_username %>
+
+  <label>Jira password</label>
+  <i>(Stored in plain text!! So make sure this user can only comment in Jira)</i>
+  <%= f.password_field :jira_password %>
+
+  <label>Jira Ticket Regexp</label>
+  <i>(This must capture the Ticket id)</i>
+  <%= f.text_field :jira_ticket_regexp %>
+
+  <label>Jira API v2 URL</label>
+  <i>(e.g. https://myjira.com/rest/api/2)</i>
+  <%= f.text_field :jira_api_url %>
+
   <h1>GitLab CI integration</h1>
 
   <label>Gitlab project URL</label>

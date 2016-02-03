@@ -1,5 +1,7 @@
 require 'tmpdir'
 require 'fileutils'
+require 'net/http'
+require 'openssl'
 require 'tempfile'
 
 class MergeRequest < ActiveRecord::Base
@@ -25,6 +27,8 @@ class MergeRequest < ActiveRecord::Base
   validates :target_branch, format: /\A[\w\d,\.-]+[^.](?<!\.lock)\z/
 
   before_save :write_history
+
+  after_create :notify_jira
 
   def can_update?
     not %w(accepted integrating).include? status
@@ -176,5 +180,39 @@ class MergeRequest < ActiveRecord::Base
 
   def author_cant_be_reviewer
     errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
+  end
+
+  def notify_jira
+    return if project.jira_username.blank? ||
+              project.jira_password.blank? ||
+              project.jira_api_url.blank? ||
+              project.jira_ticket_regexp.blank?
+
+    match = /#{project.jira_ticket_regexp}/.match(patch.commit_message)
+    return if match.nil?
+
+    message = "Merge request created at https://#{url_domain}/mr/#{id}"
+    Thread.new do
+      ActiveRecord::Base.connection.close
+      match.to_a.each do |ticket_id|
+        uri = URI("#{project.jira_api_url}/issue/#{ticket_id}/comment")
+        request = Net::HTTP::Post.new(uri.to_s)
+        request.basic_auth(project.jira_username, project.jira_password)
+        request['Content-Type'] = 'application/json'
+        request.body = { 'body' => message }.to_json
+
+        http = Net::HTTP.new(uri.hostname, uri.port)
+        http.use_ssl = true if uri.scheme == 'https'
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
+        http.start { |h| h.request(request) }
+      end
+    end
+  end
+
+  # FIXME: This should have it's own model and be easily accesible in the whole project.
+  def url_domain
+    @url_domain ||= YAML.load_file("#{Rails.root}/config/reviewit.yml")['mail']['domain']
+  rescue
+    'localhost'
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202194250) do
+ActiveRecord::Schema.define(version: 20160203020340) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id",                 null: false
@@ -76,6 +76,10 @@ ActiveRecord::Schema.define(version: 20151202194250) do
     t.datetime "updated_at"
     t.string   "gitlab_ci_project_url", limit: 255
     t.text     "summary_addons"
+    t.string   "jira_username"
+    t.string   "jira_password"
+    t.string   "jira_api_url"
+    t.string   "jira_ticket_regexp"
   end
 
   create_table "projects_users", id: false, force: :cascade do |t|
