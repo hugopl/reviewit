@@ -72,16 +72,6 @@ module MergeRequestsHelper
     end.join.html_safe
   end
 
-  def summary_addons(patch)
-    addons = patch.project.summary_addons
-    return if addons.nil?
-    addons.each_line do |line|
-      label, template = line.split(':', 2)
-      template = parse_addons_template(template, patch)
-      yield label, template
-    end
-  end
-
   private
 
   def code_line_type(line)
