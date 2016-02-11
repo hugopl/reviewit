@@ -1,0 +1,8 @@
+exclude_paths:
+- app/assets/javascripts/tag-it.js
+- app/assets/javascripts/highcharts.js
+- app/assets/javascripts/marked.min.js
+- app/assets/javascripts/jquery-ui.js
+- app/assets/javascripts/simplemde.min.js
+- app/assets/javascripts/tipped.js
+- app/assets/javascripts/imagesloaded.pkgd.min.js
