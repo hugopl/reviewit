@@ -1,7 +1,12 @@
 module Reviewit
   class Accept < Action
     def run
-      api.accept_merge_request options[:mr]
+      mr_id = options[:mr]
+      mr = api.merge_request(mr_id)
+      puts "Accept MR #{WHITE}“#{mr['subject']}”#{NO_COLOR} (yn)?"
+      return unless STDIN.gets.downcase.start_with?('y')
+
+      api.accept_merge_request(mr_id)
       puts 'Merge request accepted, check later if the integration was successful.'
     end
 
