@@ -63,6 +63,10 @@ module Reviewit
       abort "Missing #{self.class}#parse_options implementation"
     end
 
+    def root_dir
+      @root_dir ||= `git rev-parse --show-toplevel`.strip
+    end
+
     def copy_to_clipboard(text)
       text = Shellwords.escape(text)
       case RUBY_PLATFORM

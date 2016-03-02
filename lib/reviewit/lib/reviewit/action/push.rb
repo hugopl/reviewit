@@ -88,13 +88,12 @@ module Reviewit
     end
 
     def changed_files
-      root = `git rev-parse --show-toplevel`.strip
       matches = `git show --format=short`.scan(/^--- (.*)\n\+\+\+ (.*)$/)
       matches.select! do |pair|
         pair[1] != '/dev/null'
       end
       matches.map do |pair|
-        File.join(root, pair[1][2..-1])
+        File.join(root_dir, pair[1][2..-1])
       end
     end
 
@@ -106,7 +105,10 @@ module Reviewit
 
       linter_command = "./#{linter} #{changed_files.join(' ')}"
       puts linter_command
-      @linter_ok = system(linter_command)
+
+      Dir.chdir(root_dir) do
+        @linter_ok = system(linter_command)
+      end
       raise 'Lint error' unless @linter_ok
     end
   end
