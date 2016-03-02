@@ -2,11 +2,7 @@ class MrController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    project = MergeRequest.find(params[:id]).project
-    if project.users.include? current_user
-      redirect_to "/projects/#{project.id}/merge_requests/#{params[:id]}"
-    else
-      raise ActiveRecord::RecordNotFound, 'Merge request not found.'
-    end
+    project = current_user.projects.joins(:merge_requests).where('merge_requests.id = ?', params[:id])
+    redirect_to("/projects/#{project.id}/merge_requests/#{params[:id]}")
   end
 end
