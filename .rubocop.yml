@@ -3,6 +3,7 @@ AllCops:
     - 'db/**/*'
     - 'bin/**/*'
   DisplayCopNames: true
+  TargetRubyVersion: 2.1
 Lint/Eval:
   Enabled: false
 Metrics/LineLength:
@@ -13,6 +14,8 @@ Rails/Output:
 Style/Documentation:
   Enabled: false
 Style/Not:
+  Enabled: false
+Style/MutableConstant:
   Enabled: false
 Style/SpecialGlobalVars:
   Enabled: false
