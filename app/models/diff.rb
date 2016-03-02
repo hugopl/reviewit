@@ -35,7 +35,7 @@ class Diff
     attr_accessor :index
     attr_accessor :similarity
     attr_accessor :binary
-    alias_method :binary?, :binary
+    alias binary? binary
     attr_writer :status
 
     def initialize

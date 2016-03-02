@@ -40,7 +40,6 @@ module MergeRequestsHelper
                          'data-tip' => patch_ci_tip(patch),
                          target: "patch-#{patch.gitlab_ci_hash}",
                          href: "#{patch.project.gitlab_ci_project_url}/builds/#{patch.gitlab_ci_build}")
-
   end
 
   def should_show_patch_comment_divisor(patch, main_patch)
@@ -49,7 +48,7 @@ module MergeRequestsHelper
   end
 
   def diff_snippet(patch, location)
-    patch.code_at((location - 2)..(location)).map do |line|
+    patch.code_at((location - 2)..location).map do |line|
       content_tag(:div, line, class: "#{code_line_type(line)} snippet")
     end.join.html_safe
   end

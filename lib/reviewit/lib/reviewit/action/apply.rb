@@ -18,7 +18,7 @@ module Reviewit
 
     include GitUtil
 
-    def branch_name_for(mr, patch)
+    def branch_name_for(_mr, patch)
       description = patch.downcase
       description.gsub!(/\.lock$/, '')
       description.gsub!(%r{[\[\]\s\./\\:^~]}, '_')

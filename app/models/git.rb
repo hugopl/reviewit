@@ -18,7 +18,7 @@ class Git
   end
 
   attr_reader :dir, :ready
-  alias_method :ready?, :ready
+  alias ready? ready
 
   def am(patch)
     contents = patch.diff(stamp: true)
