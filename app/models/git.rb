@@ -25,7 +25,7 @@ class Git
     file = Tempfile.new('patch')
     file.puts contents
     file.close
-    call("git am #{file.path}")
+    call("git am -k #{file.path}")
   end
 
   def push(branch, forced = nil)
