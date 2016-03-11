@@ -58,6 +58,7 @@ module Reviewit
 
     def generate_commit_diff
       diff = `git format-patch --stdout --no-stat -M HEAD~1`
+      diff.sub!(/^Subject: \[PATCH\]/, 'Subject:')
       diff.sub!(/^#{MR_STAMP} \d+\n\n/m, '')
       diff
     end
