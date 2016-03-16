@@ -15,9 +15,5 @@ module ActiveSupport
     def patch(patch)
       File.read("test/fixtures/#{patch}.patch")
     end
-
-    def git_diff(hash)
-      `git format-patch --stdout --no-stat -M #{hash}~1..#{hash}`
-    end
   end
 end

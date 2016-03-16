@@ -10,7 +10,7 @@ class MergeRequestMailerTest < ActionMailer::TestCase
 
     mr = build(:merge_request, project: project, subject: 'Subject', author: user1)
     mr.add_patch(
-      diff: Diff.new(git_diff('815698bfa8b92e5d6283e390eb5ed2a839127e8d')),
+      diff: Diff.new(patch('mailer_create_mr')),
       linter_ok: true,
       ci_enabled: false)
     mr.save
