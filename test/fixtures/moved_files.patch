@@ -1,0 +1,77 @@
+From 2602550bfd82541798b5dfae6cb200a6014130b7 Mon Sep 17 00:00:00 2001
+From: Hugo Parente Lima <hugo.pl@gmail.com>
+Date: Tue, 18 Nov 2014 00:40:14 -0300
+Subject: [PATCH] Move WebFonts assets to the right location, so they can be
+ precompiled.
+
+
+diff --git a/app/assets/stylesheets/fonts/FontAwesome.otf b/app/assets/fonts/FontAwesome.otf
+similarity index 100%
+rename from app/assets/stylesheets/fonts/FontAwesome.otf
+rename to app/assets/fonts/FontAwesome.otf
+diff --git a/app/assets/stylesheets/fonts/fontawesome-webfont.eot b/app/assets/fonts/fontawesome-webfont.eot
+similarity index 100%
+rename from app/assets/stylesheets/fonts/fontawesome-webfont.eot
+rename to app/assets/fonts/fontawesome-webfont.eot
+diff --git a/app/assets/stylesheets/fonts/fontawesome-webfont.svg b/app/assets/fonts/fontawesome-webfont.svg
+similarity index 100%
+rename from app/assets/stylesheets/fonts/fontawesome-webfont.svg
+rename to app/assets/fonts/fontawesome-webfont.svg
+diff --git a/app/assets/stylesheets/fonts/fontawesome-webfont.ttf b/app/assets/fonts/fontawesome-webfont.ttf
+similarity index 100%
+rename from app/assets/stylesheets/fonts/fontawesome-webfont.ttf
+rename to app/assets/fonts/fontawesome-webfont.ttf
+diff --git a/app/assets/stylesheets/fonts/fontawesome-webfont.woff b/app/assets/fonts/fontawesome-webfont.woff
+similarity index 100%
+rename from app/assets/stylesheets/fonts/fontawesome-webfont.woff
+rename to app/assets/fonts/fontawesome-webfont.woff
+diff --git a/app/assets/stylesheets/font-awesome.css b/app/assets/stylesheets/font-awesome.css.scss
+similarity index 98%
+rename from app/assets/stylesheets/font-awesome.css
+rename to app/assets/stylesheets/font-awesome.css.scss
+index 6368ffe..1c33b08 100644
+--- a/app/assets/stylesheets/font-awesome.css
++++ b/app/assets/stylesheets/font-awesome.css.scss
+@@ -6,8 +6,11 @@
+  * -------------------------- */
+ @font-face {
+   font-family: 'FontAwesome';
+-  src: url('/assets/fonts/fontawesome-webfont.eot?v=4.2.0');
+-  src: url('/assets/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('/assets/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('/assets/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('/assets/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
++  src: font-url('fontawesome-webfont.eot');
++  src: font-url('fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
++       font-url('fontawesome-webfont.woff') format('woff'),
++       font-url('fontawesome-webfont.ttf') format('truetype'),
++       font-url('fontawesome-webfont.svg#fontawesomeregular') format('svg');
+   font-weight: normal;
+   font-style: normal;
+ }
+diff --git a/config/environments/production.rb b/config/environments/production.rb
+index 932c7f9..b93a877 100644
+--- a/config/environments/production.rb
++++ b/config/environments/production.rb
+@@ -20,7 +20,7 @@ Rails.application.configure do
+   # config.action_dispatch.rack_cache = true
+ 
+   # Disable Rails's static asset server (Apache or nginx will already do this).
+-  config.serve_static_assets = true
++  config.serve_static_assets = false
+ 
+   # Compress JavaScripts and CSS.
+   config.assets.js_compressor = :uglifier
+diff --git a/config/initializers/assets.rb b/config/initializers/assets.rb
+index d2f4ec3..c902b08 100644
+--- a/config/initializers/assets.rb
++++ b/config/initializers/assets.rb
+@@ -3,6 +3,8 @@
+ # Version of your assets, change this if you want to expire all your assets.
+ Rails.application.config.assets.version = '1.0'
+ 
++Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
++
+ # Precompile additional assets.
+ # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+ # Rails.application.config.assets.precompile += %w( search.js )
+-- 
+2.7.3
+

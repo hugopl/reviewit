@@ -1,0 +1,71 @@
+From 2c28a55a0a1f954b183876111a26e25811c7017c Mon Sep 17 00:00:00 2001
+From: Hugo Parente Lima <hugo.pl@gmail.com>
+Date: Fri, 10 Oct 2014 17:30:35 -0300
+Subject: [PATCH] An ugly logo Yay!!
+
+
+diff --git a/app/assets/images/logo.png b/app/assets/images/logo.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..ab96aa7670e5f8884641aec6852854ddaa43789d
+GIT binary patch
+literal 2097
+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
+bO<nMRF|_w*|FI;600000NkvXXu0mjf{KV*>
+
+literal 0
+HcmV?d00001
+
+diff --git a/app/views/layouts/devise/sessions.html.erb b/app/views/layouts/devise/sessions.html.erb
+index d7a7e48..9b8aad7 100644
+--- a/app/views/layouts/devise/sessions.html.erb
++++ b/app/views/layouts/devise/sessions.html.erb
+@@ -9,6 +9,7 @@
+ <body class="devise">
+ 
+ <div class="content">
++<div id="logo"><%= image_tag 'logo.png' %></div>
+ <%= yield %>
+ </div>
+ 
+-- 
+2.7.3
+

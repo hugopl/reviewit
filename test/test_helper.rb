@@ -12,9 +12,8 @@ module ActiveSupport
     include Warden::Test::Helpers
     extend MiniTest::Spec::DSL
 
-    def git_available?
-      commit_count = `git rev-list HEAD --count`.to_i
-      $?.success? && commit_count >= 342
+    def patch(patch)
+      File.read("test/fixtures/#{patch}.patch")
     end
 
     def git_diff(hash)

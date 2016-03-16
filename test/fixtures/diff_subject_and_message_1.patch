@@ -1,0 +1,27 @@
+From 70c5073e4b45bb276142497e2a50c754a8d7d32b Mon Sep 17 00:00:00 2001
+From: Marcelo Lira <setanta@gmail.com>
+Date: Wed, 3 Jun 2015 03:27:39 -0300
+Subject: [PATCH] If there's no one interested, don't send an email.
+
+Otherwise the thing brokens silently, presenting a white page to
+the helpless commenter.
+
+This bug would cease to be noticed as soon as some other person
+commented on the merge request.
+
+diff --git a/app/mailers/merge_request_mailer.rb b/app/mailers/merge_request_mailer.rb
+index e06f81a..659f384 100644
+--- a/app/mailers/merge_request_mailer.rb
++++ b/app/mailers/merge_request_mailer.rb
+@@ -9,7 +9,7 @@ class MergeRequestMailer < ApplicationMailer
+     cc = (mr.people_involved - [user]).map(&:email_address)
+     to = cc.pop
+ 
+-    mail(subject: subject, to: to, cc: cc)
++    mail(subject: subject, to: to, cc: cc) unless to.nil?
+   end
+ 
+   private
+-- 
+2.7.3
+

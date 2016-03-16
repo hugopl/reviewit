@@ -1,0 +1,488 @@
+From 60ec5b8cfc7bf2b22e4af9f04659de6b28aea364 Mon Sep 17 00:00:00 2001
+From: Hugo Parente Lima <hugo.pl@gmail.com>
+Date: Fri, 10 Oct 2014 02:05:16 -0300
+Subject: [PATCH] - API moved to it's own namespace. - Butons aren't links,
+ they are now real buttons. - A lot of other things I don't really remember.
+
+
+diff --git a/app/assets/javascripts/merge_requests.js.coffee b/app/assets/javascripts/merge_requests.js.coffee
+index 07bef94..e566026 100644
+--- a/app/assets/javascripts/merge_requests.js.coffee
++++ b/app/assets/javascripts/merge_requests.js.coffee
+@@ -7,15 +7,19 @@ window.merge_requests = ->
+   $("td > div.add-comment").on 'click', (event) ->
+     show_comment_box(event.target.parentElement.parentElement, event.target.dataset.line)
+ 
++  $('#push-comments').on 'click', (event) ->
++    false
++
+ show_comment_box = (tr, line) ->
+   if tr.dataset.expanded == 'true'
+     $(tr.nextSibling).find('textarea').focus()
+     return
+   tr.dataset.expanded = true
++  location = tr.dataset.location
+ 
+   html = "<tr><td colspan='3' class='add-comment'>\
+-           <textarea placeholder='Leave a comment'></textarea>\
+-           <a class='button cancel' onclick='hide_comment_box(this);'>Cancel</a>
++           <textarea placeholder='Leave a comment' name='comments[#{location}]'></textarea>\
++           <input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>
+            </td></tr>"
+   $(html).insertAfter tr
+ 
+@@ -23,3 +27,4 @@ window.hide_comment_box = (cancel_link) ->
+   tr = cancel_link.parentElement.parentElement
+   tr.previousSibling.dataset.expanded = false
+   $(tr).remove()
++
+diff --git a/app/assets/stylesheets/application.css b/app/assets/stylesheets/application.css
+index 4b94d2c..03aedcd 100644
+--- a/app/assets/stylesheets/application.css
++++ b/app/assets/stylesheets/application.css
+@@ -44,15 +44,6 @@ h1 {
+   font-size: 24px;
+ }
+ 
+-form {
+-  width: 600px;
+-}
+-
+-form > * {
+-  margin: 5px;
+-  vertical-align: top;
+-}
+-
+ label + input {
+     display: block;
+ }
+diff --git a/app/assets/stylesheets/merge_requests.css.scss b/app/assets/stylesheets/merge_requests.css.scss
+index fa5cc8e..344c2e9 100644
+--- a/app/assets/stylesheets/merge_requests.css.scss
++++ b/app/assets/stylesheets/merge_requests.css.scss
+@@ -20,20 +20,24 @@
+ 
+   &:hover {
+     background: linear-gradient(to bottom, $bgcolor2 5%, $bgcolor1 100%);
+-    color: $color;
+-    text-decoration: none;
+   }
+ 
+   &:active {
+-    color: $color;
+-    text-decoration: none;
+     position:relative;
+     top:1px;
+   }
+ }
+ 
+-.button {
++input[type=submit], input[type=button] {
+   @include button;
++
++  &.accept {
++    @include button(white, #83c41a, #b8e356, #a5cc52)
++  }
++
++  &.reject {
++    @include button(white, #d83526, #fc8d83, #e4685d)
++  }
+ }
+ 
+ pre.message {
+@@ -45,11 +49,9 @@ pre.message {
+   .comment {
+     margin-left: 50px;
+   }
+-  .accept {
+-    @include button(white, #83c41a, #b8e356, #a5cc52)
+-  }
+-  .reject {
+-    @include button(white, #d83526, #fc8d83, #e4685d)
++
++  input[type=submit].push-comments {
++    float: right;
+   }
+ }
+ 
+diff --git a/app/controllers/api/api_controller.rb b/app/controllers/api/api_controller.rb
+new file mode 100644
+index 0000000..82a603f
+--- /dev/null
++++ b/app/controllers/api/api_controller.rb
+@@ -0,0 +1,18 @@
++module Api
++  class ApiController < ApplicationController
++    protect_from_forgery with: :null_session
++    before_action :authenticate_user_by_token!
++    before_action :authenticate_user!, only: []
++
++  protected
++
++    def authenticate_user_by_token!
++      @current_user = User.find_by_api_token(params[:api_token]) or raise 'Sorry, invalid token.'
++
++      project_id = params[:controller] == 'api/projects' ? params[:id] : params[:project_id]
++      @project = current_user.projects.find_by_id(project_id) or raise 'Invalid project.'
++    rescue RuntimeError
++      render text: $!.message, status: :unauthorized
++    end
++  end
++end
+diff --git a/app/controllers/api/merge_requests_controller.rb b/app/controllers/api/merge_requests_controller.rb
+new file mode 100644
+index 0000000..342e59c
+--- /dev/null
++++ b/app/controllers/api/merge_requests_controller.rb
+@@ -0,0 +1,53 @@
++module Api
++  class MergeRequestsController < ApiController
++    def create
++      # TODO put this in a transaction
++      mr = MergeRequest.new
++      mr.project = project
++      mr.owner = current_user
++      mr.subject = params[:subject]
++      mr.commit_message = params[:commit_message]
++      mr.save!
++
++      patch = Patch.new
++      patch.merge_request = mr
++      patch.diff = params[:diff]
++      patch.save!
++
++      result = { :mr_id => mr.id }
++      render json: result
++    end
++
++    def update
++      # TODO put this in a transaction
++      mr = merge_request
++
++      mr.subject = params[:subject]
++      mr.commit_message = params[:commit_message]
++      mr.save!
++
++      # TODO avoid this code repetition
++      patch = Patch.new
++      patch.merge_request = mr
++      patch.diff = params[:diff]
++      patch.save!
++
++      comment = Comment.new
++      comment.patch = patch
++      comment.user = current_user
++      comment.content = params[:comments]
++      comment.save!
++
++      render json: ''
++    rescue RuntimeError
++      render text: $!.message, status: :not_found
++    end
++
++  private
++
++    def merge_request
++      @project ||= current_user.projects.find_by_id(params[:project_id]) or raise 'Invalid project.'
++      project.merge_requests.find(params[:id]) or raise 'Merge request not found.'
++    end
++  end
++end
+diff --git a/app/controllers/api/projects_controller.rb b/app/controllers/api/projects_controller.rb
+new file mode 100644
+index 0000000..e9ff983
+--- /dev/null
++++ b/app/controllers/api/projects_controller.rb
+@@ -0,0 +1,26 @@
++require Rails.root.join('lib', 'r-me', 'lib', 'r-me', 'version.rb')
++
++module Api
++  class ProjectsController < ApiController
++    def setup
++      render text: r_me_script
++    end
++
++    private
++
++    def r_me_script
++      port = request.port != 80 ? ":#{request.port}" : ''
++      gem_url = "#{request.protocol}#{request.host}#{port}/r-me-#{Rme::VERSION}.gem"
++
++      <<-eos
++      $base_url = "#{request.protocol}#{request.host}#{port}/api"
++      $api_token = "#{current_user.api_token}"
++      $gem_url = "#{gem_url}"
++      $project_name = "#{project.name.gsub('"', '\"')}"
++      $project_id = #{@project.id}
++
++      #{File.read(Rails.root.join('lib', 'r-me', 'install.rb'))}
++      eos
++    end
++  end
++end
+diff --git a/app/controllers/application_controller.rb b/app/controllers/application_controller.rb
+index 4ceedaa..288b76b 100644
+--- a/app/controllers/application_controller.rb
++++ b/app/controllers/application_controller.rb
+@@ -1,17 +1,8 @@
+ class ApplicationController < ActionController::Base
+   # Prevent CSRF attacks by raising an exception.
+   # For APIs, you may want to use :null_session instead.
+-  protect_from_forgery with: :null_session
++  protect_from_forgery with: :exception
+   before_action :authenticate_user!
+-protected
+-  def authenticate_user_by_token!
+-    @current_user = User.find_by_api_token(params[:api_token]) or raise 'Sorry, invalid token.'
+-
+-    project_id = params[:controller] == 'projects' ? params[:id] : params[:project_id]
+-    @project = current_user.projects.find_by_id(project_id) or raise 'Invalid project.'
+-  rescue RuntimeError
+-    render text: $!.message, status: :unauthorized
+-  end
+ 
+   attr_reader :project
+ end
+diff --git a/app/controllers/merge_requests_controller.rb b/app/controllers/merge_requests_controller.rb
+index ccd160f..e4aff4f 100644
+--- a/app/controllers/merge_requests_controller.rb
++++ b/app/controllers/merge_requests_controller.rb
+@@ -1,48 +1,12 @@
+ class MergeRequestsController < ApplicationController
+-  before_action :authenticate_user!, :only => [:show]
+-  before_action :authenticate_user_by_token!, :only => [:create, :update]
+-
+-  def create
+-    # TODO put this in a transaction
+-    mr = MergeRequest.new
+-    mr.project = project
+-    mr.owner = current_user
+-    mr.subject = params[:subject]
+-    mr.commit_message = params[:commit_message]
+-    mr.save!
+-
+-    patch = Patch.new
+-    patch.merge_request = mr
+-    patch.diff = params[:diff]
+-    patch.save!
+-
+-    result = { :mr_id => mr.id }
+-    render json: result
+-  end
++  before_action :authenticate_user!
+ 
+   def update
+-    # TODO put this in a transaction
+-    mr = merge_request
+-
+-    mr.subject = params[:subject]
+-    mr.commit_message = params[:commit_message]
+-    mr.save!
+-
+-    # TODO avoid this code repetition
+-    patch = Patch.new
+-    patch.merge_request = mr
+-    patch.diff = params[:diff]
+-    patch.save!
+-
+-    comment = Comment.new
+-    comment.patch = patch
+-    comment.user = current_user
+-    comment.content = params[:comments]
+-    comment.save!
+-
+-    render json: ''
+-  rescue RuntimeError
+-    render text: $!.message, status: :not_found
++    @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
++    MergeRequest.transaction do
++      create_comments params[:comments]
++    end
++    render text: (ap params)
+   end
+ 
+   def index
+@@ -50,6 +14,7 @@ class MergeRequestsController < ApplicationController
+   end
+ 
+   def show
++    @patch = merge_request.patches.last
+     @mr = merge_request
+   end
+ 
+@@ -59,4 +24,15 @@ class MergeRequestsController < ApplicationController
+     @project ||= current_user.projects.find_by_id(params[:project_id]) or raise 'Invalid project.'
+     project.merge_requests.find(params[:id]) or raise 'Merge request not found.'
+   end
++
++  def create_comments comments
++    comments.each do |location, text|
++      comment = Comment.new
++      comment.user = current_user
++      comment.patch = @patch
++      comment.content = text
++      comment.location = location
++      comment.save!
++    end
++  end
+ end
+diff --git a/app/controllers/projects_controller.rb b/app/controllers/projects_controller.rb
+index 5153196..6b15ce0 100644
+--- a/app/controllers/projects_controller.rb
++++ b/app/controllers/projects_controller.rb
+@@ -1,8 +1,5 @@
+-require Rails.root.join('lib', 'r-me', 'lib', 'r-me', 'version.rb')
+-
+ class ProjectsController < ApplicationController
+-  before_action :authenticate_user!, :except => [:setup]
+-  before_action :authenticate_user_by_token!, :only => [:setup]
++  before_action :authenticate_user!
+ 
+   def show
+     @project = current_user.projects.find_by_id(params[:id])
+@@ -22,28 +19,9 @@ class ProjectsController < ApplicationController
+     end
+   end
+ 
+-  def setup
+-    render text: r_me_script
+-  end
+-
+ private
+ 
+   def project_params
+     params.require(:project).permit(:name, :repository)
+   end
+-
+-  def r_me_script
+-    port = request.port != 80 ? ":#{request.port}" : ''
+-    gem_url = "#{request.protocol}#{request.host}#{port}/r-me-#{Rme::VERSION}.gem"
+-
+-    <<eos
+-$base_url = "#{request.protocol}#{request.host}#{port}"
+-$api_token = "#{current_user.api_token}"
+-$gem_url = "#{gem_url}"
+-$project_name = "#{project.name.gsub('"', '\"')}"
+-$project_id = #{@project.id}
+-
+-#{File.read(Rails.root.join('lib', 'r-me', 'install.rb'))}
+-eos
+-  end
+ end
+diff --git a/app/helpers/merge_requests_helper.rb b/app/helpers/merge_requests_helper.rb
+index 4454ffb..f8447b9 100644
+--- a/app/helpers/merge_requests_helper.rb
++++ b/app/helpers/merge_requests_helper.rb
+@@ -7,11 +7,6 @@ module MergeRequestsHelper
+     @patch ||= patches.last
+   end
+ 
+-  def full_setup_url
+-    port = request.port != 80 ? ":#{request.port}" : ''
+-    "#{request.protocol}#{request.host}#{port}#{setup_project_path}?api_token=#{current_user.api_token}"
+-  end
+-
+   def merge_request_pending_since mr
+     time = distance_of_time_in_words(Time.now, mr.patches.newer.updated_at)
+     "pending for #{time}"
+diff --git a/app/helpers/projects_helper.rb b/app/helpers/projects_helper.rb
+index db5c5ce..bbb49be 100644
+--- a/app/helpers/projects_helper.rb
++++ b/app/helpers/projects_helper.rb
+@@ -1,2 +1,6 @@
+ module ProjectsHelper
++  def full_setup_url
++    port = request.port != 80 ? ":#{request.port}" : ''
++    "#{request.protocol}#{request.host}#{port}#{setup_api_project_path}?api_token=#{current_user.api_token}"
++  end
+ end
+diff --git a/app/models/patch.rb b/app/models/patch.rb
+index 0e40c54..0f70d75 100644
+--- a/app/models/patch.rb
++++ b/app/models/patch.rb
+@@ -1,5 +1,6 @@
+ class Patch < ActiveRecord::Base
+   belongs_to :merge_request
+ 
++  has_many :comments
+   scope :newer, -> { order(:updated_at).reverse_order.first }
+ end
+diff --git a/app/views/merge_requests/show.html.erb b/app/views/merge_requests/show.html.erb
+index b768777..e09aeb6 100644
+--- a/app/views/merge_requests/show.html.erb
++++ b/app/views/merge_requests/show.html.erb
+@@ -2,9 +2,8 @@
+ 
+ <pre class="message"><%= @mr.commit_message %></pre>
+ 
+-<% if patches.count %>
+-<p>You have more than one patch...  hell yeah!</p>
+-<% end %>
++<%= form_tag nil, method: 'patch' do %>
++<%= hidden_field_tag(:patch_id, @patch.id) %>
+ 
+ <% process_diff(patch.diff) do |file| %>
+   <table class="code-review">
+@@ -25,7 +24,9 @@
+ <p>[comments goes here]</p>
+ 
+ <div class="merge-bar">
+-  <%= link_to 'Accept', project_merge_request_path(@project, @mr), class: 'button accept' %>
+-  <%= link_to 'Reject', project_merge_request_path(@project, @mr), class: 'button reject' %>
+-  <%= link_to 'Just push comments', project_merge_request_path(@project, @mr), class: 'button comment' %>
++  <input type="submit" value="Accept" class="accept">
++  <input type="submit" value="Reject" class="reject">
++
++  <input type="submit" value="Just push comments" class="push-comments">
+ </div>
++<% end %>
+diff --git a/config/routes.rb b/config/routes.rb
+index 0fcf390..b52c478 100644
+--- a/config/routes.rb
++++ b/config/routes.rb
+@@ -4,11 +4,14 @@ Rails.application.routes.draw do
+   root 'projects#index'
+ 
+   resources :projects do
+-    member do
+-      get 'setup'
+-    end
++    resources :merge_requests, only: [:update, :show, :index]
++  end
+ 
+-    resources :merge_requests, only: [:create, :update, :show, :index]
++  namespace :api do
++    resources :projects, only: [:setup] do
++      get 'setup', on: :member
++      resources :merge_requests, only: [:create, :update, :index]
++    end
+   end
+ 
+   # Example of regular route:
+diff --git a/db/migrate/20141003232638_create_tables.rb b/db/migrate/20141003232638_create_tables.rb
+index 9e36f35..b31559b 100644
+--- a/db/migrate/20141003232638_create_tables.rb
++++ b/db/migrate/20141003232638_create_tables.rb
+@@ -61,6 +61,7 @@ class CreateTables < ActiveRecord::Migration
+       t.references :user,    null: false
+       t.references :patch,   index: true
+       t.text       :content, default: '', null: false
++      t.integer    :location, default: 0
+       t.timestamps
+     end
+   end
+diff --git a/db/schema.rb b/db/schema.rb
+index 4920e7f..62364d1 100644
+--- a/db/schema.rb
++++ b/db/schema.rb
+@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20141003232638) do
+     t.integer  "user_id",                 null: false
+     t.integer  "patch_id"
+     t.text     "content",    default: "", null: false
++    t.integer  "location",   default: 0
+     t.datetime "created_at"
+     t.datetime "updated_at"
+   end
+-- 
+2.7.3
+

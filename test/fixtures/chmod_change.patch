@@ -1,0 +1,18 @@
+From e48934ec000e477e8394c699942b390919548c12 Mon Sep 17 00:00:00 2001
+From: Hugo Parente Lima <hugo.pl@gmail.com>
+Date: Sat, 26 Sep 2015 15:15:55 -0300
+Subject: foo
+
+---
+ Foo | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ mode change 100644 => 100755 Foo
+
+diff --git a/Foo b/Foo
+old mode 100644
+new mode 100755
+diff --git a/Bar b/Bar
+old mode 100644
+new mode 100755
+-- 
+2.5.3

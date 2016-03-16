@@ -1,0 +1,93 @@
+From e1bb11079d9437ccffc87d4406b2ccc3cbeacab4 Mon Sep 17 00:00:00 2001
+From: Hugo Parente Lima <hugo.pl@gmail.com>
+Date: Fri, 10 Oct 2014 03:04:51 -0300
+Subject: [PATCH] Added readme file.
+
+
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..af0ed0c
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,44 @@
++# RME (or whatever the name is)
++
++It's **just** a review board for git based projects, nothing more.
++
++It's split in two components, the web interface and a command line tool, both working togheter. The idea is to be more simpler possible and avoid extra useles steps.
++
++## Create a merge request
++
++1. Do your job, i.e. code!
++2. Commit it to git
++3. It's ready for review? then just call `rme` command.
++
++Done, it's it. Your review will be created and the rme command will tell you the URL used for review.
++
++## Updating a merge request
++
++1. Update your patch (git commit --amend)
++2. call `rme` command.
++
++Done.
++
++## Accepting a merge request
++
++1. Go to web interface and click accept.
++
++Done, Rme will try to apply and commit your patch, it will tell you if it can't. And if it can't, just send another 
++
++## How to setup rme command line interface
++
++1. Register your projecy in the web interface.
++2. go to the directory where your project workign copy is.
++3. type the command you saw in the web interface.
++
++Done.
++
++## Telling on what branch the patch should go
++
++Use the syntax: `rme on <branch>`
++
++# Wish list
++
++1. lint support
++2. CI integration
++3. Way to review resolution of merge conflicts.
+diff --git a/README.rdoc b/README.rdoc
+deleted file mode 100644
+index dd4e97e..0000000
+--- a/README.rdoc
++++ /dev/null
+@@ -1,28 +0,0 @@
+-== README
+-
+-This README would normally document whatever steps are necessary to get the
+-application up and running.
+-
+-Things you may want to cover:
+-
+-* Ruby version
+-
+-* System dependencies
+-
+-* Configuration
+-
+-* Database creation
+-
+-* Database initialization
+-
+-* How to run the test suite
+-
+-* Services (job queues, cache servers, search engines, etc.)
+-
+-* Deployment instructions
+-
+-* ...
+-
+-
+-Please feel free to use a different markup language if you do not plan to run
+-<tt>rake doc:app</tt>.
+-- 
+2.7.3
+

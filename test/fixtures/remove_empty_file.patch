@@ -1,0 +1,15 @@
+From d7fbe303a4ea09d9e79c5b68d82e7c75d40a97d7 Mon Sep 17 00:00:00 2001
+From: Hugo Parente Lima <hugo.pl@gmail.com>
+Date: Sat, 26 Sep 2015 15:04:07 -0300
+Subject: foo
+
+---
+ Foo | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 Foo
+
+diff --git a/Foo b/Foo
+deleted file mode 100644
+index e69de29..0000000
+-- 
+2.5.3
