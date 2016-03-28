@@ -57,4 +57,38 @@ module ProjectsHelper
       }]
     }.to_json.html_safe
   end
+
+  def projects_reviews_chart_data(project)
+    query = project.merge_requests.joins(:reviewer).limit(100).order('merge_requests.created_at DESC')
+                   .select('users.name').to_sql
+    db = ActiveRecord::Base.connection
+    data = db.execute("SELECT name, COUNT(name) AS y FROM (#{query}) GROUP BY name")
+    total = data.inject(0) { |a, e| a + e['y'].to_i }
+
+    {
+      chart: {
+        plotBackgroundColor: nil,
+        plotBorderWidth: nil,
+        plotShadow: false,
+        type: 'pie'
+      },
+      title: {
+        text: "Last #{total} merge requests reviews"
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+          }
+        }
+      },
+      series: [{
+        name: 'Reviews',
+        data: data
+      }]
+    }.to_json.html_safe
+  end
 end
