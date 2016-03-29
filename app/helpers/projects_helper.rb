@@ -63,6 +63,13 @@ module ProjectsHelper
                    .select('users.name').to_sql
     db = ActiveRecord::Base.connection
     data = db.execute("SELECT name, COUNT(name) AS y FROM (#{query}) GROUP BY name")
+    data.map! do |entry|
+      if entry['name'] == current_user.name
+        entry['sliced'] = true
+        entry['selected'] = true
+      end
+      entry
+    end
     total = data.inject(0) { |a, e| a + e['y'].to_i }
 
     {
