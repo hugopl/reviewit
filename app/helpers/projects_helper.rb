@@ -12,29 +12,34 @@ module ProjectsHelper
   end
 
   def projects_mr_chart_data(project)
-    mrs = project.merge_requests.group("strftime('%Y-%m-%d', created_at)").where('created_at > ?', 20.days.ago).count
-    last = nil
-    mrs = mrs.inject({}) do |memo, (date, count)|
-      year, month, day = date.split('-').map(&:to_i)
+    period = 20
+    first_day = period.days.ago
+    mrs = project.merge_requests.group('DATE(created_at)').where('created_at > ?', first_day).count
 
-      if last
-        (day - (last + 1)).times do |i|
-          memo["#{year}-#{month}-#{last + i}"] = 0
-        end
-      end
-      memo["#{year}-#{month}-#{day}"] = count
-      last = day
-      memo
+    day = first_day
+    period.times do
+      day = day.tomorrow
+      day_str = format('%i-%02i-%02i', day.year, day.month, day.day)
+      next if mrs.key?(day_str)
+      mrs[day_str] = 0
     end
+
+    dates = []
+    counts = []
+    mrs.sort.each do |date, count|
+      dates << date
+      counts << count
+    end
+
     {
       chart: {
         type: 'spline'
       },
       title: {
-        text: 'Merge requests creation per day (last 20 days)'
+        text: "Merge requests creation per day (last #{period} days)"
       },
       xAxis: {
-        categories: mrs.keys,
+        categories: dates,
         labels: {
           rotation: -45
         }
@@ -53,7 +58,7 @@ module ProjectsHelper
       },
       series: [{
         name: 'Num MRs created',
-        data: mrs.values
+        data: counts
       }]
     }.to_json.html_safe
   end
