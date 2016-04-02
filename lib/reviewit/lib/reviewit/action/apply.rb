@@ -4,7 +4,20 @@ module Reviewit
       patch = api.merge_request(options[:mr])
 
       fetch_repository if options[:fetch]
-      create_branch(patch['target_branch'], branch_name_for(options[:mr], patch['subject'])) if options[:branch]
+
+      if options[:branch]
+        new_branch = branch_name_for(options[:mr], patch['subject'])
+        if branch_exists?(new_branch)
+          puts "A branch named #{WHITE}“#{new_branch}”#{NO_COLOR} already exists, REMOVE it? (yn)?"
+          if STDIN.gets.downcase.start_with?('y')
+            remove_branch(new_branch)
+          else
+            puts 'So rename the branch and try again.'
+            return
+          end
+        end
+        create_branch(patch['target_branch'], new_branch)
+      end
 
       file = Tempfile.new 'patch'
       file.puts patch['patch']

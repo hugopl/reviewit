@@ -23,6 +23,11 @@ module Reviewit
       @remote ||= read_remote_from_config
     end
 
+    def branch_exists?(name)
+      `git rev-parse --verify --quiet #{name}`
+      $?.success?
+    end
+
     def create_branch(base, name)
       `git checkout --quiet #{remote}/#{base} 2>&1`
       raise "Remote branch #{base} not found" unless $?.success?
