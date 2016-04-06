@@ -29,10 +29,8 @@ module Reviewit
     end
 
     def create_branch(base, name)
-      `git checkout --quiet #{remote}/#{base} 2>&1`
-      raise "Remote branch #{base} not found" unless $?.success?
-      `git checkout --quiet -b #{git_safe_name(name)} 2>&1`
-      raise "Error creating branch #{name}" unless $?.success?
+      `git checkout --quiet -b #{git_safe_name(name)} #{remote}/#{base} 2>&1`
+      raise "Error creating branch #{name} on top of #{remote}/#{base}" unless $?.success?
     end
 
     def git_safe_name(name)
