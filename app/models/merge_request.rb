@@ -119,7 +119,10 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def people_involved
-    people = User.joins(:comments).merge(Comment.joins(:patch).where(patches: { merge_request_id: id }).uniq)
+    people = User.joins(:comments)
+                 .joins('INNER JOIN patches ON patches.id = comments.patch_id')
+                 .joins('INNER JOIN merge_requests ON merge_requests.id = patches.merge_request_id')
+                 .where('merge_requests.id = ?', id).uniq
     people << reviewer if reviewer
     (people << author).uniq
   end
