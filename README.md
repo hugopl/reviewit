@@ -32,10 +32,11 @@ For more information about database configuration look into Rails documentation 
 
 Now you need to configure a reverse proxy with unicorn of some other web server do you plan to use, if you just want to
 look at reviewit while waste time configuring [Ngix](http://nginx.org/) and [Unicorn](https://unicorn.bogomips.org/),
-do the following (not recommended for production use!!):
+just run:
 
-  1. Change `config.serve_static_assets` to false in config/environments/production.rb.
-  2. Run `RAILS_ENV=production unicorn_rails`.
+```
+$ RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 unicorn_rails
+```
 
 To configure mail delivery options check the file `config/reviewit.yml`.
 
