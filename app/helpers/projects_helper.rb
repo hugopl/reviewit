@@ -25,7 +25,7 @@ module ProjectsHelper
 
     dates = []
     counts = []
-    mrs.each do |date, count|
+    mrs.sort.each do |date, count|
       dates << format('%i-%02i-%02i', date.year, date.month, date.day)
       counts << count
     end
