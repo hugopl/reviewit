@@ -7,15 +7,13 @@ production:
   encoding: UTF8
   database: reviewit
 development:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/development.sqlite3
+  adapter: postgresql
+  encoding: UTF8
+  database: reviewit_dev
 test:
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-  database: db/test.sqlite3
+  adapter: postgresql
+  encoding: UTF8
+  database: reviewit_test
 eos
 
 desc 'Setup reviewit'
