@@ -16,26 +16,28 @@ For the sake of simplicity, the work/review processes is split in two components
 
 ## Installing
 
-These are the painless instructions if you wont have a lot (>30) of users and don't have experience installing rails applications, for a optimal configuration I would recoment you to read about how to add more workers to a unicorn configuration and/or how to use Postgres in a Ruby on Rails application. All this is easy to do but out of the scope of this README.
+First install the gem dependencies.
 
-This instalation will use SQLite3 as database and just 1 unicorn worker, this will work just fine if you don't have a lot of users using the tool at the same time.
-
-First, make sure Ruby is installed on your system, last version (2.x) is always better, then
-
-```bash
-$ git clone --depth 1 https://github.com/hugopl/reviewit.git
-$ cd reviewit
-$ gem install bundle
-$ bundle install
-$ ./scripts/first_install
-$ RAILS_ENV=production unicorn_rails
+```
+$ bundle install --without development,test
 ```
 
-Notes:
+Then create a postgres database called `reviewit` and run:
 
-  1. This will open a server on port 8080, see unicorn_rails --help for more info like running unicorn as a daemon.
-  2. The assets (fonts and images) wont show until you change `config.serve_static_assets` to false in config/environments/production.rb.
-  3. Unicorn was made to work with a proxy server like [Ngix](http://nginx.org/), so try to use it.
+```
+$ RAILS_ENV=production rake setup
+```
+
+For more information about database configuration look into Rails documentation and edit the file `config/database.yml`.
+
+Now you need to configure a reverse proxy with unicorn of some other web server do you plan to use, if you just want to
+look at reviewit while waste time configuring [Ngix](http://nginx.org/) and [Unicorn](https://unicorn.bogomips.org/),
+do the following (not recommended for production use!!):
+
+  1. Change `config.serve_static_assets` to false in config/environments/production.rb.
+  2. Run `RAILS_ENV=production unicorn_rails`.
+
+To configure mail delivery options check the file `config/reviewit.yml`.
 
 ## Setting up your Project
 
