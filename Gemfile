@@ -16,6 +16,8 @@ gem 'will_paginate', '~> 3.0'
 group :development, :test do
   gem 'awesome_print'
   gem 'byebug'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :test do
