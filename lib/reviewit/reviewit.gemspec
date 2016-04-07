@@ -14,8 +14,20 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'trollop', '~> 2.0'
   s.add_development_dependency 'awesome_print', '~> 1.2'
 
-  # FIXME: This can't depend on git.
-  s.files         = `git ls-files`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
-  s.require_paths = ['lib']
+  s.files         = %w(lib/reviewit.rb
+                       lib/reviewit/action/accept.rb
+                       lib/reviewit/action/action.rb
+                       lib/reviewit/action/apply.rb
+                       lib/reviewit/action/cancel.rb
+                       lib/reviewit/action/cleanup.rb
+                       lib/reviewit/action/list.rb
+                       lib/reviewit/action/open.rb
+                       lib/reviewit/action/push.rb
+                       lib/reviewit/action/show.rb
+                       lib/reviewit/api.rb
+                       lib/reviewit/app.rb
+                       lib/reviewit/git_util.rb
+                       lib/reviewit/version.rb)
+  s.executables   = %w(review)
+  s.require_paths = %w(lib)
 end
