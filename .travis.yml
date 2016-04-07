@@ -1,9 +1,9 @@
 language: ruby
 rvm:
-  - '2.1.5'
+  - '2.1.8'
   - '2.2.1'
-
+services:
+  - postgresql
 before_script:
-  - cp config/reviewit.travis.yml config/reviewit.yml
-  - cp config/database.travis.yml config/database.yml
-  - bundle exec rake db:create db:migrate
+  - psql -c 'create database reviewit_test;' -U postgres
+  - bundle exec rake setup
