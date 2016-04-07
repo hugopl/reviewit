@@ -18,16 +18,15 @@ module ProjectsHelper
 
     day = first_day
     period.times do
-      day = day.tomorrow
-      day_str = format('%i-%02i-%02i', day.year, day.month, day.day)
-      next if mrs.key?(day_str)
-      mrs[day_str] = 0
+      day = day.tomorrow.to_date
+      next if mrs.key?(day)
+      mrs[day] = 0
     end
 
     dates = []
     counts = []
-    mrs.sort.each do |date, count|
-      dates << date
+    mrs.each do |date, count|
+      dates << format('%i-%02i-%02i', date.year, date.month, date.day)
       counts << count
     end
 
@@ -67,14 +66,18 @@ module ProjectsHelper
     query = project.merge_requests.joins(:reviewer).limit(100).order('merge_requests.created_at DESC')
                    .select('users.name').to_sql
     db = ActiveRecord::Base.connection
-    data = db.execute("SELECT name, COUNT(name) AS y FROM (#{query}) GROUP BY name")
+    data = db.execute("SELECT name, COUNT(name) AS y FROM (#{query}) AS data GROUP BY name").to_a
+
     data.map! do |entry|
       if entry['name'] == current_user.name
         entry['sliced'] = true
         entry['selected'] = true
       end
+      entry['y'] = entry['y'].to_i
       entry
     end
+
+
     total = data.inject(0) { |a, e| a + e['y'].to_i }
 
     {
