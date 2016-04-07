@@ -21,7 +21,7 @@ class MergeRequest < ActiveRecord::Base
   scope :closed, -> { where("status >= #{CLOSE_LIMIT}") }
 
   validates :target_branch, presence: true
-  validates :subject, presence: true
+  validates :subject, presence: true, length: { maximum: 255 }
   validates :author, presence: true
   validate :author_cant_be_reviewer
   validates :target_branch, format: /\A[\w\d,\.-]+[^.](?<!\.lock)\z/
