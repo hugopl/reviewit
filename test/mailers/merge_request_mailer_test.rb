@@ -24,4 +24,13 @@ class MergeRequestMailerTest < ActionMailer::TestCase
 
     assert_includes email.body.to_s, 'Ruby hash function'
   end
+
+  def test_message_id
+    email1 = MergeRequestMailer.created(mr).deliver_now
+    mr.add_comments(user2, mr.patch, [[0, 'Hello']])
+    email2 = MergeRequestMailer.updated(user1, mr, Hash.new({})).deliver_now
+
+    assert_equal(email1.header['Message-ID'].value,
+                 email2.header['In-Reply-To'].value)
+  end
 end

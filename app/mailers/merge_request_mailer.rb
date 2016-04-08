@@ -5,6 +5,7 @@ class MergeRequestMailer < ApplicationMailer
     @author = mr.author
     @mr = mr
 
+    headers('Message-ID' => message_id(mr))
     send_email(mr.project.users)
   end
 
@@ -14,6 +15,7 @@ class MergeRequestMailer < ApplicationMailer
     @action = action(params)
     @comments = params[:comments]
 
+    headers('In-Reply-To' => message_id(mr))
     send_email(mr.people_involved)
   end
 
@@ -44,5 +46,11 @@ class MergeRequestMailer < ApplicationMailer
     else
       'commented on'
     end
+  end
+
+  def message_id(mr)
+    id_right = Rails.application.config.action_mailer[:default_options][:from].gsub(/.+@/, '')
+    id_left = Digest::MD5.hexdigest("#{mr.id}#{mr.created_at}")
+    "<#{id_left}@#{id_right}>"
   end
 end
