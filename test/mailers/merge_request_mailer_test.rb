@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MergeRequestMailerTest < ActionMailer::TestCase
-  test 'create MR' do
+  def test_mr_creation
     Rails.application.config.action_mailer.default_url_options = { host: 'example.com' }
 
     user1 = create(:user, name: 'Mr. Tester')

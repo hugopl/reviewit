@@ -1,17 +1,17 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  test 'name required' do
+  def test_required_name
     user = build(:user, name: nil)
     user.wont_be :valid?
   end
 
-  test 'email required' do
+  def test_required_email
     user = build(:user, email: nil)
     user.wont_be :valid?
   end
 
-  test 'valid email required' do
+  def test_required_valid_email
     user = build(:user, email: 'invalid')
     user.wont_be :valid?
 
@@ -31,7 +31,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test 'email uniqueness' do
+  def test_email_uniqueness
     user1 = create(:user)
     user2 = build(:user, email: user1.email)
     user2.wont_be :valid?
