@@ -1,5 +1,13 @@
-<h1>Pending merge requests for <%= @project.name %></h1>
+<h1>Merge requests for <%= @project.name %></h1>
 
-<%= render partial: 'list', locals: { mrs: @mrs, title: ['Pending review', 'Pending reviews'] } %>
+<p><%= pluralize(@total_mrs, 'pending merge request') %>.</p>
+
+<h2>May need your attention</h2>
+
+<%= render partial: 'list', locals: { mrs: @waiting_you } %>
+
+<h2>Waiting for others</h2>
+
+<%= render partial: 'list', locals: { mrs: @waiting_others } %>
 
 <p>See <%= link_to 'finished code reviews', old_ones_project_merge_requests_path(@project) %>.</p>

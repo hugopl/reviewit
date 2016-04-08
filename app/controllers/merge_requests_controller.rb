@@ -15,10 +15,15 @@ class MergeRequestsController < ApplicationController
   end
 
   def index
-    @mrs = merge_requests.pending.paginate(page: params[:page])
+    # There's no pagination on pending MRs, since this page is supposed to be always with a low number of MRs
+    mrs = merge_requests.pending.to_a
+    @total_mrs = mrs.count
+    @waiting_others = MergeRequest.waiting_others(mrs, current_user)
+    @waiting_you = mrs - @waiting_others
   end
 
   def old_ones
+    @total = merge_requests.closed.count
     @mrs = merge_requests.closed.paginate(page: params[:page])
   end
 

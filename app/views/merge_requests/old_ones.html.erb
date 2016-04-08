@@ -1,5 +1,6 @@
 <h1>Closed merge requests for <%= @project.name %></h1>
 
+<p>There <%= @total > 1 ? 'are' : 'is' %> a total of <%= pluralize(@total, 'merge request') %> closed,
+but better worry about the <%= link_to 'pending code reviews', project_merge_requests_path(@project) %>.</p>
 <%= render partial: 'list', locals: { mrs: @mrs, title: ['Finished review', 'Finished reviews'] } %>
 
-<p>See <%= link_to 'pending code reviews', project_merge_requests_path(@project) %>.</p>

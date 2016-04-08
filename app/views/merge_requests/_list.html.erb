@@ -1,8 +1,7 @@
 <%- if mrs.empty? %>
- <p>No merge requests were found.</p>
+ <p>Nothing here, go drink some wine :-)</p>
 <%- else %>
   <div class="review-list-container">
-    <div class="review-list-header"><%= pluralize(mrs.count, *title) %></div>
     <%- mrs.each do |mr| %>
       <%= link_to project_merge_request_path(@project, mr), class: "review-list #{patch_ci_status(mr.patch)}" do %>
 
@@ -19,5 +18,5 @@
     <%- end %>
   </div>
 
-  <%= will_paginate mrs %>
+  <%= will_paginate(mrs) if mrs.is_a?(ActiveRecord::Relation) %>
 <%- end %>

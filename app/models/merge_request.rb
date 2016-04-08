@@ -127,6 +127,26 @@ class MergeRequest < ActiveRecord::Base
     (people << author).uniq
   end
 
+  def comments
+    Comment.joins(:patch).where('patches.merge_request_id = ?', id)
+  end
+
+  class << self
+    def waiting_others(mrs, user)
+      mrs.select do |mr|
+        last_comment = mr.comments.last
+
+        # No coments
+        if last_comment.nil? || last_comment.patch_id != mr.patch.id
+          mr.author_id == user.id
+        # A comment
+        else
+          last_comment.user_id == user.id
+        end
+      end
+    end
+  end
+
   private
 
   def interdiff(diff1, diff2)

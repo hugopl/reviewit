@@ -11,13 +11,8 @@
   }
 }
 
-.review-list-header {
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 18px;
-  border: 1px solid #e5e5e5;
-  background-color: #f5f5f5;
-  padding: 10px;
+.review-list + .review-list {
+  border-top: none;
 }
 
 .review-list {
@@ -29,7 +24,6 @@
   line-height: 18px;
   display: block;
   border: 1px solid #e5e5e5;
-  border-top: none;
   padding: 10px;
   color: #333;
 
