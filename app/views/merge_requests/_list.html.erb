@@ -1,4 +1,4 @@
-<%- if @mrs.empty? %>
+<%- if mrs.empty? %>
  <p>No merge requests were found.</p>
 <%- else %>
   <div class="review-list-container">
@@ -19,5 +19,5 @@
     <%- end %>
   </div>
 
-  <%= will_paginate @mrs %>
+  <%= will_paginate mrs %>
 <%- end %>
