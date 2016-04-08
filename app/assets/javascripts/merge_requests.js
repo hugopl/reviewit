@@ -8,7 +8,8 @@ function merge_requests() {
     $(".patch-history-submit input").on('click', function(event) {
         request_patch_diff();
     });
-    new_editor($('textarea').get(0), false);
+    if ($('textarea').length > 0)
+        new_editor($('textarea').get(0), false)
 }
 
 function request_patch_diff() {
