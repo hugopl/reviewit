@@ -1,5 +1,5 @@
 <%- if mrs.empty? %>
- <p>Nothing here, go drink some wine :-)</p>
+ <p><%= on_empty %></p>
 <%- else %>
   <div class="review-list-container">
     <%- mrs.each do |mr| %>

@@ -2,12 +2,16 @@
 
 <p><%= pluralize(@total_mrs, 'pending merge request') %>.</p>
 
+<% if @waiting_you.empty? && @waiting_others.empty? %>
+<p>Nothing here, go drink some wine :-)</p>
+<% else %>
 <h2>May need your attention</h2>
 
-<%= render partial: 'list', locals: { mrs: @waiting_you } %>
+<%= render partial: 'list', locals: { mrs: @waiting_you, on_empty: 'Nothing here, uhu!!' } %>
 
 <h2>Waiting for others</h2>
 
-<%= render partial: 'list', locals: { mrs: @waiting_others } %>
+<%= render partial: 'list', locals: { mrs: @waiting_others, on_empty: 'Nothing here, go review some MR!' } %>
+<% end %>
 
 <p>See <%= link_to 'finished code reviews', old_ones_project_merge_requests_path(@project) %>.</p>
