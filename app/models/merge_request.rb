@@ -80,8 +80,12 @@ class MergeRequest < ActiveRecord::Base
     patch.remove_ci_branch
   end
 
-  def integrate!(reviewer)
-    return if %w(accepted integrating abandoned).include? status
+  def integrate!(reviewer, patch_id = :not_specified)
+    raise 'You tried to accept an outdated version of this merge request.' if patch.id != patch_id &&
+                                                                              patch_id != :not_specified
+    raise 'This merge request is already closed.' if closed?
+    raise 'This merge request is beign integrated by another request, please wait' if integrating?
+
     add_history_event reviewer, 'accepted the merge request'
 
     self.reviewer = reviewer

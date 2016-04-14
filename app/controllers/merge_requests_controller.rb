@@ -12,6 +12,9 @@ class MergeRequestsController < ApplicationController
     else
       redirect_to action: :show
     end
+  rescue RuntimeError => e
+    flash[:danger] = e.message
+    redirect_to action: :show
   end
 
   def index
@@ -65,8 +68,11 @@ class MergeRequestsController < ApplicationController
   end
 
   def accept
-    @mr.integrate! current_user
+    @mr.integrate!(current_user, @patch.id)
     redirect_to action: :index
+  rescue RuntimeError => e
+    flash[:danger] = e.message
+    redirect_to action: :show
   end
 
   def abandon
