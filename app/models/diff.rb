@@ -155,7 +155,7 @@ class Diff
 
   def process_patch(diff)
     @state = :state_idle
-    @index = 0
+    @index = -1
     diff.each_line do |line|
       @index += 1
       next if read_file_metadata_if_possible(line)

@@ -93,7 +93,7 @@ class DiffTest < ActiveSupport::TestCase
 
   def test_line_index
     diff = Diff.new(patch('line_index'))
-    diff.files['app/helpers/projects_helper.rb'].index.must_equal 12
-    diff.files['app/views/projects/show.html.erb'].index.must_equal 67
+    diff.files['app/helpers/projects_helper.rb'].index.must_equal 11
+    diff.files['app/views/projects/show.html.erb'].index.must_equal 66
   end
 end
