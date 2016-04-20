@@ -13,6 +13,16 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//
+// Vendor assets
+//= require tipped
+//= require imagesloaded.pkgd.min
+//= require marked.min
+//= require simplemde.min
+//= require jquery-ui.min
+//= require highcharts
+//= require tag-it
+//
 //= require_tree .
 
 // "It's not advisable to add code directly here..." bla bla bla... but I did it!! Yeah!!
