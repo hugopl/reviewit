@@ -1,0 +1,23 @@
+%h1= @project.name
+
+%p= link_to merge_request_count(@project), project_merge_requests_path(@project)
+%p To setup review it command line interface on your project working copy, do:
+%code
+  $ curl -H "X-Token: #{current_user.api_token}" -k -f #{full_setup_url} | ruby
+%p
+  Then type <code>review --help</code>.
+
+%h2 Team
+
+%p= @project.users.pluck(:name).to_sentence
+%p
+  Didn't like it!? So #{link_to 'edit your project', edit_project_path(@project)}.
+
+%h2 Statistics
+
+#project-reviews-chart
+#project-mr-chart
+
+:javascript
+  $('#project-mr-chart').highcharts(#{projects_mr_chart_data(@project)});
+  $('#project-reviews-chart').highcharts(#{projects_reviews_chart_data(@project)});

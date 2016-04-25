@@ -1,0 +1,11 @@
+%h1 Your projects
+- if current_user.projects.empty?
+  %p There are no projects for you :-(
+- else
+  - current_user.projects.each do |p|
+    .project.name
+      = link_to p.name, project_path(p)
+      ,
+      %span= link_to merge_request_count(p), project_merge_requests_path(p)
+    .project.description= p.description.blank? ? '?' : p.description
+%p= link_to 'Create project', new_project_path

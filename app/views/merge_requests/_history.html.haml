@@ -1,0 +1,19 @@
+= form_tag(project_merge_request_path(@project, @mr), method: 'get') do
+  %table.patch-history
+    %tr
+      %th Base
+      %th Created at
+      %th Lint
+      %th CI
+    - patches = @mr.patches.to_a
+    - patches.each do |patch|
+      %tr
+        %td= patch_name(patch)
+        %td= patch.created_at.to_formatted_s(:short)
+        %td= patch_linter_status(patch)
+        %td= patch_ci_icon(patch)
+
+- unless @patch.integration_log.blank?
+  %section.integrationlog
+    %h2 Integration log
+    %code= @patch.integration_log

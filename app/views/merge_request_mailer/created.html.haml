@@ -1,0 +1,10 @@
+%p Hi,
+%p
+  = @author.name
+  just pushed a new merge request to #{@mr.project.name}.
+%h1= link_to @mr.subject, project_merge_request_url(@mr.project, @mr)
+= markdown(@mr.patch.commit_message)
+%p
+  \--
+  %br/
+  Review it!

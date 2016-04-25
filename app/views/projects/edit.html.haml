@@ -1,0 +1,7 @@
+%h1 Edit Project
+
+= link_to 'Destroy project', @project, method: :delete,
+                                       data: { confirm: 'Are you sure?' },
+                                       id: 'project_destroy',
+                                       class: 'reject button'
+= render partial: 'form', locals: { action: 'update' }

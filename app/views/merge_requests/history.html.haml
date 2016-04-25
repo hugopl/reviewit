@@ -1,0 +1,11 @@
+%h1 Events History
+%p
+  Merge request created at #{@mr.created_at.to_formatted_s :long}
+  by #{@mr.author.name},
+  and since then#{@mr.history_events.empty? ? ' nothing happened.' : ':'}
+%ul
+  - @mr.history_events.each do |event|
+    %li
+      = event.who.name
+      = event.what
+      at #{event.when.to_formatted_s :short}

@@ -1,0 +1,49 @@
+= form_for @project, url: { action: action } do |f|
+  %label.required Name
+  %br/
+  = f.text_field :name, placeholder: 'The project name'
+
+  %label Description
+  %br/
+  = f.text_field :description, placeholder: 'Be succinct'
+
+  %label.required Git repository
+  %br/
+  = f.text_field :repository, placeholder: 'The project git repository URL'
+
+  %label Linter
+  %i (a script in the project directory that will run before any MR creation or update)
+  %br/
+  = f.text_field :linter, placeholder: 'Command run by CLI before create/update a MR'
+
+  %label.required Users
+  %br/
+  %ul#project_users{ 'data-myself' => current_user.name.to_s, 'data-users' => User.all_names.join('|').to_s }
+    - @project.users.each do |user|
+      %li= user.name
+
+  %h1 Jira integration
+
+  %label Jira user
+  = f.text_field :jira_username
+
+  %label Jira password
+  %i (Stored in plain text!! So make sure this user can only comment in Jira)
+  = f.password_field :jira_password
+
+  %label Jira Ticket Regexp
+  %i (This must capture the Ticket id)
+  = f.text_field :jira_ticket_regexp
+
+  %label Jira API v2 URL
+  %i (e.g. https://myjira.com/rest/api/2)
+  = f.text_field :jira_api_url
+
+  %h1 GitLab CI integration
+
+  %label Gitlab project URL
+  %i (e.g. https://my_gitlab.org/my_user/my_project)
+  = f.text_field :gitlab_ci_project_url
+  = f.submit action.humanize, class: 'button'
+
+= print_errors :project

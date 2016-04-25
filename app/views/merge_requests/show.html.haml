@@ -1,0 +1,22 @@
+%h1= @mr.patch.subject
+
+= render partial: 'summary'
+= render partial: 'history'
+
+- if @mr.patches.count > 0
+  = form_tag nil, method: 'patch' do
+    = hidden_field_tag(:patch_id, @patch.id)
+
+    = render partial: 'diff', locals: { patch: @patch }
+    = render 'comments'
+
+    .merge-bar
+      - if @mr.open? or @mr.needs_rebase?
+        - if @mr.author != current_user
+          = submit_tag 'Accept', name: 'mr_action',
+                                 data: { confirm: "Are you sure about accept this patch into #{@mr.target_branch}?" }
+        = submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: 'Are you sure?' }
+      %input.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }/
+- else
+  %p
+    %strong You found a bizarre merge request without patches.

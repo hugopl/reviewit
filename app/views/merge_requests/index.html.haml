@@ -1,0 +1,14 @@
+%h1
+  Merge requests for #{@project.name}
+%p
+  = pluralize(@total_mrs, 'pending merge request')
+  \.
+- if @waiting_you.empty? && @waiting_others.empty?
+  %p Nothing here, go drink some wine :-)
+- else
+  %h2 May need your attention
+  = render partial: 'list', locals: { mrs: @waiting_you, on_empty: 'Nothing here, uhu!!' }
+  %h2 Waiting for others
+  = render partial: 'list', locals: { mrs: @waiting_others, on_empty: 'Nothing here, go review some MR!' }
+%p
+  See #{link_to 'finished code reviews', old_ones_project_merge_requests_path(@project)}.

@@ -1,0 +1,14 @@
+%p Hi,
+%p
+  = @author.name
+  = @action
+  the merge request #{link_to @mr.subject, project_merge_request_url(@mr.project, @mr)}.
+  - @comments.each do |location, text|
+    - if location.to_i > 0
+      %p
+        %code= @mr.patch.diff.lines[location.to_i]
+    %p= text.gsub("\n", '</p><p>').html_safe
+%p
+  \--
+  %br/
+  Review it!

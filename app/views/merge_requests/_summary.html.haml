@@ -1,0 +1,17 @@
+.mr-summary
+  Status:
+  %span{ class: @mr.status }= @mr.status.humanize
+  %br/
+  Author:
+  %span= @mr.author.name
+  %br/
+  Branch:
+  %span= @mr.target_branch
+  %br/
+  = link_to 'History events', history_project_merge_request_path
+  - if @mr.accepted?
+    %br/
+    = @mr.status.humanize
+    by: #{@mr.reviewer.name}
+
+.message.markdown= @patch.commit_message

@@ -1,0 +1,34 @@
+!!!
+%html
+  %head
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
+    %title Review it!
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body{ 'data-who-am-i' => controller_name }
+    #header
+      .content
+        %span.path
+          = link_to 'Home', projects_path
+          - if under? 'projects'
+            \/ #{link_to @project.name, @project}
+          - if under_index_of? 'merge_requests'
+            \/ #{link_to 'Merge Requests', project_merge_requests_path(@project)}
+          - if under? 'merge_requests'
+            \/ #{link_to(@mr.id, project_merge_request_path(@project, @mr).tr('.', '/'))}
+        .user-nav
+          = current_user.name
+          = link_to faq_path, class: 'tipped', 'data-tip' => 'FAQ' do
+            %i.fa.fa-question-circle
+          = link_to edit_user_registration_path, class: 'tipped', 'data-tip' => 'Settings' do
+            %i.fa.fa-gears
+          = link_to destroy_user_session_path, method: :delete, class: 'tipped', 'data-tip' => 'Sign out' do
+            %i.fa.fa-sign-out
+    .content
+      = render 'flash_messages'
+      = yield
+    #error_tips
+    %footer
+      Review it! #{version} © 2014-2015
+      %a{ href: 'https://github.com/hugopl/reviewit/graphs/contributors' } All contributors
