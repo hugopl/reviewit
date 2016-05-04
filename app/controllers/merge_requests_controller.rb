@@ -1,6 +1,4 @@
 class MergeRequestsController < ApplicationController
-  before_action :authenticate_user!
-
   def update
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
     merge_request.add_comments(current_user, @patch, params[:comments])
