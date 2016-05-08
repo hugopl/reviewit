@@ -25,7 +25,7 @@ $ bundle install --without development,test
 Then create a postgres database called `reviewit` and run:
 
 ```
-$ RAILS_ENV=production rake setup
+$ bin/setup
 ```
 
 For more information about database configuration look into Rails documentation and edit the file `config/database.yml`.
