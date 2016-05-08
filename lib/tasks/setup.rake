@@ -49,7 +49,6 @@ eos
     end
   end
 
-  FileUtils.rm_f 'db/development.sqlite3'
   Rake::Task['db:schema:load'].invoke
   Rake::Task['assets:precompile'].invoke if ENV['RAILS_ENV'] == 'production'
   Rake::Task['build_cli_gem'].invoke
