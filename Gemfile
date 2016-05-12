@@ -19,6 +19,7 @@ group :development, :test do
   gem 'byebug'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'grape_on_rails_routes'
   gem 'haml_lint'
 end
 

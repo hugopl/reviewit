@@ -98,6 +98,8 @@ GEM
     grape-entity (0.5.1)
       activesupport
       multi_json (>= 1.3.2)
+    grape_on_rails_routes (0.3.0)
+      rails (>= 3.1.1, < 5)
     haml (4.0.7)
       tilt
     haml_lint (0.17.1)
@@ -240,6 +242,7 @@ DEPENDENCIES
   faker
   grape (~> 0.14)
   grape-entity (~> 0.5)
+  grape_on_rails_routes
   haml_lint
   hamlit
   jquery-rails
