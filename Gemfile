@@ -29,4 +29,5 @@ group :test do
   gem 'minitest-reporters'
   gem 'rails-perftest'
   gem 'ruby-prof'
+  gem 'simplecov', require: false, group: :test
 end
