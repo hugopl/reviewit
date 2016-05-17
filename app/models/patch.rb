@@ -10,7 +10,7 @@ class Patch < ActiveRecord::Base
   validates :diff, presence: true
   validates :commit_message, length: { minimum: 0 }, allow_nil: false
 
-  after_create :push_to_ci_if_neded
+  after_create :push_to_ci_if_needed
 
   delegate :author, to: :merge_request
   delegate :reviewer, to: :merge_request
@@ -91,7 +91,7 @@ class Patch < ActiveRecord::Base
     self.diff = diff.sub(/^From: .*$/, "From: #{author.name} <#{author.email}>")
   end
 
-  def push_to_ci_if_neded
+  def push_to_ci_if_needed
     push_to_ci unless canceled?
   end
 
