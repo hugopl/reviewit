@@ -86,3 +86,18 @@ function hide_comment_box(cancelLink) {
     $(tr).remove();
 }
 
+function toogle_merge_requests(){
+    var review_items = $('.code-review-item')
+    if(review_items.length > 0) {
+        review_items.find('.deleted').next('.code-review-container').slideUp(0)
+        review_items.find('.code-review-header').bind('click', function() {
+            var container = $(this).parents('.code-review-item').find('.code-review-container');
+            if(container.is(':visible')) {
+                container.slideUp();
+            } else {
+                container.slideDown();
+            }
+        })
+    }
+}
+

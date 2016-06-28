@@ -5,21 +5,22 @@
       %a{ href: 'http://cyberelk.net/tim/software/patchutils/' } interdiff
 - else
   - @diff.each_file do |file|
-    .code-review-header
-      = file.label
-      = diff_file_status(file)
-    .code-review-container
-      %table.code-review
-        - file.each_change do |change, type, location, old_ln, new_ln|
-          %tr{ class: type, 'data-location' => location }
-            %td= old_ln
-            %td= new_ln
-            %td #{@disable_comments ? '' : '<div class="add-comment"></div>'.html_safe}#{change}
-          - if @comments.include?(location)
-            %tr.comment{ 'data-location' => location }
-              %td{ colspan: 2 }
-                = "\uf086 #{@comments[location].count}" if @comments[location].count > 1
-              %td
-                - @comments[location].each do |comment|
-                  = render partial: 'comment', locals: { comment: comment }
-                %input{ onclick: 'show_comment_box(this.parentElement.parentElement)', type: 'button', value: 'Reply' }/
+    .code-review-item
+      .code-review-header{ class: diff_file_status_class(file) }
+        = file.label
+        = diff_file_status(file)
+      .code-review-container
+        %table.code-review
+          - file.each_change do |change, type, location, old_ln, new_ln|
+            %tr{ class: type, 'data-location' => location }
+              %td= old_ln
+              %td= new_ln
+              %td #{@disable_comments ? '' : '<div class="add-comment"></div>'.html_safe}#{change}
+            - if @comments.include?(location)
+              %tr.comment{ 'data-location' => location }
+                %td{ colspan: 2 }
+                  = "\uf086 #{@comments[location].count}" if @comments[location].count > 1
+                %td
+                  - @comments[location].each do |comment|
+                    = render partial: 'comment', locals: { comment: comment }
+                  %input{ onclick: 'show_comment_box(this.parentElement.parentElement)', type: 'button', value: 'Reply' }/

@@ -25,9 +25,11 @@ pre.message {
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
   border-radius: 4px 4px 0px 0px;
   margin-top: 40px;
   clear: both;
+  cursor: pointer;
 
   .flag {
     font-weight: normal;
@@ -63,6 +65,7 @@ pre.message {
 .code-review-container {
   overflow-x: scroll;
   border: 1px solid #ccc;
+  border-top:none;
   border-radius: 0px 0px 4px 4px;
 }
 

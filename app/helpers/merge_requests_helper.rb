@@ -53,6 +53,21 @@ module MergeRequestsHelper
     end.join.html_safe
   end
 
+  def diff_file_status_class(file)
+    flags = []
+    if file.new?
+      flags.push 'new'
+      flags.push 'chmod-changed'
+    elsif file.deleted?
+      flags.push 'deleted'
+    elsif file.renamed?
+      flags.push 'renamed'
+    elsif file.chmod_changed?
+      flags.push 'chmod-changed'
+    end
+    flags.join(' ')
+  end
+
   def diff_file_status(file)
     flags = {}
     if file.new?
