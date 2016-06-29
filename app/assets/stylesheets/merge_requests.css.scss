@@ -401,3 +401,16 @@ section.integrationlog {
   top: 15%;
   overflow-y: scroll;
 }
+
+.form-item {
+  display: inline-block;
+  width: 180px;
+}
+
+.form-item label {
+  display: block;
+}
+
+.select2-search__field {
+  min-width: 0!important
+}

@@ -28,6 +28,14 @@ class MergeRequestsController < ApplicationController
     @mrs = merge_requests.closed.paginate(page: params[:page])
   end
 
+  def search
+    @mrs = merge_requests.closed
+    @mrs = @mrs.where(target_branch: params[:target_branch]) if !params[:target_branch].blank? && params[:target_branch] != '0'
+    @mrs = @mrs.where(author: params[:author]) if !params[:author].blank? && params[:author] != '0'
+    @mrs = @mrs.where('lower(subject) LIKE :query', query: "%#{params[:subject].downcase}%") unless params[:subject].blank?
+    @total = @mrs.count
+  end
+
   def history
     @mr = project.merge_requests.includes(history_events: [:who]).find(params[:id])
   end

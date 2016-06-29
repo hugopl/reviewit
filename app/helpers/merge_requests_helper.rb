@@ -115,4 +115,17 @@ module MergeRequestsHelper
     when 'running' then 'fa-cog fa-spin'
     end
   end
+
+  def target_branch_options
+    options = MergeRequest.uniq.pluck(:target_branch).sort.reverse
+    options.unshift(['', ''])
+    options_for_select(options)
+  end
+
+  def author_options
+    author_ids = MergeRequest.uniq.pluck(:author_id)
+    options = User.where(id: author_ids).pluck(:name, :id).sort
+    options.unshift(['', ''])
+    options_for_select(options)
+  end
 end

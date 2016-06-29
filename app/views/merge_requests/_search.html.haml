@@ -1,0 +1,11 @@
+= form_for(:merge_request, url: {action: 'search'}) do |f|
+  .form-item{ style: 'width:255px' }
+    = label_tag :target_branch
+    = select_tag :target_branch, target_branch_options, class: 'select2select'
+  .form-item
+    = label_tag :author
+    = select_tag :author, author_options, class: 'select2select'
+  .form-item{ style: 'width:420px' }
+    = text_field_tag(:subject, '', placeholder: 'Commit Message')
+  .form-item{ style: 'width:100px' }
+    = f.submit 'Search'

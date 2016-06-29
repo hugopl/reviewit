@@ -22,6 +22,7 @@
 //= require jquery-ui.min
 //= require highcharts
 //= require tag-it
+//= require select2.full
 //
 //= require_tree .
 
@@ -38,6 +39,12 @@ var ready = function() {
   $(".markdown").each(function(idx, item) {
       item.innerHTML = marked(item.textContent);
   });
+
+  $('.select2select').select2({
+    allowClear: true,
+    placeholder: 'Select one',
+  });
+
 }
 $(document).ready(ready);
 $(document).on('page:load', ready);
