@@ -119,13 +119,13 @@ module MergeRequestsHelper
   def target_branch_options
     options = MergeRequest.uniq.where(project_id: @project.id).order('target_branch ASC').pluck(:target_branch)
     options.unshift(['', ''])
-    options_for_select(options)
+    options_for_select(options, params[:target_branch])
   end
 
   def author_options
     options = User.uniq.order('name ASC').joins(:merge_requests)
                   .where('merge_requests.project_id = ?', @project.id).pluck(:name, :id)
     options.unshift(['', ''])
-    options_for_select(options)
+    options_for_select(options, params[:author])
   end
 end

@@ -1,4 +1,3 @@
-- no_paginate ||= false
 - if mrs.empty?
   %p= on_empty
 - else
@@ -12,5 +11,6 @@
           %span{ class: mr.status }= mr.status.humanize
           %span.target_branch= mr.target_branch
 
-  - unless no_paginate
-    = will_paginate(mrs) if mrs.is_a?(ActiveRecord::Relation)
+  = will_paginate(mrs, params: { target_branch: @target_branch,
+                                 author: @author,
+                                 subject: @subject }) if mrs.is_a?(ActiveRecord::Relation)

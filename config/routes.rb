@@ -21,7 +21,6 @@ Rails.application.routes.draw do
       get :ci_status, on: :member
       collection do
         get 'old_ones'
-        post 'search'
       end
     end
   end
