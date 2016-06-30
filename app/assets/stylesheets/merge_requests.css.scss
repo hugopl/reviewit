@@ -402,13 +402,18 @@ section.integrationlog {
   overflow-y: scroll;
 }
 
-.form-item {
-  display: inline-block;
-  width: 180px;
+.search-box {
+  margin-bottom: 10px;
 }
 
-.form-item label {
-  display: block;
+.search-box #subject {
+  margin: 0px;
+  display: inline;
+  height: 28px;
+}
+
+.search-box input[type=submit] {
+  float: right;
 }
 
 .select2-search__field {

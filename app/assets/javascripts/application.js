@@ -40,9 +40,8 @@ var ready = function() {
       item.innerHTML = marked(item.textContent);
   });
 
-  $('.select2select').select2({
-    allowClear: true,
-    placeholder: 'Select one',
+  $('.select2select').each(function(idx, item) {
+    $(item).select2({ allowClear: true, placeholder: item.dataset.placeholder});
   });
 
 }
