@@ -1,7 +1,8 @@
 %h1
   Closed merge requests for #{@project.name}
 %p
-  There #{@total > 1 ? 'are' : 'is'} a total of #{pluralize(@total, 'merge request')} closed,
+  There #{@total > 1 ? 'are' : 'is'} a total of #{pluralize(@total, 'merge request')}
+  #{search_request? ? 'found' : 'closed'},
   but better worry about the #{link_to 'pending code reviews', project_merge_requests_path(@project)}.
 = render partial: 'search'
 = render partial: 'list', locals: { mrs: @mrs, title: ['Finished review', 'Finished reviews'] }

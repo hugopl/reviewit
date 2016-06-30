@@ -12,6 +12,10 @@ module MergeRequestsHelper
     content_tag(:span, '', class: "fa #{patch.linter_ok? ? 'fa-check ok' : 'fa-remove fail'}")
   end
 
+  def search_request?
+    !params[:author].blank? || !params[:target_branch].blank? || !params[:subject].blank?
+  end
+
   def merge_request_pending_since(mr)
     last_patch = mr.patch
     return if last_patch.nil?
