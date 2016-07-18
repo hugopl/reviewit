@@ -4,6 +4,6 @@
   %div
     = f.label :email
     %br/
-    = f.email_field :email, autofocus: true
+    = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)
   %div= f.submit 'Resend confirmation instructions'
 = render 'devise/shared/links'
