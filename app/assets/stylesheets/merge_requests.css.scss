@@ -245,6 +245,12 @@ textarea.comment {
   margin: 20px 10px 10px 10px;
 }
 
+.avatar {
+  float: left;
+  margin-right: 10px;
+  border-radius: 20px;
+}
+
 div.comment {
   line-height: 18px;
   clear: both;
@@ -253,11 +259,6 @@ div.comment {
     margin-top: 30px;
   }
 
-  .avatar {
-    float: left;
-    margin-right: 10px;
-    border-radius: 20px;
-  }
   .comment-header {
     font-weight: bold;
     text-align: left;
