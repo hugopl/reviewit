@@ -290,6 +290,10 @@ div.comment {
       float: right;
     }
   }
+
+  pre {
+    overflow-x: scroll;
+  }
 }
 
 .mr-summary {
