@@ -1,6 +1,8 @@
 module Reviewit
   class Apply < Action
     def run
+      check_dirty_working_copy!
+
       patch = api.merge_request(options[:mr])
 
       fetch_repository if options[:fetch]
