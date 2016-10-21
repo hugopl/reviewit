@@ -1,5 +1,4 @@
 require 'trollop'
-require 'awesome_print'
 
 require 'reviewit/api.rb'
 require 'reviewit/action/action.rb'
