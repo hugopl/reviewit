@@ -5,10 +5,10 @@
     - mrs.each do |mr|
       = link_to project_merge_request_path(@project, mr), class: "review-list #{patch_ci_status(mr.patch)}" do
         = image_tag gravatar_url(mr.author), class: 'avatar'
-        .subject= mr.subject
+        .subject
+          \##{mr.id} – #{mr.subject}
         .summary
-          \##{mr.id} #{merge_request_pending_since(mr)},
-          opened by #{mr.author.name},
+          #{merge_request_status_line(mr)}
           %span{ class: mr.status }= mr.status.humanize
           %span.target_branch= mr.target_branch
 

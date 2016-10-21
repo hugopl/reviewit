@@ -16,14 +16,18 @@ module MergeRequestsHelper
     !params[:author].blank? || !params[:target_branch].blank? || !params[:subject].blank?
   end
 
-  def merge_request_pending_since(mr)
-    last_patch = mr.patch
-    return if last_patch.nil?
-    time = last_patch.updated_at
-    last_comment = last_patch.comments.order('id DESC').limit(1).first
-    time = last_comment.created_at if last_comment
-    time = distance_of_time_in_words(Time.now, time)
-    "pending for #{time}"
+  def merge_request_status_line(mr)
+    if mr.closed?
+      "Closed #{distance_of_time_in_words(Time.now, mr.updated_at)} ago,"
+    else
+      last_patch = mr.patch
+      return if last_patch.nil?
+      time = last_patch.updated_at
+      last_comment = last_patch.comments.order('id DESC').limit(1).first
+      time = last_comment.created_at if last_comment
+      time = distance_of_time_in_words(Time.now, time)
+      "Pending for #{time},"
+    end
   end
 
   def patch_ci_status(patch)
