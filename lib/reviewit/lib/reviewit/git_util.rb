@@ -10,7 +10,7 @@ module Reviewit
       return if branch.nil?
 
       puts " * [pruned] #{branch}"
-      `git branch -D #{Shellwords.escape(branch)}`
+      `git branch -D #{git_safe_name(branch)}`
     end
 
     def fetch_repository
@@ -24,7 +24,7 @@ module Reviewit
     end
 
     def branch_exists?(name)
-      `git rev-parse --verify --quiet #{name}`
+      `git rev-parse --verify --quiet #{git_safe_name(name)}`
       $?.success?
     end
 
