@@ -37,7 +37,7 @@ var ready = function() {
   });
 
   $(".markdown").each(function(idx, item) {
-      item.innerHTML = marked(item.textContent);
+      item.innerHTML = marked(item.textContent, { sanitize: true });
   });
 
   $('.select2select').each(function(idx, item) {
