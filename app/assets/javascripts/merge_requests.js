@@ -90,14 +90,14 @@ function toogle_merge_requests(){
     var review_items = $('.code-review-item')
     if(review_items.length > 0) {
         review_items.find('.deleted').next('.code-review-container').slideUp(0)
-        review_items.find('.toggle-file-btn').bind('click', function() {
+        review_items.find('.toggle-file-btn').bind('click', function(event) {
             var container = $(this).parents('.code-review-item').find('.code-review-container');
             if(container.is(':visible')) {
                 container.slideUp();
-                $('.toggle-file-btn').text('Show')
+                $(event.target).text('Show')
             } else {
                 container.slideDown();
-                $('.toggle-file-btn').text('Hide')
+                $(event.target).text('Hide')
             }
         })
     }
