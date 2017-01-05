@@ -29,7 +29,6 @@ pre.message {
   border-radius: 4px 4px 0px 0px;
   margin-top: 40px;
   clear: both;
-  cursor: pointer;
 
   .flag {
     font-weight: normal;
@@ -59,6 +58,19 @@ pre.message {
   .renamed {
     color: blue;
     border-color: blue;
+  }
+
+  .toggle-file-btn {
+    float: right;
+    margin-top: 4px;
+    margin-right: 10px;
+    font-size: 11px;
+    cursor: pointer;
+    width: 40px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 1px 1px 4px #000000;
+    line-height: 15px;
   }
 }
 
