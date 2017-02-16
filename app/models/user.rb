@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :merge_requests, foreign_key: :author_id
 
   validates :name, presence: true, allow_blank: false
+  validates :api_token, uniqueness: true
 
   def self.valid_token?(token)
     User.exists?(api_token: token)
