@@ -10,8 +10,7 @@
         = file.label
         = diff_file_status(file)
 
-        .toggle-file-btn
-          Hide
+        .toggle-file-btn= file.deleted? ? 'Show' : 'Hide'
       .code-review-container
         %table.code-review
           - file.each_change do |change, type, location, old_ln, new_ln|
