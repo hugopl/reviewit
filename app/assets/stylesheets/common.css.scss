@@ -111,6 +111,10 @@ input, textarea {
   display: block;
 }
 
+.select2-container {
+  padding-bottom: 10px;
+}
+
 @mixin button($color: #777777, $bordercolor: #dcdcdc, $bgcolor1: #ededed, $bgcolor2: #dfdfdf) {
   box-shadow: inset 0px 1px 0px 0px #ffffff;
   box-shadow: inset 0px 1px 0px 0px #ffffff;
@@ -303,3 +307,6 @@ img[src^="/assets/emojis/"] {
   }
 }
 
+.select2-search__field {
+  min-width: 0!important
+}
