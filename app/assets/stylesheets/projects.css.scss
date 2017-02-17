@@ -4,10 +4,10 @@
 
 .review-list-container {
   > div:first-child {
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 4px 4px 0 0;
   }
   > div:last-child {
-    border-radius: 0px 0px 4px 4px;
+    border-radius: 0 0 4px 4px;
   }
 }
 
@@ -16,9 +16,9 @@
 }
 
 .review-list {
-  -webkit-transition: background-color .15s linear;
-  -moz-transition: background-color .15s linear;
-  transition: background-color .15s linear;
+  -webkit-transition: background-color 0.15s linear;
+  -moz-transition: background-color 0.15s linear;
+  transition: background-color 0.15s linear;
   font-size: 15px;
   font-weight: normal;
   line-height: 18px;
@@ -47,27 +47,27 @@
   }
 
   &.review-list--success {
-    background-color: #F1F8E9;
+    background-color: #f1f8e9;
 
     &:hover {
-      background-color: darken(#F1F8E9, 5%);
+      background-color: darken(#f1f8e9, 5%);
     }
   }
 
   &.review-list--failure {
-    background-color: #FFEBEE;
+    background-color: #ffebee;
 
     &:hover {
-      background-color: darken(#FFEBEE, 5%);
+      background-color: darken(#ffebee, 5%);
     }
   }
 
   &.review-list--canceled {
-    background-color: #EEEEEE;
-    opacity: .8;
+    background-color: #eee;
+    opacity: 0.8;
 
     &:hover {
-      background-color: darken(#EEEEEE, 5%);
+      background-color: darken(#eee, 5%);
     }
   }
 }

@@ -26,7 +26,7 @@ pre.message {
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  border-radius: 4px 4px 0px 0px;
+  border-radius: 4px 4px 0 0;
   margin-top: 40px;
   clear: both;
 
@@ -69,7 +69,7 @@ pre.message {
     width: 40px;
     background-color: white;
     border-radius: 4px;
-    box-shadow: 1px 1px 4px #000000;
+    box-shadow: 1px 1px 4px #000;
     line-height: 15px;
   }
 }
@@ -78,7 +78,7 @@ pre.message {
   overflow-x: scroll;
   border: 1px solid #ccc;
   border-top:none;
-  border-radius: 0px 0px 4px 4px;
+  border-radius: 0 0 4px 4px;
 }
 
 .del {
@@ -102,7 +102,7 @@ pre.message {
   font-size: 12px;
   height: 18px;
   line-height: 18px;
-  padding: 0px 6px 0px 6px;
+  padding: 0 6px 0 6px;
 }
 
 .snippet-container {
@@ -117,13 +117,11 @@ pre.message {
 
 .code-review {
   width: 100%;
-  border-spacing: 0px;
+  border-spacing: 0;
   color: #333;
 
-  th {
-  }
-
-  tr > td:nth-child(1), tr > td:nth-child(2) {
+  tr > td:nth-child(1),
+  tr > td:nth-child(2) {
     text-align: right;
     background-color: whitesmoke;
     border-right: 1px solid #ccc;
@@ -136,16 +134,18 @@ pre.message {
     font-size: 12px;
     height: 18px;
     line-height: 18px;
-    padding: 0px 6px 0px 6px;
+    padding: 0 6px 0 6px;
   }
   td:last-child {
     width: 100%;
   }
-  .add > td:nth-child(1), .add > td:nth-child(2) {
+  .add > td:nth-child(1),
+  .add > td:nth-child(2) {
     background-color: #cfc;
     border-right: 1px solid #b9e7b9;
   }
-  .del > td:nth-child(1), .del > td:nth-child(2) {
+  .del > td:nth-child(1),
+  .del > td:nth-child(2) {
     background-color: #fcc;
     border-right: 1px solid #e7baba;
   }
@@ -196,7 +196,7 @@ pre.message {
       display: block;
       width: 100%;
       padding: 10px;
-      margin: 0px 0px 10px 0px;
+      margin: 0 0 10px 0;
     }
   }
 
@@ -238,12 +238,12 @@ h3.comment-patch-update {
   text-align: center;
   color: #ccc;
   border-bottom: 1px dashed #ccc;
-  line-height:1px;
+  line-height: 1px;
   span {
     font-weight: normal;
     font-style: italic;
-    background:#fff;
-    padding:0 10px;
+    background: #fff;
+    padding: 0 10px;
   }
 }
 
@@ -288,7 +288,7 @@ div.comment {
     padding-left: 50px;
 
     p {
-      margin-top: 0px;
+      margin-top: 0;
     }
 
     p+p {
@@ -325,12 +325,12 @@ div.comment {
 }
 
 p + h2 {
-  margin: 0px;
+  margin: 0;
 }
 
 h2 {
-  margin: 10px 0px 0px 0px;
-  padding: 0px;
+  margin: 10px 0 0 0;
+  padding: 0;
   font-size: 16px;
 }
 
@@ -338,7 +338,7 @@ h2 {
   min-width: 980px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  border-spacing: 0px;
+  border-spacing: 0;
   clear: both;
 
   .ci-link {
@@ -352,14 +352,14 @@ h2 {
     font-size: 12px;
     line-height: 18px;
     border-bottom: 1px solid #ccc;
-    padding: 0px 4px 0px 4px;
+    padding: 0 4px 0 4px;
     white-space: nowrap;
   }
   td {
     font-size: 12px;
     line-height: 18px;
-    padding: 0px 2px 0px 2px;
-    margin: 0px;
+    padding: 0 2px 0 2px;
+    margin: 0;
     vertical-align: middle;
     text-align: center;
   }
@@ -375,10 +375,12 @@ h2 {
     text-align: center;
     width: 1px;
   }
-  td:nth-child(3), td:nth-child(4) {
+  td:nth-child(3),
+  td:nth-child(4) {
     width: 1px;
   }
-  td:nth-child(5), td:nth-child(6) {
+  td:nth-child(5),
+  td:nth-child(6) {
     width: 1px;
   }
 }
@@ -388,7 +390,7 @@ h2 {
 
   input {
     font-size: 10px;
-    margin: 0px;
+    margin: 0;
     padding: 4px;
   }
 }
@@ -399,8 +401,8 @@ section.integrationlog {
     display: block;
     white-space: pre-wrap;
     background-color: black;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     border-radius: 4px;
     border: 1px solid #ccc;
     padding: 10px;
@@ -424,7 +426,7 @@ section.integrationlog {
 }
 
 .search-box #subject {
-  margin: 0px;
+  margin: 0;
   display: inline;
   height: 28px;
 }
@@ -434,5 +436,5 @@ section.integrationlog {
 }
 
 .search-box .select2-container {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
