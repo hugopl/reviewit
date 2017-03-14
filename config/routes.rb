@@ -12,6 +12,7 @@ Rails.application.routes.draw do
              end
   end
 
+  post '/configure_webpush' => 'users#configure_webpush'
   root 'projects#index'
 
   resources :projects do

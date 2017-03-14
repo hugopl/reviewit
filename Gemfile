@@ -7,11 +7,13 @@ gem 'jquery-rails'
 gem 'rails', '4.2.6'
 gem 'redcarpet'
 gem 'sass-rails', '~> 4.0.3'
+gem 'serviceworker-rails', '~> 0.5.4'
 gem 'pg'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'unicorn'
 gem 'will_paginate', '~> 3.0'
+gem 'webpush', '~> 0.3.1'
 gem 'hamlit'
 
 group :development, :test do

@@ -24,6 +24,21 @@ class User < ActiveRecord::Base
     "#{name} <#{email}>"
   end
 
+  def send_push_notification(text)
+    Webpush.payload_send(
+        message: text,
+        endpoint: webpush_endpoint,
+        p256dh: webpush_p256dh,
+        auth: webpush_auth,
+        ttl: 24 * 60 * 60,
+        vapid: {
+          subject: 'mailto:hugo.pl@gmail.com', # This need to be read from reviewit.yml
+          public_key: ReviewitConfig.webpush_public_key,
+          private_key: ReviewitConfig.webpush_private_key
+        }
+      )
+  end
+
   private
 
   def generate_api_token

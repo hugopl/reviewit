@@ -24,7 +24,10 @@
 //= require tag-it
 //= require select2.full
 //
-//= require_tree .
+//= require ./application.js
+//= require ./merge_requests.js
+//= require ./projects.js
+//= require ./serviceworker-companion.js
 
 // "It's not advisable to add code directly here..." bla bla bla... but I did it!! Yeah!!
 var ready = function() {
@@ -47,3 +50,4 @@ var ready = function() {
 }
 $(document).ready(ready);
 $(document).on('page:load', ready);
+//= require serviceworker-companion
