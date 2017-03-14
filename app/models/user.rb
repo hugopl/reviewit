@@ -24,7 +24,13 @@ class User < ActiveRecord::Base
     "#{name} <#{email}>"
   end
 
+  def webpush_notification_enabled?
+    webpush_endpoint.present? && webpush_p256dh.present? && webpush_auth.present?
+  end
+
   def send_push_notification(text)
+    return unless webpush_notification_enabled?
+
     Webpush.payload_send(
         message: text,
         endpoint: webpush_endpoint,
@@ -37,6 +43,8 @@ class User < ActiveRecord::Base
           private_key: ReviewitConfig.webpush_private_key
         }
       )
+  rescue Webpush::InvalidSubscription
+    update_attributes(webpush_endpoint: nil, webpush_p256dh: nil, webpush_auth: nil)
   end
 
   private
