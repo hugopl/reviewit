@@ -16,7 +16,8 @@
     = f.label(:timezone)
     %br/
     - default_timezone = (params[:user] || {})[:time_zone] || @user.time_zone
-    = time_zone_select(resource_name, :time_zone, TZInfo::Timezone.all, { default: default_timezone, model: TZInfo::Timezone }, class: 'select2select')
+    = time_zone_select(resource_name, :time_zone, TZInfo::Timezone.all, { default: default_timezone,
+                                                                          model: TZInfo::Timezone }, class: 'select2select')
   %div
     = f.label(:password)
     %i (leave blank if you don't want to change it)

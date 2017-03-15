@@ -1,7 +1,7 @@
 %h1
   Merge requests for #{@project.name}
 %p
-  #{ pluralize(@total_mrs, 'pending merge request') }.
+  #{pluralize(@total_mrs, 'pending merge request')}.
 - if @waiting_you.empty? && @waiting_others.empty?
   %p Nothing here, go drink some wine :-)
 - else

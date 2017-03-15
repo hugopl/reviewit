@@ -8,7 +8,7 @@
         .subject
           \##{mr.id} – #{mr.subject}
         .summary
-          #{merge_request_status_line(mr)}
+          = merge_request_status_line(mr)
           %span{ class: mr.status }= mr.status.humanize
           %span.target_branch= mr.target_branch
 

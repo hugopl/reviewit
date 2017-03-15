@@ -4,4 +4,7 @@
   We found #{@total > 1 ? 'are' : 'is'} a total of #{pluralize(@total, 'merge request')} for this search,
   but better worry about the #{link_to 'pending code reviews', project_merge_requests_path(@project)}.
 = render partial: 'search'
-= render partial: 'list', locals: { no_paginate: true, mrs: @mrs, title: ['Search results', 'Search results'], on_empty: 'Nothing found' }
+= render partial: 'list', locals: { no_paginate: true,
+                                    mrs: @mrs,
+                                    title: ['Search results', 'Search results'],
+                                    on_empty: 'Nothing found' }
