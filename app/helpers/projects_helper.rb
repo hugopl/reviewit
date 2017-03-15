@@ -77,7 +77,6 @@ module ProjectsHelper
       entry
     end
 
-
     total = data.inject(0) { |a, e| a + e['y'].to_i }
 
     {
