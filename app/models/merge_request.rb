@@ -222,7 +222,7 @@ class MergeRequest < ActiveRecord::Base
     match = /#{project.jira_ticket_regexp}/.match(patch.commit_message)
     return if match.nil?
 
-    message = "Merge request created at https://#{url_domain}/mr/#{id}"
+    message = "Merge request created at https://#{ReviewitConfig.mail.domain}/mr/#{id}"
     Thread.new do
       ActiveRecord::Base.connection.close
       match.to_a.each do |ticket_id|
@@ -255,12 +255,5 @@ class MergeRequest < ActiveRecord::Base
 
   def send_webpush_needs_rebase_notification
     author.send_webpush_assync('Rebase needed', subject)
-  end
-
-  # FIXME: This should have it's own model and be easily accesible in the whole project.
-  def url_domain
-    @url_domain ||= YAML.load_file("#{Rails.root}/config/reviewit.yml")['mail']['domain']
-  rescue
-    'localhost'
   end
 end

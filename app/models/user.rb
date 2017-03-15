@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
       auth: webpush_auth,
       ttl: WEBPUSH_TTL,
       vapid: {
-        subject: 'mailto:hugo.pl@gmail.com', # This need to be read from reviewit.yml
+        subject: "mailto:#{ReviewitConfig.mail.sender}",
         public_key: ReviewitConfig.webpush_public_key,
         private_key: ReviewitConfig.webpush_private_key
       }

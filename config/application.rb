@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require File.expand_path('../../app/models/reviewit_config.rb', __FILE__)
+
 module Reviewit
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -31,30 +33,27 @@ module Reviewit
       config.action_mailer.default_url_options = { host: 'example.com' }
       config.action_mailer.default_options = { from: 'reviewit@example.com' }
     else
-      yml = YAML.load_file("#{Rails.root}/config/reviewit.yml")['mail']
-      yml ||= {}
-
-      config.action_mailer.delivery_method = (yml['delivery_method'] || 'file').to_sym
+      config.action_mailer.delivery_method = ReviewitConfig.mail.delivery_method.to_sym
 
       config.action_mailer.smtp_settings = {
-        address:              yml['address'],
-        port:                 yml['port'],
-        authentication:       yml['authentication'],
-        domain:               yml['domain'],
-        enable_starttls_auto: yml['enable_starttls_auto'],
-        user_name:            yml['user_name'],
-        password:             yml['password'],
-        openssl_verify_mode:  yml['openssl_verify_mode']
+        address:              ReviewitConfig.mail.address,
+        port:                 ReviewitConfig.mail.port,
+        authentication:       ReviewitConfig.mail.authentication,
+        domain:               ReviewitConfig.mail.domain,
+        enable_starttls_auto: ReviewitConfig.mail.enable_starttls_auto,
+        user_name:            ReviewitConfig.mail.user_name,
+        password:             ReviewitConfig.mail.password,
+        openssl_verify_mode:  ReviewitConfig.mail.openssl_verify_mode
       }
 
       config.action_mailer.file_settings = {
         location: 'logs/mails'
       }
       config.action_mailer.default_url_options = {
-        host: yml['host']
+        host: ReviewitConfig.mail.host
       }
       config.action_mailer.default_options = {
-        from: yml['sender']
+        from: ReviewitConfig.mail.sender
       }
     end
 
