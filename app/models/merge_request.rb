@@ -29,6 +29,7 @@ class MergeRequest < ActiveRecord::Base
   before_save :write_history
 
   after_create :notify_jira
+  after_create :send_webpush_creation_notification
 
   def can_update?
     not %w(accepted integrating).include? status
@@ -71,6 +72,7 @@ class MergeRequest < ActiveRecord::Base
       end
     end
     add_history_event(author, count == 1 ? 'added a comment.' : "added #{count} comments.") unless count.zero?
+    send_webpush_comment_notification(author, comments.count)
   end
 
   def abandon!(reviewer)
@@ -95,9 +97,11 @@ class MergeRequest < ActiveRecord::Base
     patch.push do |success|
       if success
         accepted!
+        send_webpush_accept_notification
       else
         add_history_event reviewer, 'failed to integrate merge request'
         needs_rebase!
+        send_webpush_needs_rebase_notification
       end
     end
   end
@@ -234,6 +238,23 @@ class MergeRequest < ActiveRecord::Base
         http.start { |h| h.request(request) }
       end
     end
+  end
+
+  def send_webpush_creation_notification
+    User.send_webpush(project.users.webpush_enabled, "MR created on #{project.name}", subject)
+  end
+
+  def send_webpush_accept_notification
+    author.send_webpush_assync('Your MR got accepted!', subject)
+  end
+
+  def send_webpush_comment_notification(who, n_of_comments)
+    return if who == author
+    author.send_webpush_assync("#{n_of_comments} new comments", subject)
+  end
+
+  def send_webpush_needs_rebase_notification
+    author.send_webpush_assync('Rebase needed', subject)
   end
 
   # FIXME: This should have it's own model and be easily accesible in the whole project.

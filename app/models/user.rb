@@ -12,6 +12,12 @@ class User < ActiveRecord::Base
   validates :name, presence: true, allow_blank: false
   validates :api_token, uniqueness: true
 
+  scope(:webpush_enabled, lambda do
+    where('webpush_endpoint IS NOT NULL AND webpush_p256dh IS NOT NULL AND webpush_auth IS NOT NULL')
+  end)
+
+  WEBPUSH_TTL = 8.hours.to_i
+
   def self.valid_token?(token)
     User.exists?(api_token: token)
   end
@@ -28,21 +34,39 @@ class User < ActiveRecord::Base
     webpush_endpoint.present? && webpush_p256dh.present? && webpush_auth.present?
   end
 
-  def send_push_notification(title:, body:, tag: 'reviewit')
+  def self.send_webpush(users, title, body)
+    users.each do |user|
+      user.send_webpush_assync(title, body)
+    end
+  end
+
+  def send_webpush_assync(title, body)
+    return unless webpush_notification_enabled?
+
+    Thread.new do
+      begin
+        send_webpush(title, body)
+      ensure
+        ActiveRecord::Base.connection.close
+      end
+    end
+  end
+
+  def send_webpush(title, body)
     return unless webpush_notification_enabled?
 
     Webpush.payload_send(
-        message: { title: title, body: body, tag: tag }.to_json,
-        endpoint: webpush_endpoint,
-        p256dh: webpush_p256dh,
-        auth: webpush_auth,
-        ttl: 24 * 60 * 60,
-        vapid: {
-          subject: 'mailto:hugo.pl@gmail.com', # This need to be read from reviewit.yml
-          public_key: ReviewitConfig.webpush_public_key,
-          private_key: ReviewitConfig.webpush_private_key
-        }
-      )
+      message: { title: title, body: body, tag: 'reviewit' }.to_json,
+      endpoint: webpush_endpoint,
+      p256dh: webpush_p256dh,
+      auth: webpush_auth,
+      ttl: WEBPUSH_TTL,
+      vapid: {
+        subject: 'mailto:hugo.pl@gmail.com', # This need to be read from reviewit.yml
+        public_key: ReviewitConfig.webpush_public_key,
+        private_key: ReviewitConfig.webpush_private_key
+      }
+    )
   rescue Webpush::InvalidSubscription
     update_attributes(webpush_endpoint: nil, webpush_p256dh: nil, webpush_auth: nil)
   end
