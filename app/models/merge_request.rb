@@ -241,7 +241,8 @@ class MergeRequest < ActiveRecord::Base
   end
 
   def send_webpush_creation_notification
-    User.send_webpush(project.users.webpush_enabled, "MR created on #{project.name}", subject)
+    users = project.users.webpush_enabled.to_a - [author]
+    User.send_webpush(users, "MR created on #{project.name}", subject)
   end
 
   def send_webpush_accept_notification
