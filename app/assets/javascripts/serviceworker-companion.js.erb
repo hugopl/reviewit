@@ -2,21 +2,23 @@
 pubkey = Base64.urlsafe_decode64(ReviewitConfig.webpush_public_key)
 %>
 
-if (navigator.serviceWorker) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/serviceworker.js', { scope: './' })
-      .then(function(serviceWorkerRegistration) {
-        serviceWorkerRegistration.pushManager.subscribe({ userVisibleOnly: true,
-                                                          applicationServerKey: new Uint8Array(<%= pubkey.bytes %>) })
-          .then(function(subscription) {
-            $.post({ url: '/configure_webpush', data: { subscription: subscription.toJSON() } });
-          });
-      });
-  });
+function registerWebPushNotifications() {
+  if (navigator.serviceWorker) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/serviceworker.js', { scope: './' })
+        .then(function(serviceWorkerRegistration) {
+          serviceWorkerRegistration.pushManager.subscribe({ userVisibleOnly: true,
+                                                            applicationServerKey: new Uint8Array(<%= pubkey.bytes %>) })
+            .then(function(subscription) {
+              $.post({ url: '/configure_webpush', data: { subscription: subscription.toJSON() } });
+            });
+        });
+    });
 
-  if (Notification.permission !== 'denied' && Notification.permission !== 'granted') {
-    Notification.requestPermission();
+    if (Notification.permission !== 'denied' && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  } else {
+    console.log('Service workers not supported by this browser.');
   }
-} else {
-  console.log('Service workers not supported by this browser.');
 }

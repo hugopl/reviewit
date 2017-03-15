@@ -30,6 +30,7 @@
 //= require ./serviceworker-companion.js
 
 // "It's not advisable to add code directly here..." bla bla bla... but I did it!! Yeah!!
+var alreadyTriedToRegisterNotifications = false;
 var ready = function() {
   var func = window[document.body.dataset.whoAmI];
   if (func)
@@ -47,6 +48,11 @@ var ready = function() {
     $(item).select2({ allowClear: true, placeholder: item.dataset.placeholder});
   });
 
+  // If we are not in a devise layout
+  if (!alreadyTriedToRegisterNotifications && document.body.className !== "devise") {
+    registerWebPushNotifications();
+    alreadyTriedToRegisterNotifications = true
+  }
 }
 $(document).ready(ready);
 $(document).on('page:load', ready);
