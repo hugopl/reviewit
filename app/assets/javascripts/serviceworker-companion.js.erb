@@ -1,9 +1,20 @@
+function configureWebPush(subscription) {
+  $.post({ url: '/configure_webpush', data: { subscription: subscription.toJSON() } });
+}
+
+var swRegistration = null;
+
 function subscribeServiceWorker(serviceWorkerRegistration) {
-  var key = new Uint8Array(<%= Base64.urlsafe_decode64(ReviewitConfig.webpush_public_key).bytes %>)
-  serviceWorkerRegistration.pushManager.subscribe({ userVisibleOnly: true,
-                                                    applicationServerKey: key }).then(function(subscription) {
-    $.post({ url: '/configure_webpush', data: { subscription: subscription.toJSON() } });
+  swRegistration = serviceWorkerRegistration
+  swRegistration.pushManager.getSubscription().then(function(subscription) {
+    if (!subscription) {
+      var key = new Uint8Array(<%= Base64.urlsafe_decode64(ReviewitConfig.webpush_public_key).bytes %>)
+      swRegistration.pushManager.subscribe({ userVisibleOnly: true,
+                                             applicationServerKey: key }).then(configureWebPush);
+    }
+    swRegistration = null;
   });
+
 }
 
 function receiveMessageFromServiceWorker(event) {
