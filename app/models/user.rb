@@ -28,11 +28,11 @@ class User < ActiveRecord::Base
     webpush_endpoint.present? && webpush_p256dh.present? && webpush_auth.present?
   end
 
-  def send_push_notification(text)
+  def send_push_notification(title:, body:, tag: 'reviewit')
     return unless webpush_notification_enabled?
 
     Webpush.payload_send(
-        message: text,
+        message: { title: title, body: body, tag: tag }.to_json,
         endpoint: webpush_endpoint,
         p256dh: webpush_p256dh,
         auth: webpush_auth,

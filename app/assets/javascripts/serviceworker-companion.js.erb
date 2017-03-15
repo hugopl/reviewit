@@ -1,23 +1,25 @@
-<%
-pubkey = Base64.urlsafe_decode64(ReviewitConfig.webpush_public_key)
-%>
+function subscribeServiceWorker(serviceWorkerRegistration) {
+  var key = new Uint8Array(<%= Base64.urlsafe_decode64(ReviewitConfig.webpush_public_key).bytes %>)
+  serviceWorkerRegistration.pushManager.subscribe({ userVisibleOnly: true,
+                                                    applicationServerKey: key }).then(function(subscription) {
+    $.post({ url: '/configure_webpush', data: { subscription: subscription.toJSON() } });
+  });
+}
+
+function receiveMessageFromServiceWorker(event) {
+  console.log("To be implemented soon! :-)");
+  console.log(event.data);
+}
 
 function registerWebPushNotifications() {
   if (navigator.serviceWorker) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/serviceworker.js', { scope: './' })
-        .then(function(serviceWorkerRegistration) {
-          serviceWorkerRegistration.pushManager.subscribe({ userVisibleOnly: true,
-                                                            applicationServerKey: new Uint8Array(<%= pubkey.bytes %>) })
-            .then(function(subscription) {
-              $.post({ url: '/configure_webpush', data: { subscription: subscription.toJSON() } });
-            });
-        });
-    });
+    navigator.serviceWorker.register('/serviceworker.js', { scope: '/' }).then(subscribeServiceWorker);
+    navigator.serviceWorker.addEventListener('message', receiveMessageFromServiceWorker);
 
     if (Notification.permission !== 'denied' && Notification.permission !== 'granted') {
       Notification.requestPermission();
     }
+    console.log('Service worker registered!');
   } else {
     console.log('Service workers not supported by this browser.');
   }

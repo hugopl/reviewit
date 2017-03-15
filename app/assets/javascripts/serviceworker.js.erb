@@ -1,7 +1,9 @@
-self.addEventListener("push", function(event) {
-  var body = (event.data && event.data.text());
-  var tag = "reviewit";
-  var icon = "<%= asset_path 'favicon/android-chrome-144x144.png' %>";
+function receivePushNotification(event) {
+  var data = JSON.parse(event.data && event.data.text());
+  data['icon'] = "<%= asset_path 'favicon/android-chrome-144x144.png' %>";
+  var title = data['title']
+  delete data['title']
+  event.waitUntil(self.registration.showNotification(title, data));
+}
 
-  event.waitUntil(self.registration.showNotification('Reviewit', { body: body, icon: icon, tag: tag }));
-});
+self.addEventListener("push", receivePushNotification);
