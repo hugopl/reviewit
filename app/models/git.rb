@@ -29,7 +29,7 @@ class Git
   end
 
   def push(branch, forced = nil)
-    call("git push #{forced ? '-f' : ''} origin #{@branch}:#{branch}")
+    call("git push #{forced ? '-f' : ''} origin refs/heads/#{@branch}:#{branch}")
   end
 
   def rm_branch(branch)
