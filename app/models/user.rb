@@ -34,29 +34,29 @@ class User < ActiveRecord::Base
     webpush_endpoint.present? && webpush_p256dh.present? && webpush_auth.present?
   end
 
-  def self.send_webpush(users, title, body)
+  def self.send_webpush(users, title, body, url = '/')
     users.each do |user|
-      user.send_webpush_assync(title, body)
+      user.send_webpush_assync(title, body, url)
     end
   end
 
-  def send_webpush_assync(title, body)
+  def send_webpush_assync(title, body, url = '/')
     return unless webpush_notification_enabled?
 
     Thread.new do
       begin
-        send_webpush(title, body)
+        send_webpush(title, body, url)
       ensure
         ActiveRecord::Base.connection.close
       end
     end
   end
 
-  def send_webpush(title, body)
+  def send_webpush(title, body, url = '/')
     return unless webpush_notification_enabled?
 
     Webpush.payload_send(
-      message: { title: title, body: body, tag: 'reviewit' }.to_json,
+      message: { title: title, body: body, tag: 'reviewit', url: url }.to_json,
       endpoint: webpush_endpoint,
       p256dh: webpush_p256dh,
       auth: webpush_auth,

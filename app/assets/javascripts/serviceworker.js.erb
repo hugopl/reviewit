@@ -1,5 +1,6 @@
 function receivePushNotification(event) {
   var data = JSON.parse(event.data && event.data.text());
+  self.lastURL = data['url']
   data['icon'] = "<%= asset_path 'favicon/android-chrome-144x144.png' %>";
   var title = data['title']
   delete data['title']
@@ -7,3 +8,22 @@ function receivePushNotification(event) {
 }
 
 self.addEventListener("push", receivePushNotification);
+
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({
+      type: "window"
+    })
+    .then(function(clientList) {
+      for (var i = 0; i < clientList.length; i++) {
+        var client = clientList[i];
+        if ((client.url == self.lastURL || self.lastURL === '/') && 'focus' in client )
+          return client.focus();
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(self.lastURL);
+      }
+    })
+  );
+});
