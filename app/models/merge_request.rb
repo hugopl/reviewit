@@ -117,9 +117,9 @@ class MergeRequest < ActiveRecord::Base
     from -= 1
     to -= 1
 
-    return patches[to].diff if from < 0
+    return Diff.new(patches[to].diff) if from < 0
 
-    interdiff(patches[from].diff, patches[to].diff)
+    Diff.new(interdiff(patches[from].diff, patches[to].diff), source: :interdiff)
   end
 
   def deprecated_patches
@@ -175,17 +175,17 @@ class MergeRequest < ActiveRecord::Base
     end
   end
 
-  GIT_HEADERS = [/old mode .+\n/,
-                 /new mode .+\n/,
-                 /deleted file mode .+\n/,
-                 /new file mode .+\n/,
-                 /copy from .+\n/,
-                 /copy to .+\n/,
-                 /rename from .+\n/,
-                 /rename to .+\n/,
-                 /similarity index .+\n/,
-                 /dissimilarity index .+\n/,
-                 /index .+\n/]
+  GIT_HEADERS = [/^old mode .+\n/,
+                 /^new mode .+\n/,
+                 /^deleted file mode .+\n/,
+                 /^new file mode .+\n/,
+                 /^copy from .+\n/,
+                 /^copy to .+\n/,
+                 /^rename from .+\n/,
+                 /^rename to .+\n/,
+                 /^similarity index .+\n/,
+                 /^dissimilarity index .+\n/,
+                 /^index .+\n/]
   # interdiff has a bug with some git headers in the patch, the bug was already fixed
   # but most distro doesn't have this fix yet.
   # https://github.com/twaugh/patchutils/commit/14261ad5461e6c4b3ffc2f87131601ff79e2a0fc

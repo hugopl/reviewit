@@ -89,6 +89,9 @@ module MergeRequestsHelper
       flags['chmod-changed'] = "chmod change: #{file.old_chmod} → #{file.new_chmod}"
     end
 
+    # interdiff tags
+    flags['interdiff-tag'] = file.interdiff_tag if file.interdiff_tag
+
     flags.map do |flag, label|
       content_tag(:span, label, class: "flag #{flag}")
     end.join.html_safe

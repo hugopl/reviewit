@@ -1,8 +1,7 @@
 - if @diff.empty?
   .alert.info
     No enough information to detect difference between these two versions, blame
-    = succeed '.' do
-      %a{ href: 'http://cyberelk.net/tim/software/patchutils/' } interdiff
+    <a href='http://cyberelk.net/tim/software/patchutils/'>interdiff</a>.
 - else
   - @diff.each_file do |file|
     .code-review-item

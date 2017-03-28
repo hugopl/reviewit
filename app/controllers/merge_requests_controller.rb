@@ -42,7 +42,7 @@ class MergeRequestsController < ApplicationController
     @from = params[:from].to_i
     @to = params[:to].to_i
     @to = merge_request.patches.count if @to.zero?
-    @diff = Diff.new(merge_request.patch_diff(@from, @to))
+    @diff = merge_request.patch_diff(@from, @to)
 
     if @from.zero?
       @patch = merge_request.patches[@to - 1]
