@@ -11,6 +11,8 @@ function subscribeServiceWorker(serviceWorkerRegistration) {
       var key = new Uint8Array(<%= Base64.urlsafe_decode64(ReviewitConfig.webpush_public_key).bytes %>)
       swRegistration.pushManager.subscribe({ userVisibleOnly: true,
                                              applicationServerKey: key }).then(configureWebPush);
+    } else {
+      configureWebPush(subscription);
     }
     swRegistration = null;
   });
