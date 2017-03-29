@@ -155,11 +155,11 @@ class MergeRequest < ActiveRecord::Base
     end
   end
 
-  private
-
   def my_path
     @my_path ||= Rails.application.routes.url_helpers.project_merge_request_path(project, self)
   end
+
+  private
 
   def interdiff(diff1, diff2)
     prune_git_headers!(diff1)

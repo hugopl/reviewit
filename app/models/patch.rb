@@ -16,6 +16,7 @@ class Patch < ActiveRecord::Base
   delegate :reviewer, to: :merge_request
   delegate :project, to: :merge_request
   delegate :target_branch, to: :merge_request
+  delegate :subject, to: :merge_request
 
   before_save :fix_author
 
