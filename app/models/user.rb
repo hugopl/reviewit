@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   end)
 
   WEBPUSH_TTL = 8.hours.to_i
+  WEBPUSH_TIMEOUT = 15
 
   def self.valid_token?(token)
     User.exists?(api_token: token)
@@ -55,18 +56,22 @@ class User < ActiveRecord::Base
   def send_webpush(title, body, url = '/')
     return unless webpush_notification_enabled?
 
-    Webpush.payload_send(
-      message: { title: title, body: body, tag: 'reviewit', url: url }.to_json,
-      endpoint: webpush_endpoint,
-      p256dh: webpush_p256dh,
-      auth: webpush_auth,
-      ttl: WEBPUSH_TTL,
-      vapid: {
-        subject: "mailto:#{ReviewitConfig.mail.sender}",
-        public_key: ReviewitConfig.webpush_public_key,
-        private_key: ReviewitConfig.webpush_private_key
-      }
-    )
+    Timeout::timeout(WEBPUSH_TIMEOUT) do
+      Webpush.payload_send(
+        message: { title: title, body: body, tag: 'reviewit', url: url }.to_json,
+        endpoint: webpush_endpoint,
+        p256dh: webpush_p256dh,
+        auth: webpush_auth,
+        ttl: WEBPUSH_TTL,
+        vapid: {
+          subject: "mailto:#{ReviewitConfig.mail.sender}",
+          public_key: ReviewitConfig.webpush_public_key,
+          private_key: ReviewitConfig.webpush_private_key
+        }
+      )
+    end
+  rescue Timeout::Error
+    nil
   rescue Webpush::InvalidSubscription
     update_attributes(webpush_endpoint: nil, webpush_p256dh: nil, webpush_auth: nil)
   end
