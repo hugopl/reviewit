@@ -1,21 +1,19 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-  yml = YAML.load_file(Rails.root.join('config', 'reviewit.yml'))
-
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   # config.secret_key = 'eea6b0d7506d79dc516deb6d8ba73566da45796d31c49e7b6d334d8f9c35976f8961f5cb10ca4ac0ee1becfbee5e5b4f1b969da46157282623e45b8741bb5c10'
-  config.secret_key = yml['secret_key']
+  config.secret_key = ReviewitConfig.secret_key
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = yml['mail_sender']
+  config.mailer_sender = ReviewitConfig.mail.sender
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
