@@ -157,6 +157,10 @@ class MergeRequest < ActiveRecord::Base
 
   private
 
+  def my_path
+    @my_path ||= Rails.application.routes.url_helpers.project_merge_request_path(project, self)
+  end
+
   def interdiff(diff1, diff2)
     prune_git_headers!(diff1)
     prune_git_headers!(diff2)
@@ -242,19 +246,19 @@ class MergeRequest < ActiveRecord::Base
 
   def send_webpush_creation_notification
     users = project.users.webpush_enabled.to_a - [author]
-    User.send_webpush(users, "MR created on #{project.name}", subject)
+    User.send_webpush(users, "MR created on #{project.name}", subject, my_path)
   end
 
   def send_webpush_accept_notification
-    author.send_webpush_assync('Your MR got accepted!', subject)
+    author.send_webpush_assync('Your MR got accepted!', subject, my_path)
   end
 
   def send_webpush_comment_notification(who, n_of_comments)
     return if who == author
-    author.send_webpush_assync("#{n_of_comments} new comments", subject)
+    author.send_webpush_assync("#{n_of_comments} new comments", subject, my_path)
   end
 
   def send_webpush_needs_rebase_notification
-    author.send_webpush_assync('Rebase needed', subject)
+    author.send_webpush_assync('Rebase needed', subject, my_path)
   end
 end
