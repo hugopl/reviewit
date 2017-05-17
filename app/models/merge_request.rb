@@ -71,8 +71,10 @@ class MergeRequest < ActiveRecord::Base
         count += 1
       end
     end
-    add_history_event(author, count == 1 ? 'added a comment.' : "added #{count} comments.") unless count.zero?
-    send_webpush_comment_notification(author, comments.count)
+    return if count.zero?
+
+    add_history_event(author, count == 1 ? 'added a comment.' : "added #{count} comments.")
+    send_webpush_comment_notification(author, count)
   end
 
   def abandon!(reviewer)
