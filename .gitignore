@@ -19,4 +19,5 @@ coverage/*
 /public/assets
 /public/*.gem
 /.ruby-version
+.ruby-gemset
 .byebug_history
