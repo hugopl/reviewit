@@ -3,12 +3,13 @@ module Reviewit
     def run
       check_dirty_working_copy!
 
-      patch = api.merge_request(options[:mr])
+      patches = options[:mr].map { |mr| api.merge_request(mr) }
 
       fetch_repository if options[:fetch]
 
       if options[:branch]
-        new_branch = branch_name_for(options[:mr], patch['subject'])
+        patch = patches.first # First patch decides the branch
+        new_branch = branch_name_for(options[:mr].first, patch['subject'])
         if branch_exists?(new_branch)
           puts "A branch named #{WHITE}“#{new_branch}”#{NO_COLOR} already exists, REMOVE it? (yn)?"
           if STDIN.gets.downcase.start_with?('y')
@@ -21,12 +22,13 @@ module Reviewit
         create_branch(patch['target_branch'], new_branch)
       end
 
-      file = Tempfile.new 'patch'
-      file.puts patch['patch']
-      file.close
-
-      ok = system("git am #{file.path}")
-      raise "Failed to apply patch, run #{WHITE}git am --abort#{NO_COLOR} to be cool." unless ok
+      patches.each_with_index do |patch, i|
+        file = Tempfile.new("patch_#{i}")
+        file.puts(patch['patch'])
+        file.close
+        ok = system("git am #{file.path}")
+        raise "Failed to apply patch, run #{WHITE}git am --abort#{NO_COLOR} to be cool." unless ok
+      end
     end
 
     private
@@ -42,7 +44,7 @@ module Reviewit
         opt :branch, 'Create a branch, then apply the patch', default: true
         opt :fetch, 'Fetch repository before apply the branch', default: true
       end
-      options[:mr] = ARGV.shift
+      options[:mr] = ARGV
       raise 'You need to inform the merge request id' if options[:mr].nil?
       options
     end

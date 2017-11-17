@@ -60,7 +60,7 @@ review actions:
   accept    Accept a merge request
   cancel    Cancel current review.
   cleanup   Prune remote branches and their respective local branches.
-  apply     Apply patch from a merge request on your tree.
+  apply     Apply one or more patches from merge requests on your tree.
   show      Show patch from a merge request.
   open      Open a merge request in your default browser.
 
