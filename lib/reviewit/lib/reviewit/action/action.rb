@@ -60,7 +60,7 @@ module Reviewit
     end
 
     def parse_options
-      abort "Missing #{self.class}#parse_options implementation"
+      Trollop.options
     end
 
     def root_dir

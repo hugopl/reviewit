@@ -30,9 +30,5 @@ module Reviewit
         $1.to_i if branch =~ /^mr-(\d+)-.*/
       end.compact
     end
-
-    def parse_options
-      Trollop.options
-    end
   end
 end

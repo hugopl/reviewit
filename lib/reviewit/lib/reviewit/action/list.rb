@@ -20,10 +20,6 @@ module Reviewit
 
     private
 
-    def parse_options
-      Trollop.options
-    end
-
     def inject_header(list)
       list.unshift Hash[list.first.keys.map { |k| [k, k.to_s.capitalize.tr('_', ' ')] }]
     end
