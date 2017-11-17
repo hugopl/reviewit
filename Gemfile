@@ -23,6 +23,7 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'grape_on_rails_routes'
   gem 'haml_lint'
+  gem 'rubocop'
 end
 
 group :test do
