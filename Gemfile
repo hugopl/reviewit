@@ -23,6 +23,8 @@ group :development, :test do
   gem 'binding_of_caller'
   gem 'grape_on_rails_routes'
   gem 'haml_lint'
+  gem 'mina', require: false
+  gem 'mina-unicorn', require: false
   gem 'rubocop'
 end
 
