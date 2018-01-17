@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Kernel.load Rails.root.join('lib', 'reviewit', 'lib', 'reviewit', 'version.rb') unless defined? Reviewit::VERSION
 
 Rails.application.routes.draw do
@@ -29,5 +31,8 @@ Rails.application.routes.draw do
   get :faq, controller: :application
   get '/:id', to: 'errors#show', constraints: { id: /\d{3}/ }
 
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   mount Reviewit::API => '/'
 end

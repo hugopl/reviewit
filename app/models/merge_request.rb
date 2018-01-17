@@ -81,7 +81,7 @@ class MergeRequest < ActiveRecord::Base
     add_history_event reviewer, 'abandoned the merge request'
     self.status = :abandoned
     save!
-    patch.remove_ci_branch
+    RemoveCIBranchesWorker.perform_async(id) if project.gitlab_ci?
   end
 
   def integrate!(reviewer, patch_id = :not_specified)
@@ -96,16 +96,8 @@ class MergeRequest < ActiveRecord::Base
     self.status = :integrating
     save!
 
-    patch.push do |success|
-      if success
-        accepted!
-        send_webpush_accept_notification
-      else
-        add_history_event reviewer, 'failed to integrate merge request'
-        needs_rebase!
-        send_webpush_needs_rebase_notification
-      end
-    end
+    RemoveCIBranchesWorker.perform_async(id) if project.gitlab_ci?
+    GitPushWorker.perform_async(author.id, patch.id, :integration)
   end
 
   def patch
@@ -159,6 +151,28 @@ class MergeRequest < ActiveRecord::Base
 
   def my_path
     @my_path ||= Rails.application.routes.url_helpers.project_merge_request_path(project, self)
+  end
+
+  def send_webpush_creation_notification
+    users = project.users.webpush_enabled.to_a - [author]
+    User.send_webpush(users, "MR created on #{project.name}", subject, my_path)
+  end
+
+  def send_webpush_accept_notification
+    author.send_webpush_assync('Your MR got accepted!', subject, my_path)
+  end
+
+  def send_webpush_comment_notification(who, n_of_comments)
+    return if who == author
+    author.send_webpush_assync("#{n_of_comments} new comments", subject, my_path)
+  end
+
+  def send_webpush_needs_rebase_notification
+    author.send_webpush_assync('Rebase needed', subject, my_path)
+  end
+
+  def send_webpush_integration_failed
+    author.send_webpush_assync('Integration failed', subject, my_path)
   end
 
   private
@@ -244,23 +258,5 @@ class MergeRequest < ActiveRecord::Base
         http.start { |h| h.request(request) }
       end
     end
-  end
-
-  def send_webpush_creation_notification
-    users = project.users.webpush_enabled.to_a - [author]
-    User.send_webpush(users, "MR created on #{project.name}", subject, my_path)
-  end
-
-  def send_webpush_accept_notification
-    author.send_webpush_assync('Your MR got accepted!', subject, my_path)
-  end
-
-  def send_webpush_comment_notification(who, n_of_comments)
-    return if who == author
-    author.send_webpush_assync("#{n_of_comments} new comments", subject, my_path)
-  end
-
-  def send_webpush_needs_rebase_notification
-    author.send_webpush_assync('Rebase needed', subject, my_path)
   end
 end

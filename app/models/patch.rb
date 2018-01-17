@@ -47,43 +47,8 @@ class Patch < ActiveRecord::Base
     self[:diff].sub(/^diff --git /, "#{text}\ndiff --git ")
   end
 
-  def push
-    LoggedGit.new.clone(project.repository, target_branch) do |git|
-      yield(git.ready? && git.am(self) && git.push(target_branch))
-
-      self.integration_log = git.command_log
-      save
-
-      next unless git.ready?
-      git.rm_branch(ci_branch_name) unless gitlab_ci_hash.blank?
-    end
-  end
-
-  def remove_ci_branch
-    return if gitlab_ci_hash.blank?
-    Git.new.clone(project.repository) do |git|
-      next unless git.ready?
-      git.rm_branch(ci_branch_name)
-    end
-  end
-
   def push_to_ci
-    return unless project.gitlab_ci?
-
-    self.gitlab_ci_hash = nil
-    self.gitlab_ci_status = :unknown
-    save
-
-    Git.new.clone(project.repository, target_branch) do |git|
-      next unless git.ready?
-
-      merge_request.deprecated_patches.each { |p| git.rm_branch(p.ci_branch_name) }
-      if git.am(self)
-        update_attribute(:gitlab_ci_hash, git.sha1) if git.push(ci_branch_name, :forced)
-      else
-        merge_request.needs_rebase!
-      end
-    end
+    GitPushWorker.perform_async(author.id, id, :ci) if project.gitlab_ci?
   end
 
   private

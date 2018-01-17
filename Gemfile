@@ -8,6 +8,7 @@ gem 'rails', '4.2.10'
 gem 'redcarpet'
 gem 'sass-rails', '~> 4.0.3'
 gem 'serviceworker-rails', '~> 0.5.4'
+gem 'sidekiq'
 gem 'pg'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
@@ -24,6 +25,7 @@ group :development, :test do
   gem 'grape_on_rails_routes'
   gem 'haml_lint'
   gem 'mina', require: false
+  gem 'mina-sidekiq', require: false
   gem 'mina-unicorn', require: false
   gem 'rubocop'
 end

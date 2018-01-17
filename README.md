@@ -38,6 +38,10 @@ just run:
 $ RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 unicorn_rails
 ```
 
+Reviewit! execute git commands using sidekiq, so you need a redis-server running and accessible by Sidekiq, to start sidekiq
+in the development environment, use `bundle exec sidekiq`, if you are using the deploy script sidekiq is automatically started
+by it.
+
 To configure mail delivery options check the file `config/reviewit.yml`.
 
 ## Setting up your Project

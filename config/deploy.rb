@@ -28,6 +28,8 @@ set :repository, 'https://github.com/hugopl/reviewit.git'
 set :branch, branch
 set :user, user
 set :forward_agent, true
+set :sidekiq_pid, 'tmp/pids/sidekiq.pid'
+set :sidekiq_log, 'log/sidekiq.log'
 
 # Shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
 # Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
@@ -55,6 +57,7 @@ task :deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
     invoke :'git:clone'
+    invoke :'sidekiq:quiet'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
@@ -64,6 +67,7 @@ task :deploy do
     on :launch do
       command '~/.rvm/bin/rvm default do bundle exec rake build_cli_gem'
       invoke :'unicorn:restart'
+      invoke :'sidekiq:restart'
     end
   end
 end

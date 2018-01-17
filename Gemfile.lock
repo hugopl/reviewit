@@ -63,6 +63,7 @@ GEM
       execjs
     coffee-script-source (1.10.0)
     concurrent-ruby (1.0.5)
+    connection_pool (2.2.1)
     crass (1.0.2)
     debug_inspector (0.0.3)
     descendants_tracker (0.0.4)
@@ -139,6 +140,8 @@ GEM
     mina (1.2.3)
       open4 (~> 1.3.4)
       rake
+    mina-sidekiq (1.0.3)
+      mina (>= 1.0.2)
     mina-unicorn (1.1.0)
       mina (~> 1.0)
     mini_portile2 (2.3.0)
@@ -164,6 +167,8 @@ GEM
     rack (1.6.8)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-protection (2.0.0)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.10)
@@ -196,6 +201,7 @@ GEM
     raindrops (0.16.0)
     rake (12.3.0)
     redcarpet (3.3.4)
+    redis (4.0.1)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     rubocop (0.51.0)
@@ -215,6 +221,11 @@ GEM
       sprockets-rails (~> 2.0)
     serviceworker-rails (0.5.4)
       railties (>= 3.1)
+    sidekiq (5.0.5)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      rack-protection (>= 1.5.0)
+      redis (>= 3.3.4, < 5)
     simplecov (0.11.2)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -274,6 +285,7 @@ DEPENDENCIES
   hamlit
   jquery-rails
   mina
+  mina-sidekiq
   mina-unicorn
   minitest-reporters
   pg
@@ -284,6 +296,7 @@ DEPENDENCIES
   ruby-prof
   sass-rails (~> 4.0.3)
   serviceworker-rails (~> 0.5.4)
+  sidekiq
   simplecov
   turbolinks
   uglifier (>= 1.3.0)

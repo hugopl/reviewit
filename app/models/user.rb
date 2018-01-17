@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   before_create :generate_api_token
   has_many :comments
   has_many :merge_requests, foreign_key: :author_id
+  has_many :patches, through: :merge_requests
 
   validates :name, presence: true, allow_blank: false
   validates :api_token, uniqueness: true

@@ -20,11 +20,6 @@ module Reviewit
       def merge_request
         MergeRequest.find(params[:mr_id])
       end
-
-      def same_patch?
-        last_patch = merge_request.patch
-        last_patch.diff == params[:diff] and last_patch.commit_message == params[:commit_message]
-      end
     end
 
     resource :merge_requests do
@@ -64,28 +59,16 @@ module Reviewit
           raise 'You need to be the MR author to update it.' if mr.author != current_user
           raise "You can not update a #{mr.status} merge request." unless mr.can_update?
 
-          if same_patch?
-            if mr.needs_rebase? or (project.gitlab_ci? && mr.patch.ok_to_retry_ci?)
-              mr.patch.push_to_ci
-            elsif params[:target_branch].blank? or params[:target_branch] == mr.target_branch
-              raise 'Seems you are re-submitting the same patch.'
-            else
-              mr.target_branch = params[:target_branch].to_s.strip
-              mr.patch.push_to_ci
-              mr.save!
-            end
-          else
-            MergeRequest.transaction do
-              diff = Diff.new(params[:diff])
-              mr.subject = diff.subject
-              mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
-              mr.status = :open
-              mr.add_patch(diff: diff,
-                           linter_ok: params[:linter_ok].true?,
-                           description: (params[:description] or '').lines.first.to_s,
-                           ci_enabled: params[:ci].true?)
-              mr.save!
-            end
+          MergeRequest.transaction do
+            diff = Diff.new(params[:diff])
+            mr.subject = diff.subject
+            mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
+            mr.status = :open
+            mr.add_patch(diff: diff,
+                         linter_ok: params[:linter_ok].true?,
+                         description: (params[:description] or '').lines.first.to_s,
+                         ci_enabled: params[:ci].true?)
+            mr.save!
           end
           ok
         end

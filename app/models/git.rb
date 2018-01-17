@@ -1,61 +1,72 @@
 class Git
-  def clone(repository, branch = 'master')
-    background do
-      base_dir = "#{Dir.tmpdir}/reviewit"
-      project_dir_name = "#{branch}_#{SecureRandom.hex}"
-      dir = "#{base_dir}/#{project_dir_name}"
-      FileUtils.rm_rf dir
-      FileUtils.mkdir_p dir
-
-      @branch = branch
-      @dir = base_dir
-      @ready = call("git clone --branch #{branch} --depth 1 #{repository} #{project_dir_name}")
-      @dir = dir
-
-      yield(self)
-      FileUtils.rm_rf(dir) if @ready
-    end
+  def initialize(repository)
+    @repository = repository
+    @log = StringIO.new
   end
 
-  attr_reader :dir, :ready
-  alias ready? ready
+  attr_reader :dir
+
+  def init
+    create_directories
+    FileUtils.mkdir_p(@dir) || fail("Error creating directory #{@dir}")
+    call('git init .')
+    call("git remote add origin #{@repository}")
+  end
+
+  def clone(branch)
+    @branch = branch
+    project_dir_name = create_directories
+    call("git clone --branch #{branch} --depth 1 #{@repository} #{project_dir_name}", @base_dir)
+  end
+
+  def cleanup
+    FileUtils.rm_rf(@dir)
+  end
 
   def am(patch)
     contents = patch.diff(stamp: true)
     file = Tempfile.new('patch')
-    file.puts contents
+    file.puts(contents)
     file.close
     call("git am -k #{file.path}")
   end
 
-  def push(branch, forced = nil)
+  def push(branch, forced: false)
     call("git push #{forced ? '-f' : ''} origin refs/heads/#{@branch}:#{branch}")
   end
 
+  def rm_branches(branches)
+    branches_to_remove = branches.map { |branch| ":refs/heads/#{branch}" }.join(' ')
+    call("git push origin #{branches_to_remove}")
+  end
+
   def rm_branch(branch)
-    call("git push origin :#{branch}")
+    call("git push origin :refs/heads/#{branch}")
   end
 
   def sha1(branch = 'HEAD')
     `cd #{@dir} && git rev-parse #{branch}`.strip
   end
 
-  protected
-
-  def call(command)
-    `cd #{@dir} && #{command} 2>&1`
-    $?.success?
+  def log
+    @log.string
   end
 
   private
 
-  def background
-    Thread.new do
-      begin
-        yield
-      ensure
-        ActiveRecord::Base.connection.close
-      end
-    end
+  def create_directories
+    @base_dir = "#{Dir.tmpdir}/reviewit"
+    project_dir_name = SecureRandom.hex.to_s
+    @dir = "#{@base_dir}/#{project_dir_name}"
+
+    FileUtils.mkdir_p(@base_dir) || fail("Error creating directory #{@base_dir}")
+    project_dir_name
+  end
+
+  def call(command, directory = @dir)
+    @log.puts "$ #{command}"
+    res = `cd #{directory} && #{command} 2>&1`.strip
+    @log.puts(res) unless res.empty?
+    $?.success?
   end
 end
