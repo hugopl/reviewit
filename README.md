@@ -16,7 +16,7 @@ For the sake of simplicity, the work/review processes is split in two components
 
 ## Installing
 
-First install the gem dependencies.
+You need ruby at least 2.2.2, then install the gem dependencies.
 
 ```
 $ bundle install --without development,test
