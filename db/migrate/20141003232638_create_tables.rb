@@ -41,7 +41,7 @@ class CreateTables < ActiveRecord::Migration
       t.references :user,    index: true, null: false
     end
 
-    add_index :projects_users, [:project_id, :user_id], unique: true
+    add_index :projects_users, %i(project_id user_id), unique: true
 
     create_table :merge_requests do |t|
       t.references :project,  index: true

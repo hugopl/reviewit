@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   devise_for :users, skip: :registrations
   devise_scope :user do
     resource :registration,
-             only: [:new, :create, :edit, :update],
+             only: %i(new create edit update),
              path: 'users',
              path_names: { new: 'sign_up' },
              as: :user_registration do
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   root 'projects#index'
 
   resources :projects do
-    resources :merge_requests, only: [:update, :show, :index] do
+    resources :merge_requests, only: %i(update show index) do
       get :history, on: :member
       get :ci_status, on: :member
       collection do

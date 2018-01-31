@@ -12,7 +12,7 @@ class MergeRequest < ActiveRecord::Base
   has_many :patches, -> { order(:created_at) }, dependent: :destroy
   has_many :history_events, -> { order(:when) }, dependent: :destroy
 
-  enum status: [:open, :integrating, :needs_rebase, :accepted, :abandoned]
+  enum status: %i(open integrating needs_rebase accepted abandoned)
 
   # Any status >= this is considered a closed MR
   CLOSE_LIMIT = 3
