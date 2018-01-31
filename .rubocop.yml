@@ -1,47 +1,98 @@
 AllCops:
   Exclude:
-    - 'db/**/*'
-    - 'bin/**/*'
+    - db/schema.rb
+    - bin/**/*
   DisplayCopNames: true
-  TargetRubyVersion: 2.1
-Lint/Eval:
+  TargetRubyVersion: 2.3
+  TargetRailsVersion: 4.1
+Layout/IndentHeredoc:
   Enabled: false
-Metrics/LineLength:
-  Max: 125
-Rails/Output:
-  Exclude:
-    - 'lib/reviewit/**/*'
-Style/Documentation:
+Layout/MultilineHashBraceLayout:
   Enabled: false
-Style/Not:
+Layout/MultilineMethodCallBraceLayout:
   Enabled: false
-Style/MutableConstant:
+Lint/AmbiguousBlockAssociation:
   Enabled: false
-Style/SpecialGlobalVars:
+Lint/DuplicateMethods:
   Enabled: false
-Style/NegatedIf:
+Lint/UnneededRequireStatement:
   Enabled: false
-Style/SignalException:
+Lint/UriEscapeUnescape:
   Enabled: false
-Style/AndOr:
-  Enabled: false
-Style/PerlBackrefs:
-  Enabled: false
-Style/EachWithObject:
+Lint/Void:
   Enabled: false
 Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
   Enabled: false
 Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
   Enabled: false
+Metrics/LineLength:
+  Max: 125
 Metrics/MethodLength:
   Enabled: false
 Metrics/ModuleLength:
   Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
 Metrics/PerceivedComplexity:
   Enabled: false
-Rails/TimeZone:
+Naming/HeredocDelimiterCase:
+  Enabled: false
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+Naming/VariableNumber:
+  Enabled: false
+Performance/HashEachMethods:
   Enabled: false
 Rails/HasAndBelongsToMany:
+  Enabled: false
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+Style/AndOr:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/ClassVars:
+  Enabled: false
+Style/DateTime:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/EachWithObject:
+  Enabled: false
+Style/EmptyMethod:
+  Enabled: false
+Style/FormatStringToken:
+  EnforcedStyle: template
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/MixinUsage:
+  Enabled: false
+Style/MutableConstant:
+  Enabled: false
+Style/Not:
+  Enabled: false
+Style/NumericLiterals:
+  MinDigits: 7
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%i': '()'
+    '%w': '()'
+    '%W': '()'
+Style/PerlBackrefs:
+  Enabled: false
+Style/RedundantConditional:
+  Enabled: false
+Style/SafeNavigation:
+  Enabled: false
+Style/SignalException:
+  Enabled: false
+Style/SpecialGlobalVars:
+  Enabled: false
+Style/TernaryParentheses:
   Enabled: false
