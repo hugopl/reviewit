@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
   def send_webpush(title, body, url = '/')
     return unless webpush_notification_enabled?
 
-    Timeout::timeout(WEBPUSH_TIMEOUT) do
+    Timeout.timeout(WEBPUSH_TIMEOUT) do
       Webpush.payload_send(
         message: { title: title, body: body, tag: 'reviewit', url: url }.to_json,
         endpoint: webpush_endpoint,
