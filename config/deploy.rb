@@ -49,7 +49,7 @@ task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
 end
 
-desc "Deploys the current version to the server."
+desc 'Deploys the current version to the server.'
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
   # invoke :'git:ensure_pushed'
