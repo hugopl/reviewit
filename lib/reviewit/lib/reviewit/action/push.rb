@@ -90,8 +90,8 @@ module Reviewit
 
     def changed_files
       matches = `git show --format=short`.scan(/^--- (.*)\n\+\+\+ (.*)$/)
-      matches.select! do |pair|
-        pair[1] != '/dev/null'
+      matches.reject! do |pair|
+        pair[1] == '/dev/null'
       end
       matches.map do |pair|
         File.join(root_dir, pair[1][2..-1])
