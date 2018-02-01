@@ -75,7 +75,7 @@ module Reviewit
       when /darwin/
         copy_to_clipboard_mac(text)
       end
-    rescue
+    rescue StandardError
       false
     end
 

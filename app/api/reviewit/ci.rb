@@ -18,7 +18,7 @@ module Reviewit
           title = patch.success? ? 'CI green!!' : 'CI failed :-('
           patch.author.send_webpush_assync(title, patch.subject, patch.merge_request.my_path)
         end
-      rescue => e
+      rescue StandardError => e
         raise e.message
       end
     end
