@@ -216,7 +216,7 @@ class Diff
 
       if line.start_with?('+++')
         @file.index = 0 # Don't care about index on interdiffs
-        @state =  :state_reading_file_changes
+        @state = :state_reading_file_changes
       else
         @state = :state_reading_file_metadata
       end
