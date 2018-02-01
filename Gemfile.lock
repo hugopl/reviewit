@@ -112,8 +112,8 @@ GEM
       rake (>= 10, < 13)
       rubocop (>= 0.50.0)
       sysexits (~> 1.1)
-    hamlit (2.3.0)
-      temple (~> 0.7.6)
+    hamlit (2.8.6)
+      temple (>= 0.8.0)
       thor
       tilt
     hashie (3.4.4)
@@ -240,7 +240,7 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sysexits (1.2.0)
-    temple (0.7.6)
+    temple (0.8.0)
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (1.4.1)
