@@ -107,11 +107,6 @@ module MergeRequestsHelper
     end
   end
 
-  def parse_addons_template(template, patch)
-    template.gsub!('#{mr_id}', patch.merge_request.id.to_s)
-    template.gsub!('#{mr_version}', patch.version.to_s)
-  end
-
   def patch_ci_tip(patch)
     "CI #{patch.gitlab_ci_status}"
   end
