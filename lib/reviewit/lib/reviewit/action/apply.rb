@@ -8,8 +8,8 @@ module Reviewit
       fetch_repository if options[:fetch]
 
       if options[:branch]
-        patch = patches.first # First patch decides the branch
-        new_branch = branch_name_for(options[:mr].first, patch['subject'])
+        first_patch = patches.first # First patch decides the branch
+        new_branch = branch_name_for(options[:mr].first, first_patch['subject'])
         if branch_exists?(new_branch)
           puts "A branch named #{WHITE}“#{new_branch}”#{NO_COLOR} already exists, REMOVE it? (yn)?"
           if STDIN.gets.downcase.start_with?('y')
@@ -19,7 +19,7 @@ module Reviewit
             return
           end
         end
-        create_branch(patch['target_branch'], new_branch)
+        create_branch(first_patch['target_branch'], new_branch)
       end
 
       patches.each_with_index do |patch, i|
