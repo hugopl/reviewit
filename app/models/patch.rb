@@ -21,7 +21,7 @@ class Patch < ActiveRecord::Base
   before_save :fix_author
 
   def ok_to_retry_ci?
-    failed? || canceled?
+    (failed? || canceled?) && self == merge_request.patch
   end
 
   def ci_branch_name
@@ -48,6 +48,7 @@ class Patch < ActiveRecord::Base
   end
 
   def push_to_ci
+    unknown!
     GitPushWorker.perform_async(author.id, id, :ci) if project.gitlab_ci?
   end
 

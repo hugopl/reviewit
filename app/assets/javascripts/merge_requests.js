@@ -8,6 +8,9 @@ function merge_requests() {
     $(".patch-history-submit input").on('click', function(event) {
         request_patch_diff();
     });
+    $("input.trigger-ci").on('click', function(event) {
+        trigger_ci(event);
+    });
     if ($('textarea').length > 0)
         new_editor($('textarea').get(0), false);
     toogle_merge_requests();
@@ -21,6 +24,11 @@ function request_patch_diff() {
     var to = $('.patch-history input[name=to]:checked').val();
     query += 'to=' + to;
     Turbolinks.visit(query);
+}
+
+function trigger_ci(event) {
+    base_url = event.target.form.action;
+    Turbolinks.visit(base_url + '/trigger_ci')
 }
 
 function handle_history_radios(radio) {

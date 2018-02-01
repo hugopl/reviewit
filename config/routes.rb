@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :merge_requests, only: %i(update show index) do
       get :history, on: :member
       get :ci_status, on: :member
+      get :trigger_ci, on: :member
       collection do
         get 'old_ones'
       end

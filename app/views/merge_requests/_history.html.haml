@@ -12,7 +12,10 @@
     - patches.each_with_index do |patch, i|
     - i += 1
       %tr
-        %td= patch_name(patch)
+        %td
+          = patch_name(patch)
+          - if @project.gitlab_ci? && patch.ok_to_retry_ci?
+            %input.trigger-ci{ type: 'button', value: 'Trigger CI' }
         %td= patch.created_at.to_formatted_s(:short)
         %td= patch_linter_status(patch)
         %td= patch_ci_icon(patch)

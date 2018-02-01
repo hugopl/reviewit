@@ -54,6 +54,17 @@ class MergeRequestsController < ApplicationController
     end
   end
 
+  def trigger_ci
+    @patch = merge_request.patch
+    if @patch.ok_to_retry_ci?
+      @patch.push_to_ci
+      flash[:success] = 'CI triggered!'
+    else
+      flash[:info] = 'You can not trigger CI for this patch yet.'
+    end
+    redirect_to(action: :show)
+  end
+
   private
 
   def version_from_params
