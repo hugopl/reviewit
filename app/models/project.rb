@@ -20,7 +20,7 @@ class Project < ActiveRecord::Base
   private
 
   def validate_repository
-    is_valid = URI.regexp =~ repository && /\A[^ ;&|]+\z/ =~ repository
+    is_valid = URI::DEFAULT_PARSER.make_regexp =~ repository && /\A[^ ;&|]+\z/ =~ repository
     errors.add(:repository, 'is not a valid URI') unless is_valid
   end
 end
