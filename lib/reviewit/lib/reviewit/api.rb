@@ -105,7 +105,7 @@ module Reviewit
       update_configuration_and_exit! if response.code == '460'
 
       raise response.body if response.code =~ /[^2]\d\d/
-      data = JSON.load(response.body)
+      data = JSON.parse(response.body)
       return data
     rescue JSON::ParserError
       raise 'Error parsing returned JSON.'
