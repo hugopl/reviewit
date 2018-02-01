@@ -8,7 +8,7 @@ class RemoveCIBranchesWorker
     merge_request = MergeRequest.find(merge_request_id)
     repository = merge_request.project.repository
 
-    possible_ci_branches = merge_request.patches.count.times.map { |i| "mr-#{merge_request.id}-version-#{i + 1}"}
+    possible_ci_branches = merge_request.patches.count.times.map { |i| "mr-#{merge_request.id}-version-#{i + 1}" }
     branches_to_remove = remote_branches(repository) & possible_ci_branches
 
     git = Git.new(repository)
