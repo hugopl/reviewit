@@ -55,6 +55,10 @@ module MergeRequestsHelper
     patch.comments.any?
   end
 
+  def interdiff_view?
+    @from.nonzero?
+  end
+
   def diff_snippet(patch, location)
     patch.code_at((location - 2)..location).map do |line|
       content_tag(:div, line, class: "#{code_line_type(line)} snippet")

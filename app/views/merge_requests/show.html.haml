@@ -8,7 +8,10 @@
     = hidden_field_tag(:patch_id, @patch.id)
 
     = render partial: 'diff', locals: { patch: @patch }
-    = render 'comments'
+    - if interdiff_view?
+      %p.alert.info Comments aren't show in diff mode.
+    - else
+      = render 'comments'
 
     .merge-bar
       - if @mr.open? or @mr.needs_rebase?
