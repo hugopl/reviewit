@@ -1,3 +1,5 @@
 linters:
   LineLength:
     max: 125
+  InstanceVariables:
+    enabled: false

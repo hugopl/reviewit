@@ -3,7 +3,7 @@
 = render partial: 'summary'
 = render partial: 'history'
 
-- if @mr.patches.count > 0
+- if @mr.patches.count.positive?
   = form_tag nil, method: 'patch' do
     = hidden_field_tag(:patch_id, @patch.id)
 
