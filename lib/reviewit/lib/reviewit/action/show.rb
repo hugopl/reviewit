@@ -24,7 +24,7 @@ module Reviewit
         if line.start_with? 'd'
           color = WHITE
           line_to_end_intersection = 4
-        elsif line_to_end_intersection > 0
+        elsif line_to_end_intersection.positive?
           color = WHITE
           line_to_end_intersection -= 1
         elsif line.start_with? '+'

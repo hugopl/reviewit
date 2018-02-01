@@ -58,7 +58,7 @@ class MergeRequestsController < ApplicationController
 
   def version_from_params
     version = params[:version].to_i
-    raise ActiveRecord::RecordNotFound, 'Patch not found' if version < 0
+    raise ActiveRecord::RecordNotFound, 'Patch not found' if version.negative?
     version = merge_request.patches.count if version.zero?
     version
   end

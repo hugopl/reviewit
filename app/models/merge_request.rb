@@ -111,7 +111,7 @@ class MergeRequest < ActiveRecord::Base
     from -= 1
     to -= 1
 
-    return Diff.new(patches[to].diff) if from < 0
+    return Diff.new(patches[to].diff) if from.negative?
 
     Diff.new(interdiff(patches[from].diff, patches[to].diff), source: :interdiff)
   end
