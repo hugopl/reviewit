@@ -51,6 +51,9 @@ Rails/HasAndBelongsToMany:
   Enabled: false
 Rails/HasManyOrHasOneDependent:
   Enabled: false
+Security/Eval:
+  Exclude:
+    - lib/reviewit/lib/reviewit/api.rb
 Style/AndOr:
   Enabled: false
 Style/ClassAndModuleChildren:
