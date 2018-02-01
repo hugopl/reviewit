@@ -28,5 +28,4 @@ class AddSubjectToPatch < ActiveRecord::Migration
                  "-- \n" \
                  "2.5.3\n"
   end
-
 end

@@ -29,14 +29,14 @@ class CreateTables < ActiveRecord::Migration
     add_index :users, :reset_password_token, unique: true
 
     create_table :projects do |t|
-      t.string :name,       unique: true, null: false
+      t.string :name, unique: true, null: false
       t.string :description, default: '', null: false
       t.string :repository, null: false
       t.string :linter,     default: '', null: false
       t.timestamps
     end
 
-    create_table :projects_users, :id => false do |t|
+    create_table :projects_users, id: false do |t|
       t.references :project, index: true, null: false
       t.references :user,    index: true, null: false
     end
