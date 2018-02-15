@@ -12,9 +12,10 @@ class ReviewitConfig
     def load_data
       data = read_yaml
       data.merge!(data[Rails.env]) if data.key?(Rails.env)
-      apply_open_structs(data)
       data.symbolize_keys!
       apply_defaults(data)
+      apply_open_structs(data)
+      data
     end
 
     def apply_open_structs(data)
@@ -29,13 +30,13 @@ class ReviewitConfig
       data[:mail][:domain] ||= 'localhost'
       data[:mail][:sender] ||= 'foobar@example.com'
       data[:mail][:delivery_method] ||= 'file'
-      data
     end
 
     def read_yaml
-      YAML.load_file(CONFIG_FILE) || {}
+      path = Rails.root.join(CONFIG_FILE)
+      YAML.load_file(path) || {}
     rescue Errno::ENOENT
-      warn("#{Dir.pwd}/#{CONFIG_FILE} not found! Using default values")
+      warn("#{path} not found! Using default values")
       {}
     end
 
