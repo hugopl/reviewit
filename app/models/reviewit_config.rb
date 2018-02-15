@@ -35,7 +35,7 @@ class ReviewitConfig
     def read_yaml
       YAML.load_file(CONFIG_FILE) || {}
     rescue Errno::ENOENT
-      warn("#{RPM_CONFIG_FILE} not found! Using default values")
+      warn("#{Dir.pwd}/#{CONFIG_FILE} not found! Using default values")
       {}
     end
 
