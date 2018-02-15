@@ -2,6 +2,7 @@ require 'io/console'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm'
+require 'mina_sidekiq/tasks'
 require 'mina/unicorn'
 
 domain = ENV['DOMAIN']
