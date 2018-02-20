@@ -32,6 +32,14 @@ module Reviewit
       patch("merge_requests/#{id}/accept")
     end
 
+    def lock_branch(branch)
+      patch('lock', branch: branch)
+    end
+
+    def unlock_branch(branch)
+      patch('unlock', branch: branch)
+    end
+
     def pending_merge_requests
       list = get 'merge_requests'
       list.map do |item|

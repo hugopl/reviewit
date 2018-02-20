@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :merge_requests, foreign_key: :author_id
   has_many :patches, through: :merge_requests
+  has_many :locked_branches, foreign_key: :who_id
 
   validates :name, presence: true, allow_blank: false
   validates :api_token, uniqueness: true

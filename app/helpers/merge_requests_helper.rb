@@ -101,6 +101,17 @@ module MergeRequestsHelper
     end.join.html_safe
   end
 
+  def target_branch_locked?
+    @target_branch_locked ||= @mr.target_branch_locked?
+  end
+
+  def foreach_locked_branches
+    @project.locked_branches.includes(:who).group_by(&:who).each do |user, locked_branches|
+      branches = locked_branches.map { |i| "<strong>#{i.branch}</strong>" }.to_sentence.html_safe
+      yield(user.name, branches, locked_branches.size)
+    end
+  end
+
   private
 
   def code_line_type(line)

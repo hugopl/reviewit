@@ -5,7 +5,7 @@ require 'reviewit/action/action.rb'
 require 'reviewit/version.rb'
 
 module Reviewit
-  ACTIONS = %w(push list show apply accept cancel cleanup open).freeze
+  ACTIONS = %w(push list show apply accept cancel cleanup open lock unlock).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end

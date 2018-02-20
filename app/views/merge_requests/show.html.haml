@@ -1,5 +1,9 @@
 %h1= @mr.patch.subject
 
+- if target_branch_locked?
+  .alert.info
+    The target branch for this merge request was locked by <strong>#{@mr.who_locked_the_branch?.name}</strong>.
+
 = render partial: 'summary'
 = render partial: 'history'
 
@@ -15,7 +19,7 @@
 
     .merge-bar
       - if @mr.open? or @mr.needs_rebase?
-        - if @mr.author != current_user
+        - if @mr.author != current_user && !target_branch_locked?
           = submit_tag 'Accept', name: 'mr_action',
                                  data: { confirm: "Are you sure about accept this patch into #{@mr.target_branch}?" }
         = submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: 'Are you sure?' }

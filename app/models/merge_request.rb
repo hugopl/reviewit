@@ -89,6 +89,7 @@ class MergeRequest < ActiveRecord::Base
                                                                               patch_id != :not_specified
     raise 'This merge request is already closed.' if closed?
     raise 'This merge request is being integrated by another request, please wait' if integrating?
+    raise "The target branch was locked by #{who_locked_the_branch?.name}" if target_branch_locked?
 
     add_history_event reviewer, 'accepted the merge request'
 
@@ -173,6 +174,14 @@ class MergeRequest < ActiveRecord::Base
 
   def send_webpush_integration_failed
     author.send_webpush_assync('Integration failed', subject, my_path)
+  end
+
+  def target_branch_locked?
+    project.locked_branches.where(branch: target_branch).any?
+  end
+
+  def who_locked_the_branch?
+    project.users.joins(:locked_branches).where(locked_branches: { branch: target_branch }).first
   end
 
   private

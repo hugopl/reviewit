@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_many :merge_requests, dependent: :destroy
+  has_many :locked_branches, dependent: :delete_all
 
   validates :name, presence: true
   validates :linter, format: { with: %r{\A[^\./](?!.*(\.\.|[&|<>])).*\z},

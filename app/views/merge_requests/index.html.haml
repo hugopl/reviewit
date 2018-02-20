@@ -2,6 +2,12 @@
   Merge requests for #{@project.name}
 %p
   #{pluralize(@total_mrs, 'pending merge request')}.
+
+- if @project.locked_branches.any?
+  .alert.info
+    - foreach_locked_branches do |user, locked_branches, n|
+      #{"Branch".pluralize(n)} #{locked_branches} locked by #{user}<br>
+
 - if @waiting_you.empty? && @waiting_others.empty?
   %p Nothing here, go drink some wine :-)
 - else

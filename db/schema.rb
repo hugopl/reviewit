@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315005553) do
+ActiveRecord::Schema.define(version: 20180220011610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,16 @@ ActiveRecord::Schema.define(version: 20170315005553) do
 
   add_index "history_events", ["merge_request_id"], name: "index_history_events_on_merge_request_id", using: :btree
   add_index "history_events", ["who_id"], name: "index_history_events_on_who_id", using: :btree
+
+  create_table "locked_branches", force: :cascade do |t|
+    t.integer  "project_id", null: false
+    t.integer  "who_id",     null: false
+    t.string   "branch",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "locked_branches", ["branch", "project_id"], name: "index_locked_branches_on_branch_and_project_id", unique: true, using: :btree
 
   create_table "merge_requests", force: :cascade do |t|
     t.integer  "project_id"
