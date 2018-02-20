@@ -66,6 +66,7 @@ task :deploy do
     invoke :'deploy:cleanup'
 
     on :launch do
+      invoke :'rvm:use', 'default'
       command '~/.rvm/bin/rvm default do bundle exec rake build_cli_gem'
       invoke :'unicorn:restart'
       invoke :'sidekiq:restart'
