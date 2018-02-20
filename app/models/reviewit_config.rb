@@ -30,6 +30,7 @@ class ReviewitConfig
       data[:mail][:domain] ||= 'localhost'
       data[:mail][:sender] ||= 'foobar@example.com'
       data[:mail][:delivery_method] ||= 'file'
+      data[:secret_key] ||= SecureRandom.hex(64)
     end
 
     def read_yaml
