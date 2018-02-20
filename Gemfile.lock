@@ -112,7 +112,7 @@ GEM
       rake (>= 10, < 13)
       rubocop (>= 0.50.0)
       sysexits (~> 1.1)
-    hamlit (2.8.6)
+    hamlit (2.8.7)
       temple (>= 0.8.0)
       thor
       tilt
