@@ -10,7 +10,7 @@ class Patch < ActiveRecord::Base
   validates :diff, presence: true
   validates :commit_message, length: { minimum: 0 }, allow_nil: false
 
-  after_create :push_to_ci_if_needed
+  after_commit :push_to_ci_if_needed, on: :create
 
   delegate :author, to: :merge_request
   delegate :reviewer, to: :merge_request
