@@ -24,6 +24,8 @@ Gem::Specification.new do |s|
                        lib/reviewit/action/open.rb
                        lib/reviewit/action/push.rb
                        lib/reviewit/action/show.rb
+                       lib/reviewit/action/lock.rb
+                       lib/reviewit/action/unlock.rb
                        lib/reviewit/api.rb
                        lib/reviewit/app.rb
                        lib/reviewit/git_util.rb
