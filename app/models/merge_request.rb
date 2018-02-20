@@ -98,7 +98,7 @@ class MergeRequest < ActiveRecord::Base
     save!
 
     RemoveCIBranchesWorker.perform_async(id) if project.gitlab_ci?
-    GitPushWorker.perform_async(author.id, patch.id, :integration)
+    GitPushWorker.perform_async(patch.id, :integration)
   end
 
   def patch

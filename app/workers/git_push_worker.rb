@@ -5,10 +5,10 @@ class GitPushWorker
 
   PUSH_TYPES = %w(integration ci).freeze
 
-  def perform(user_id, patch_id, push_type)
+  def perform(patch_id, push_type)
     fail("Wrong push type (#{push_type})") unless PUSH_TYPES.include?(push_type)
 
-    patch = User.find(user_id).patches.includes(:merge_request).find(patch_id)
+    patch = Patch.find(patch_id)
     repository = patch.project.repository
     merge_request = patch.merge_request
 

@@ -49,7 +49,7 @@ class Patch < ActiveRecord::Base
 
   def push_to_ci
     unknown!
-    GitPushWorker.perform_async(author.id, id, :ci) if project.gitlab_ci?
+    GitPushWorker.perform_async(id, :ci) if project.gitlab_ci?
   end
 
   private
