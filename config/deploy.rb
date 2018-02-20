@@ -37,7 +37,6 @@ set :sidekiq_log, 'log/sidekiq.log'
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets')
 set :shared_files, fetch(:shared_files, []).push(%w(config/database.yml
-                                                    config/secrets.yml
                                                     config/reviewit.yml
                                                     config/unicorn.rb'))
 
