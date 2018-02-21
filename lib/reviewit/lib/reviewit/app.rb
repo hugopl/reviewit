@@ -63,6 +63,8 @@ review actions:
   apply     Apply one or more patches from merge requests on your tree.
   show      Show patch from a merge request.
   open      Open a merge request in your default browser.
+  lock      Lock a branch, so no MRs will be accepted there.
+  unlock    Unlock a branch.
 
 To get help on subcommands use for example:
   review push --help
