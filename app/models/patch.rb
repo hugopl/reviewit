@@ -10,7 +10,7 @@ class Patch < ActiveRecord::Base
   validates :diff, presence: true
   validates :commit_message, length: { minimum: 0 }, allow_nil: false
 
-  after_commit :push_to_ci_if_needed, on: :create
+  after_commit :really_push_to_ci, on: :create, unless: :canceled?
 
   delegate :author, to: :merge_request
   delegate :reviewer, to: :merge_request
@@ -49,7 +49,7 @@ class Patch < ActiveRecord::Base
 
   def push_to_ci
     unknown!
-    GitPushWorker.perform_async(id, :ci) if project.gitlab_ci?
+    really_push_to_ci
   end
 
   private
@@ -58,8 +58,9 @@ class Patch < ActiveRecord::Base
     self.diff = diff.sub(/^From: .*$/, "From: #{author.name} <#{author.email}>")
   end
 
-  def push_to_ci_if_needed
-    push_to_ci unless canceled?
+  # This method exists because we can't change ourselves under a after_commit callback.
+  def really_push_to_ci
+    GitPushWorker.perform_async(id, :ci) if project.gitlab_ci?
   end
 
   def mr_stamp
