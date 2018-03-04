@@ -21,11 +21,11 @@
             \/ #{link_to(@mr.id, project_merge_request_path(@project, @mr).tr('.', '/'))}
         .user-nav
           = current_user.name
-          = link_to faq_path, class: 'tipped', 'data-tip' => 'FAQ' do
+          = link_to faq_path, 'data-balloon' => 'FAQ', 'data-balloon-pos' => 'down' do
             %i.fa.fa-question-circle
-          = link_to edit_user_registration_path, class: 'tipped', 'data-tip' => 'Settings' do
+          = link_to edit_user_registration_path, 'data-balloon' => 'Settings', 'data-balloon-pos' => 'down' do
             %i.fa.fa-gears
-          = link_to destroy_user_session_path, method: :delete, class: 'tipped', 'data-tip' => 'Sign out' do
+          = link_to destroy_user_session_path, method: :delete, 'data-balloon' => 'Sign out', 'data-balloon-pos' => 'down' do
             %i.fa.fa-sign-out
     .content
       = render 'flash_messages'

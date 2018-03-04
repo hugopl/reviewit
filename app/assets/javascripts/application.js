@@ -15,7 +15,6 @@
 //= require turbolinks
 //
 // Vendor assets
-//= require tipped
 //= require imagesloaded.pkgd.min
 //= require marked.min
 //= require simplemde.min
@@ -35,10 +34,6 @@ var ready = function() {
   var func = window[document.body.dataset.whoAmI];
   if (func)
     func();
-
-  $(".tipped").each(function(idx, item) {
-    Tipped.create(item, item.dataset.tip);
-  });
 
   $(".markdown").each(function(idx, item) {
       item.innerHTML = marked(item.textContent, { sanitize: true });

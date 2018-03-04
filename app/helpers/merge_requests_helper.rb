@@ -43,11 +43,15 @@ module MergeRequestsHelper
   def patch_ci_icon(patch)
     return unless patch.project.gitlab_ci?
 
-    tag = patch.unknown? ? :i : :a
-    content_tag(tag, '', class: "tipped fa #{patch_ci_fa(patch)}",
-                         'data-tip' => patch_ci_tip(patch),
-                         target: "patch-#{patch.gitlab_ci_hash}",
-                         href: "#{patch.project.gitlab_ci_project_url}/builds/#{patch.gitlab_ci_build}")
+    icon = "<i class='fa #{patch_ci_fa(patch)}'></i>".html_safe
+    if patch.unknown?
+      icon
+    else
+      content_tag(:a, icon, 'data-balloon' => patch_ci_tip(patch),
+                            'data-balloon-pos' => "down",
+                             target: "patch-#{patch.gitlab_ci_hash}",
+                             href: "#{patch.project.gitlab_ci_project_url}/builds/#{patch.gitlab_ci_build}")
+    end
   end
 
   def should_show_patch_comment_divisor(patch, main_patch)
