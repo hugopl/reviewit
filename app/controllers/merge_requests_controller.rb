@@ -27,9 +27,11 @@ class MergeRequestsController < ApplicationController
     @mrs = merge_requests.closed.paginate(page: params[:page])
     @target_branch = params[:target_branch]
     @author = params[:author]
+    @reviewer = params[:reviewer]
     @subject = params[:subject]
     @mrs = @mrs.where(target_branch: @target_branch) unless @target_branch.blank?
     @mrs = @mrs.where(author: @author) unless @author.blank?
+    @mrs = @mrs.where(reviewer: @reviewer) unless @reviewer.blank?
     @mrs = @mrs.where('lower(subject) LIKE ?', "%#{@subject.downcase}%") unless @subject.blank?
     @total = @mrs.count
   end

@@ -2,5 +2,6 @@
   .search-box
     = select_tag :target_branch, target_branch_options, class: 'select2select', data: { placeholder: 'Target Branch' }
     = select_tag :author, author_options, class: 'select2select', data: { placeholder: 'Author' }
+    = select_tag :reviewer, author_options, class: 'select2select', data: { placeholder: 'Reviewer' }
     = text_field_tag(:subject, @subject, placeholder: 'Commit Message')
     = f.submit 'Search'
