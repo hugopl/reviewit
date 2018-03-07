@@ -10,9 +10,7 @@ module Reviewit
       puts 'Merge request accepted, check later if the integration was successful.'
     end
 
-    private
-
-    def parse_options
+    def self.parse_options
       Trollop.options {}
       mr = ARGV.shift
       raise 'You need to inform the merge request id' if mr.nil?

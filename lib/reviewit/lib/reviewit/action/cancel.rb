@@ -14,9 +14,7 @@ module Reviewit
       puts 'Merge request abandoned.'
     end
 
-    private
-
-    def parse_options
+    def self.parse_options
       Trollop.options
       mr = ARGV.shift
       { mr: mr }

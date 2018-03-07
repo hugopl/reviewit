@@ -5,13 +5,14 @@ require 'reviewit/action/action.rb'
 require 'reviewit/version.rb'
 
 module Reviewit
-  ACTIONS = %w(push list show apply accept cancel cleanup open lock unlock).freeze
+  ACTIONS = %w(push list show apply accept cancel cleanup open lock unlock config).freeze
   ACTIONS.each do |action|
     autoload action.capitalize.to_sym, "reviewit/action/#{action}.rb"
   end
 
   class App
     attr_reader :linter
+    attr_reader :action_name
 
     def run
       return show_help if ARGV == ['--help']
@@ -41,15 +42,19 @@ module Reviewit
       abort "\nInterruped! Bye!"
     end
 
+    def git_config(key)
+      `git config --get #{key} 2>/dev/null`.strip
+    end
+
     private
 
     def action_class
       show_help(:abort) if ARGV.empty?
 
-      action_name = ARGV.shift
-      raise 'Unknown action' unless ACTIONS.include? action_name
+      @action_name = ARGV.shift
+      raise 'Unknown action' unless ACTIONS.include?(@action_name)
 
-      Reviewit.const_get(action_name.capitalize)
+      Reviewit.const_get(@action_name.capitalize)
     end
 
     def show_help(should_abort = nil)
@@ -65,6 +70,7 @@ review actions:
   open      Open a merge request in your default browser.
   lock      Lock a branch, so no MRs will be accepted there.
   unlock    Unlock a branch.
+  config    Set default options for any review CLI action.
 
 To get help on subcommands use for example:
   review push --help
@@ -84,10 +90,6 @@ eot
       @linter = git_config 'reviewit.linter'
       @project_hash = git_config('reviewit.projecthash')
       raise 'This project seems not configured.' if @api_token.empty? or @project_id.empty? or @base_url.empty?
-    end
-
-    def git_config(key)
-      `git config --get #{key} 2>/dev/null`.strip
     end
   end
 end

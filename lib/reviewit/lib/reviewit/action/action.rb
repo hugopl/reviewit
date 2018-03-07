@@ -7,7 +7,8 @@ module Reviewit
       @api = api
 
       @linter = app.linter
-      @options = parse_options
+      inject_default_params(app) if app.action_name != 'config'
+      @options = self.class.parse_options
     end
 
     protected
@@ -70,7 +71,7 @@ module Reviewit
       end
     end
 
-    def parse_options
+    def self.parse_options
       Trollop.options
     end
 
@@ -96,6 +97,24 @@ module Reviewit
 
     def copy_ruby_platform_mac(text)
       IO.popen('pbcopy', 'w') { |f| f << text }
+    end
+
+    private
+
+    def inject_default_params(app)
+      return if ARGV.include?('--help') || ARGV.include?('-h')
+
+      raw_default_params = app.git_config("reviewit.config#{app.action_name}")
+      return if raw_default_params.empty?
+
+      default_params = JSON.parse(raw_default_params)
+      puts "#{RED}Buggy default params! Ignoring them.#{NO_COLOR}" unless default_params.is_a?(Array)
+      puts "Using custom default params: #{GREEN}#{default_params.join(' ')}#{NO_COLOR}"
+
+      default_params.each { |param| ARGV << param }
+      ARGV.uniq!
+    rescue JSON::ParserError
+      raise 'JSON load error while loading default params for this action.'
     end
   end
 end

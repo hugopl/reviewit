@@ -31,15 +31,7 @@ module Reviewit
       end
     end
 
-    private
-
-    include GitUtil
-
-    def branch_name_for(mr, patch)
-      "mr-#{mr}-#{patch.downcase}"
-    end
-
-    def parse_options
+    def self.parse_options
       options = Trollop.options do
         opt :branch, 'Create a branch, then apply the patch', default: true
         opt :fetch, 'Fetch repository before apply the branch', default: true
@@ -47,6 +39,14 @@ module Reviewit
       options[:mr] = ARGV
       raise 'You need to inform the merge request id' if options[:mr].nil?
       options
+    end
+
+    private
+
+    include GitUtil
+
+    def branch_name_for(mr, patch)
+      "mr-#{mr}-#{patch.downcase}"
     end
   end
 end

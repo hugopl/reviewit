@@ -6,9 +6,7 @@ module Reviewit
       puts 'Branch locked!'
     end
 
-    private
-
-    def parse_options
+    def self.parse_options
       options = Trollop.options
       options[:branch] = ARGV.shift
       options

@@ -20,9 +20,7 @@ module Reviewit
       copy_to_clipboard(url)
     end
 
-    private
-
-    def parse_options
+    def self.parse_options
       options = Trollop.options do
         opt :message, 'A message to the given action', type: String
         opt :linter, 'Run linter', default: true
@@ -33,6 +31,8 @@ module Reviewit
       options[:branch] = ARGV.shift
       options
     end
+
+    private
 
     def update_merge_request(mr_id)
       description = (options[:message] or read_user_single_line_message('Type a single line description of the change: '))

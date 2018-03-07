@@ -9,14 +9,14 @@ module Reviewit
       print_colored_diff(mr['patch'])
     end
 
-    private
-
-    def parse_options
+    def self.parse_options
       Trollop.options {}
       mr = ARGV.shift
       raise 'You need to inform the merge request id' if mr.nil?
       { mr: mr }
     end
+
+    private
 
     def print_colored_diff(diff)
       line_to_end_intersection = 0
