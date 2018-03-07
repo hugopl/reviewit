@@ -5,6 +5,7 @@ require 'fileutils'
 require 'securerandom'
 require 'pathname'
 require 'rake'
+require 'webpush'
 
 def main
   Bundler.setup
