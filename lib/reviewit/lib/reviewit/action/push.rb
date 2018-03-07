@@ -27,6 +27,7 @@ module Reviewit
         opt :message, 'A message to the given action', type: String
         opt :linter, 'Run linter', default: true
         opt :rename, 'Rename branch after push.', default: true
+        opt :'allow-dirty', 'Allow push even if your working copy is dirty.', default: false
         opt :ci, 'Push code to CI.', default: true
       end
       options[:branch] = ARGV.shift

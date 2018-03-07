@@ -56,7 +56,18 @@ module Reviewit
     end
 
     def check_dirty_working_copy!
-      raise 'Your working copy is dirty, use git stash and try again.' unless `git status --porcelain`.empty?
+      git_status = `git status --porcelain`
+      return if git_status.empty?
+
+      if @options[:'allow-dirty']
+        puts "#{RED}Your workingcopy is dirty! The following files wont be sent in this merge request:#{NO_COLOR}\n\n"
+        git_status.lines.each do |line|
+          puts "  #{RED}#{line.split(' ', 2)[1].strip}#{NO_COLOR}"
+        end
+        puts
+      else
+        raise 'Your working copy is dirty, use git stash and try again.'
+      end
     end
 
     def parse_options
