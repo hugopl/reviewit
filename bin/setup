@@ -7,7 +7,7 @@ require 'pathname'
 require 'rake'
 
 def main
-  Bundler.require
+  Bundler.setup
 
   app_root = Pathname.new File.expand_path('../../',  __FILE__)
   Dir.chdir(app_root) do
