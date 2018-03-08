@@ -62,9 +62,10 @@ module ProjectsHelper
     }.to_json.html_safe
   end
 
-  def projects_reviews_chart_data(project)
-    query = project.merge_requests.joins(:reviewer).limit(100).order('merge_requests.created_at DESC')
-                   .select('users.name').to_sql
+  def projects_merge_request_chart(project, role, title)
+    query = project.merge_requests.joins(role).accepted.limit(100)
+                                   .select('users.name')
+                                   .order('merge_requests.created_at DESC').to_sql
     db = ActiveRecord::Base.connection
     data = db.execute("SELECT name, COUNT(name) AS y FROM (#{query}) AS data GROUP BY name").to_a
 
@@ -87,7 +88,7 @@ module ProjectsHelper
         type: 'pie'
       },
       title: {
-        text: "Last #{total} merge requests reviews"
+        text: (title % { total: total })
       },
       plotOptions: {
         pie: {

@@ -16,8 +16,14 @@
 %h2 Statistics
 
 #project-reviews-chart
+#project-authors-chart
 #project-mr-chart
 
 :javascript
   $('#project-mr-chart').highcharts(#{projects_mr_chart_data(@project)});
-  $('#project-reviews-chart').highcharts(#{projects_reviews_chart_data(@project)});
+  $('#project-reviews-chart').highcharts(#{projects_merge_request_chart(@project,
+                                                                        :reviewer,
+                                                                        'Reviewer of last %{total} merge requests accepted.')});
+  $('#project-authors-chart').highcharts(#{projects_merge_request_chart(@project,
+                                                                        :author,
+                                                                        'Author of last %{total} merge requests accepted')});
