@@ -10,6 +10,8 @@
         .summary
           = merge_request_status_line(mr)
           %span{ class: mr.status }= mr.status.humanize
+          - if mr.accepted?
+            by #{mr.reviewer.name}
           %span.target_branch= mr.target_branch
 
   = will_paginate(mrs, params: { target_branch: @target_branch,
