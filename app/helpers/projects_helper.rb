@@ -75,6 +75,7 @@ module ProjectsHelper
         entry['selected'] = true
       end
       entry['y'] = entry['y'].to_i
+      entry['name'] = entry['name'].split[0..1].join(' ')
       entry
     end
 
