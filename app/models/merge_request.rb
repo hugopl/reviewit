@@ -107,7 +107,7 @@ class MergeRequest < ActiveRecord::Base
 
   def patch_diff(from = 0, to = nil)
     to ||= patches.count
-    raise ActiveRecord::RecordNotFound, 'Patch diff not found' if from >= to
+    raise ActiveRecord::RecordNotFound, 'Patch diff not found' if from >= to || to > patches.count
     # convert to zero based index.
     from -= 1
     to -= 1
