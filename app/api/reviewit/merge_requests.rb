@@ -57,7 +57,7 @@ module Reviewit
           mr = merge_request
 
           raise 'You need to be the MR author to update it.' if mr.author != current_user
-          raise "You can not update a #{mr.status} merge request." unless mr.can_update?
+          raise "You can not update an #{mr.status} merge request." unless mr.can_update?
 
           MergeRequest.transaction do
             diff = Diff.new(params[:diff])
