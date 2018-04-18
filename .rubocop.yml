@@ -45,8 +45,6 @@ Naming/HeredocDelimiterNaming:
   Enabled: false
 Naming/VariableNumber:
   Enabled: false
-Performance/HashEachMethods:
-  Enabled: false
 Rails/HasAndBelongsToMany:
   Enabled: false
 Rails/HasManyOrHasOneDependent:
