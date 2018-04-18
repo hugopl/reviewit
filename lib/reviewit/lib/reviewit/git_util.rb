@@ -29,15 +29,16 @@ module Reviewit
     end
 
     def create_branch(base, name)
-      `git checkout --quiet -b #{git_safe_name(name)} #{remote}/#{base} 2>&1`
+      `git checkout --quiet -b "#{git_safe_name(name)}" #{remote}/#{base} 2>&1`
       raise "Error creating branch #{name} on top of #{remote}/#{base}" unless $?.success?
     end
 
     def git_safe_name(name)
       name.gsub!(/\.\z/, '') # no ending with a dot, not really a git restriction.
-      name.gsub!(/^\./, '_') # replace other dots by underscore
       name.gsub!(%r{(\.lock|/)\z}, '_') # git restrictions
       name.gsub!(/[\s\\>:~^]/, '_') # more git restrictions
+      name.gsub!(/[-\]\[:\.'"]/, '_')
+      name.gsub!(/_+/, '_')
       Shellwords.escape(name)
     end
 
