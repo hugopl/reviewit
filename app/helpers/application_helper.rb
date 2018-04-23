@@ -34,7 +34,7 @@ module ApplicationHelper
   end
 
   def page_title
-    @mr.nil? ? 'Review it!' : "[#{@mr.id}] Review it!"
+    @mr.nil? ? 'Review it!' : "#{@mr.id}|Review it!"
   end
 
   private
