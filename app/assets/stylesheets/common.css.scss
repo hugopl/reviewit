@@ -228,24 +228,20 @@ input[type=checkbox] {
 }
 
 input[type=checkbox] + label {
-  line-height: 21px;
-  padding: 0;
+  cursor: pointer;
   font-weight: normal;
 }
 
 input[type=checkbox] + label:before {
-  content: '';
+  font-family: FontAwesome;
   display: inline-block;
-  width: 23px;
-  height: 21px;
-  background-image: image-url('checkbox.png');
-  vertical-align: text-bottom;
-  margin-right: 4px;
+  content: "\f096";
+  width: 16px;
 }
 
 input[type=checkbox]:checked + label:before {
-  background-image: image-url('checkbox.png');
-  background-position: 0 -21px;
+  content: "\f046";
+  width: 16px;
 }
 
 .pagination {
