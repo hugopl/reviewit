@@ -87,6 +87,8 @@ GEM
       railties (>= 3.0.0)
     faker (1.6.3)
       i18n (~> 0.5)
+    font-awesome-rails (4.7.0.4)
+      railties (>= 3.2, < 6.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     grape (0.16.2)
@@ -277,6 +279,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faker
+  font-awesome-rails
   grape (~> 0.14)
   grape-entity (~> 0.5)
   grape_on_rails_routes
@@ -304,4 +307,4 @@ DEPENDENCIES
   will_paginate (~> 3.0)
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

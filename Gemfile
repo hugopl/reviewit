@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'devise'
+gem 'font-awesome-rails'
 gem 'grape', '~> 0.14'
 gem 'grape-entity', '~> 0.5'
 gem 'hamlit'

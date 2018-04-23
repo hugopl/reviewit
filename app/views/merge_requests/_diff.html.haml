@@ -20,7 +20,8 @@
             - if @comments.include?(location)
               %tr.comment{ 'data-location' => location }
                 %td{ colspan: 2 }
-                  = "\uf086 #{@comments[location].count}" if @comments[location].count > 1
+                  %i.fa.fa-comments
+                  = @comments[location].count if @comments[location].count > 1
                 %td
                   - @comments[location].each do |comment|
                     = render partial: 'comment', locals: { comment: comment }
