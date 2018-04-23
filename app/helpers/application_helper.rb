@@ -33,6 +33,10 @@ module ApplicationHelper
     end
   end
 
+  def page_title
+    @mr.nil? ? 'Review it!' : "[#{@mr.id}] Review it!"
+  end
+
   private
 
   def path_info
