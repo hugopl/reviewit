@@ -5,23 +5,27 @@ function merge_requests() {
     $("td > div.add-comment").on('click', function(event) {
         show_comment_box(event.target.parentElement.parentElement);
     });
-    $(".patch-history-submit input").on('click', function(event) {
-        request_patch_diff();
+    $("#patch-history-submit").on('click', function(event) {
+        request_patch_diff(event);
     });
     $("input.trigger-ci").on('click', function(event) {
         trigger_ci(event);
+    });
+    $('.toggle-mini').on('click', function(event) {
+        toggle_mini(event);
     });
     if ($('textarea').length > 0)
         new_editor($('textarea').get(0), false);
     toogle_merge_requests();
 }
 
-function request_patch_diff() {
+function request_patch_diff(event) {
+    var form = $(event.target.form)
     var query = '?';
-    var from = $('.patch-history input[name=from]:checked').val();
+    var from = form.find('input[name=from]:checked').val();
     if (from !== '0')
         query += 'from=' + from + '&';
-    var to = $('.patch-history input[name=to]:checked').val();
+    var to = form.find('input[name=to]:checked').val();
     query += 'to=' + to;
     Turbolinks.visit(query);
 }
@@ -78,11 +82,27 @@ function show_comment_box(tr) {
     }
     tr.dataset.expanded = true;
     var location = tr.dataset.location;
+
+    var blockerHTML = '';
+    if (!isAuthor) {
+        var blocker = tr.dataset.blocker === '';
+        var checkboxText = blocker ? 'Issue solved' : 'Blocker issue?';
+        var blockerVar = blocker ? 'solved' : 'blockers';
+        var blockerChecked = blocker ? '' : ' checked';
+        blockerHTML = "<span data-balloon=\"Merge requests can't be accepted with open blocker issues.\" data-balloon-pos=right>"
+            + "<input id=blocker_" + location + " type=checkbox value=1" + blockerChecked + " name='" + blockerVar + "[" + location + "]'>"
+            + "<label for=blocker_" + location + ">" + checkboxText + "</label>"
+            + "</span>"
+    }
+
     var html = "<tr><td colspan='3' class='add-comment " + extraCss + "'>"
             + "<div class='comment-box'>"
             + "<textarea placeholder='Leave a comment' name='comments[" + location + "]'></textarea>"
             + "</div>"
-            + "<input type='button' class=reject onclick='hide_comment_box(this);' value=Cancel>"
+            + "<div class='comment-controls'>"
+            + blockerHTML
+            + "<input type=button class=reject onclick='hide_comment_box(this);' value=Cancel>"
+            + "</div>"
             + "</td></tr>";
     $(html).insertAfter(tr);
     var textArea = $(tr.nextSibling).find('textarea').get(0);
@@ -90,7 +110,7 @@ function show_comment_box(tr) {
 };
 
 function hide_comment_box(cancelLink) {
-    var tr = cancelLink.parentElement.parentElement;
+    var tr = cancelLink.parentElement.parentElement.parentElement;
     tr.previousSibling.dataset.expanded = false;
     $(tr).remove();
 }
@@ -111,3 +131,13 @@ function toogle_merge_requests(){
     })
 }
 
+function toggle_mini(event) {
+  var target = $(event.target)
+  var show = target.hasClass('show');
+  target.toggleClass('show');
+  var elem = target.next();
+  if (show)
+      elem.slideUp(100);
+  else
+      elem.slideDown(100)
+}

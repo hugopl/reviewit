@@ -1,29 +1,31 @@
 = form_tag(project_merge_request_path(@project, @mr), method: 'get') do
-  %table.patch-history
-    %tr
-      %th Base
-      %th Created at
-      %th Lint
-      %th CI
-      %th= radio_button_tag('from', 0, @from.zero?)
-      %th
-    - patches = @mr.patches.to_a
-    - last_i = patches.size
-    - patches.each_with_index do |patch, i|
-    - i += 1
+  %h2.toggle-mini.show Patch history
+  %div
+    %table.mini
       %tr
-        %td
-          = patch_name(patch)
-          - if @project.gitlab_ci? && patch.ok_to_retry_ci?
-            %input.trigger-ci{ type: 'button', value: 'Trigger CI' }
-        %td= patch.created_at.to_formatted_s(:short)
-        %td= patch_linter_status(patch)
-        %td= patch_ci_icon(patch)
-        %td= radio_button_tag('from', i, @from == i, disabled: (i >= @to)) if i != last_i
-        %td= radio_button_tag('to', i, @to == i, disabled: (i <= @from))
-    %tr
-      %td.patch-history-submit{ colspan: 6 }
-        %input{ type: 'button', value: 'Show diff' }
+        %th Base
+        %th Created at
+        %th Lint
+        %th CI
+        %th= radio_button_tag('from', 0, @from.zero?)
+        %th
+      - patches = @mr.patches.to_a
+      - last_i = patches.size
+      - patches.each_with_index do |patch, i|
+      - i += 1
+        %tr
+          %td
+            = patch_name(patch)
+            - if @project.gitlab_ci? && patch.ok_to_retry_ci?
+              %input.trigger-ci{ type: 'button', value: 'Trigger CI' }
+          %td= patch.created_at.to_formatted_s(:short)
+          %td= patch_linter_status(patch)
+          %td= patch_ci_icon(patch)
+          %td= radio_button_tag('from', i, @from == i, disabled: (i >= @to)) if i != last_i
+          %td= radio_button_tag('to', i, @to == i, disabled: (i <= @from))
+      %tr
+        %td.buttons{ colspan: 6 }
+          %input#patch-history-submit{ type: 'button', value: 'Show diff' }
 
 
 - unless @patch.integration_log.blank?

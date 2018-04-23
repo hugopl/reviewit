@@ -56,17 +56,11 @@ module MergeRequestsHelper
 
   def should_show_patch_comment_divisor(patch, main_patch)
     return patch.comments.general.any? if patch == main_patch
-    patch.comments.any?
+    patch.comments.general.any?
   end
 
   def interdiff_view?
     @from.nonzero?
-  end
-
-  def diff_snippet(patch, location)
-    patch.code_at((location - 2)..location).map do |line|
-      content_tag(:div, line, class: "#{code_line_type(line)} snippet")
-    end.join.html_safe
   end
 
   def diff_file_status(file)
@@ -98,6 +92,30 @@ module MergeRequestsHelper
     @project.locked_branches.includes(:who).group_by(&:who).each do |user, locked_branches|
       branches = locked_branches.map { |i| "<strong>#{i.branch}</strong>" }.to_sentence.html_safe
       yield(user.name, branches, locked_branches.size)
+    end
+  end
+
+  def issue_link(issue)
+    content = issue.content.truncate(120)
+    options = { anchor: "comment-#{issue.id}" }
+    if issue.patch_id != @mr.patch.id
+      version = @mr.patch_ids.index(issue.patch_id) + 1
+      options[:to] = version
+      extra = "On #{version.ordinalize} version"
+    end
+
+    output = link_to(content, project_merge_request_path(@project, @mr, options))
+    output += content_tag(:span, extra, class: 'flag patch-warning') unless extra.blank?
+    output
+  end
+
+  def code_comment_icon(comments)
+    if comments.any?(&:blocker?)
+      'fa fa-exclamation'
+    elsif comments.any?(&:solved?)
+      'fa fa-check'
+    else
+      'fa fa-comments'
     end
   end
 

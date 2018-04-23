@@ -7,9 +7,6 @@
     %h3.comment-patch-update
       %span
         Patch updated, #{patch_name(patch)}
-  - if patch != @patch
-    - patch.comments.includes(:user).code.group_by(&:location).each do |_location, comments|
-      = render partial: 'code_comment_recap', locals: { comments: comments, patch: patch }
   - patch.comments.includes(:user).general.each do |comment|
     = render partial: 'comment', locals: { comment: comment }
 

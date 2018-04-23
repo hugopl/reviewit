@@ -43,6 +43,19 @@ class MergeRequest < ActiveRecord::Base
     Comment.joins(:patch).where(patches: { merge_request_id: id }, comments: { location: 0 }).any?
   end
 
+  def solve_issues_by_id(reviewer, issue_ids)
+    raise 'Merge request author cannot mark an issue as solved' if author == reviewer
+    comments.blocker.where(id: issue_ids).update_all(status: Comment.statuses[:solved], reviewer_id: reviewer.id)
+    add_history_event(reviewer, "tagged #{'issue'.pluralize(issue_ids.count)} #{issue_ids.to_sentence} as solved.")
+  end
+
+  def solve_issues_by_location(reviewer, patch, locations)
+    raise 'Merge request author cannot mark an issue as solved' if author == reviewer
+    issue_ids = patch.comments.blocker.where(location: locations).pluck(:id)
+    patch.comments.blocker.where(id: issue_ids).update_all(status: Comment.statuses[:solved], reviewer_id: reviewer.id)
+    add_history_event(reviewer, "tagged #{'issue'.pluralize(issue_ids.count)} #{issue_ids.to_sentence} as solved.")
+  end
+
   def add_patch(diff:, linter_ok:, ci_enabled:, description: '')
     patch = Patch.new
     patch.subject = diff.subject
@@ -55,8 +68,10 @@ class MergeRequest < ActiveRecord::Base
     add_history_event(author, 'updated the merge request') if persisted?
   end
 
-  def add_comments(author, patch, comments)
+  def add_comments(author, patch, comments, blockers)
     return if comments.nil?
+
+    blockers ||= {}
 
     count = 0
     transaction do
@@ -67,6 +82,7 @@ class MergeRequest < ActiveRecord::Base
         comment.patch = patch
         comment.content = text
         comment.location = location
+        comment.status = :blocker if blockers[location]
         comment.save!
         count += 1
       end

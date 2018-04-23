@@ -13,16 +13,18 @@
       .code-review-container
         %table.code-review
           - file.each_change do |change, type, location, old_ln, new_ln|
-            %tr{ class: type, 'data-location' => location }
+            - blocker = @comments[location]&.any?(&:blocker?)
+            %tr{ class: type, data: { location: location } }
               %td= old_ln
               %td= new_ln
               %td #{@disable_comments ? '' : '<div class="add-comment"></div>'.html_safe}#{change}
             - if @comments.include?(location)
-              %tr.comment{ 'data-location' => location }
+              %tr.comment{ data: { location: location, blocker: blocker } }
                 %td{ colspan: 2 }
-                  %i.fa.fa-comments
-                  = @comments[location].count if @comments[location].count > 1
+                  %i{ class: code_comment_icon(@comments[location]) }
+                  - if @comments[location].count > 1
+                    = @comments[location].count
                 %td
                   - @comments[location].each do |comment|
                     = render partial: 'comment', locals: { comment: comment }
-                  %input{ onclick: 'show_comment_box(this.parentElement.parentElement)', type: 'button', value: 'Reply' }/
+                  %input{ onclick: 'show_comment_box(this.parentElement.parentElement)', type: 'button', value: 'Reply' }

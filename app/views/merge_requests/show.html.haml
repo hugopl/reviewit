@@ -6,6 +6,10 @@
 
 = render partial: 'summary'
 = render partial: 'history'
+= render partial: 'blockers'
+
+:javascript
+  var isAuthor = #{@mr.author == current_user};
 
 = form_tag(project_merge_request_path(@project, @mr, to: params[:to]), method: 'patch') do
   = hidden_field_tag(:patch_id, @patch.id)
@@ -17,8 +21,12 @@
     = render 'comments'
 
   .merge-bar
-    - if @mr.open? or @mr.needs_rebase?
-      - if @mr.author != current_user && !target_branch_locked?
+    - if @mr.open? || @mr.needs_rebase?
+      - blockers = @mr.comments.blocker.count
+      - if blockers.positive?
+        .alert.info
+          You cannot accept this merge request because it still have <b><a href=#issuelist>#{pluralize(blockers, 'open issue')}</a></b>.
+      - if @mr.author != current_user && !target_branch_locked? && blockers.zero?
         = submit_tag 'Accept', name: 'mr_action',
                                data: { confirm: "Are you sure about accept this patch into #{@mr.target_branch}?" }
       = submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: 'Are you sure?' }

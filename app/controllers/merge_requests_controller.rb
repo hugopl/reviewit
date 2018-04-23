@@ -1,7 +1,8 @@
 class MergeRequestsController < ApplicationController
   def update
     @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
-    merge_request.add_comments(current_user, @patch, params[:comments])
+    @mr.solve_issues_by_location(current_user, @patch, params[:solved].keys) if params[:solved].present?
+    @mr.add_comments(current_user, @patch, params[:comments], params[:blockers])
 
     MergeRequestMailer.updated(current_user, merge_request, params).deliver
     redir_params = { action: :show }
@@ -16,6 +17,13 @@ class MergeRequestsController < ApplicationController
   rescue RuntimeError => e
     flash[:danger] = e.message
     redirect_to(redir_params)
+  end
+
+  def solve_issues
+    merge_request.solve_issues_by_id(current_user, params[:solved])
+    n = params[:solved].count
+    flash[:success] = "#{n} #{'issue'.pluralize(n)} tagged as solved!"
+    redirect_to action: :show
   end
 
   def index

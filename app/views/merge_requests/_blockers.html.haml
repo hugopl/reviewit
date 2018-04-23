@@ -1,0 +1,30 @@
+- if @mr.comments.blocker.exists?
+  = form_tag(solve_issues_project_merge_request_path(@project, @mr)) do
+    %h2#issuelist.toggle-mini.show Pending issues
+    %div
+      %table.mini
+        %tr
+          %th Title
+          %th Solved?
+        - @mr.comments.blocker.each do |issue|
+          - issue_id = "issue#{issue.id}"
+          %tr
+            %td= issue_link(issue)
+            %td
+              %input{ id: issue_id, name: 'solved[]', value: issue.id, type: 'checkbox' }
+              %label{ for: issue_id }
+        %tr
+          %td.buttons{ colspan: 2 }
+            %input{ type: 'submit', value: 'Mark then as fixed!' }
+
+- if @mr.comments.solved.exists?
+  %h2.toggle-mini Solved issues
+  %div.hide
+    %table.mini
+      %tr
+        %th Title
+        %th Who accepted?
+      - @mr.comments.solved.includes(:reviewer).each do |issue|
+        %tr
+          %td= issue_link(issue)
+          %td= issue.reviewer&.name

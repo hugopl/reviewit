@@ -18,6 +18,10 @@ body {
   flex-direction: column;
 }
 
+.hide {
+  display: none;
+}
+
 body > div.content {
   -webkit-flex: 1;
   flex: 1;
