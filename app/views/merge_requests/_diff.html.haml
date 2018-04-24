@@ -5,7 +5,7 @@
 - else
   - @diff.each_file do |file|
     .code-review-item
-      .code-review-header{ class: diff_file_status_class(file) }
+      .code-review-header
         = file.label
         = diff_file_status(file)
 
