@@ -10,6 +10,7 @@
 
 :javascript
   var isAuthor = #{@mr.author == current_user};
+  var isOpenMR = #{!@mr.closed?};
 
 = form_tag(project_merge_request_path(@project, @mr, to: params[:to]), method: 'patch') do
   = hidden_field_tag(:patch_id, @patch.id)

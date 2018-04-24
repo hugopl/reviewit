@@ -84,7 +84,7 @@ function show_comment_box(tr) {
     var location = tr.dataset.location;
 
     var blockerHTML = '';
-    if (!isAuthor) {
+    if (!isAuthor && isOpenMR) {
         var blocker = tr.dataset.blocker === '';
         var checkboxText = blocker ? 'Issue solved' : 'Blocker issue?';
         var blockerVar = blocker ? 'solved' : 'blockers';

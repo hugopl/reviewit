@@ -82,7 +82,7 @@ class MergeRequest < ActiveRecord::Base
         comment.patch = patch
         comment.content = text
         comment.location = location
-        comment.status = :blocker if blockers[location]
+        comment.status = :blocker if !closed? && blockers[location]
         comment.save!
         count += 1
       end
