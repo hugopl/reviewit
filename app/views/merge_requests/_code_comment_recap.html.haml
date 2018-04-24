@@ -2,7 +2,7 @@
   = diff_snippet(patch, comments.first.location)
 .code-comment-recap
   - comments.each do |comment|
-    .comment{ id: "comment-#{comment.id}" }
+    .comment{ id: "comment-ref-#{comment.id}" }
       = link_to('<i class="fa fa-link"></i>'.html_safe,
                 project_merge_request_path(@project, @mr, to: @to, anchor: "comment-#{comment.id}"))
       = image_tag gravatar_url(comment.user), class: 'avatar'
