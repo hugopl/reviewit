@@ -7,23 +7,19 @@
 = render partial: 'summary'
 = render partial: 'history'
 
-- if @mr.patches.count.positive?
-  = form_tag(project_merge_request_path(@project, @mr, to: params[:to]), method: 'patch') do
-    = hidden_field_tag(:patch_id, @patch.id)
+= form_tag(project_merge_request_path(@project, @mr, to: params[:to]), method: 'patch') do
+  = hidden_field_tag(:patch_id, @patch.id)
 
-    = render partial: 'diff', locals: { patch: @patch }
-    - if interdiff_view?
-      %p.alert.info Comments aren't show in diff mode.
-    - else
-      = render 'comments'
+  = render partial: 'diff', locals: { patch: @patch }
+  - if interdiff_view?
+    %p.alert.info Comments aren't show in diff mode.
+  - else
+    = render 'comments'
 
-    .merge-bar
-      - if @mr.open? or @mr.needs_rebase?
-        - if @mr.author != current_user && !target_branch_locked?
-          = submit_tag 'Accept', name: 'mr_action',
-                                 data: { confirm: "Are you sure about accept this patch into #{@mr.target_branch}?" }
-        = submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: 'Are you sure?' }
-      %input.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }/
-- else
-  %p
-    %strong You found a bizarre merge request without patches.
+  .merge-bar
+    - if @mr.open? or @mr.needs_rebase?
+      - if @mr.author != current_user && !target_branch_locked?
+        = submit_tag 'Accept', name: 'mr_action',
+                               data: { confirm: "Are you sure about accept this patch into #{@mr.target_branch}?" }
+      = submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: 'Are you sure?' }
+    %input.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }/
