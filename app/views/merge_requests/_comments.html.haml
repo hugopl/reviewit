@@ -12,7 +12,8 @@
 
 .comment-box
   %textarea.comment{ name: 'comments[0]' }
-  .comment-controls
-    %span{ data: { balloon: "Merge requests can't be accepted with open blocker issues.", balloon_pos: 'right' } }
-      %input#blocker_0{ type: 'checkbox', value: 1, name: 'blockers[0]' }
-      %label{ for: 'blocker_0' } Blocker issue?
+  - if current_user != @mr.author && !@mr.closed?
+    .comment-controls
+      %span{ data: { balloon: "Merge requests can't be accepted with open blocker issues.", balloon_pos: 'right' } }
+        %input#blocker_0{ type: 'checkbox', value: 1, name: 'blockers[0]' }
+        %label{ for: 'blocker_0' } Blocker issue?
