@@ -4,15 +4,18 @@ class MergeRequestsController < ApplicationController
     merge_request.add_comments(current_user, @patch, params[:comments])
 
     MergeRequestMailer.updated(current_user, merge_request, params).deliver
+    redir_params = { action: :show }
+    redir_params[:to] = params[:to] if params[:to]
+
     case params[:mr_action]
     when 'Accept' then accept
     when 'Abandon' then abandon
     else
-      redirect_to action: :show
+      redirect_to(redir_params)
     end
   rescue RuntimeError => e
     flash[:danger] = e.message
-    redirect_to action: :show
+    redirect_to(redir_params)
   end
 
   def index
