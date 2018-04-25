@@ -46,7 +46,7 @@ module Reviewit
     include GitUtil
 
     def branch_name_for(mr, patch)
-      "mr-#{mr}-#{patch.downcase}"
+      git_safe_name("mr-#{mr}-#{patch.downcase}")
     end
   end
 end

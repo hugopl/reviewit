@@ -10,7 +10,7 @@ module Reviewit
       return if branch.nil?
 
       puts " * [pruned] #{branch}"
-      `git branch -D #{git_safe_name(branch)}`
+      `git branch -D "#{Shellwords.escape(branch)}"`
     end
 
     def fetch_repository
@@ -24,22 +24,22 @@ module Reviewit
     end
 
     def branch_exists?(name)
-      `git rev-parse --verify --quiet #{git_safe_name(name)}`
+      `git rev-parse --verify --quiet "#{Shellwords.escape(name)}"`
       $?.success?
     end
 
     def create_branch(base, name)
-      `git checkout --quiet -b "#{git_safe_name(name)}" #{remote}/#{base} 2>&1`
+      `git checkout --quiet -b "#{Shellwords.escape(name)}" "#{remote}/#{Shellwords.escape(base)}" 2>&1`
       raise "Error creating branch #{name} on top of #{remote}/#{base}" unless $?.success?
     end
 
     def git_safe_name(name)
-      name.gsub!(/\.\z/, '') # no ending with a dot, not really a git restriction.
-      name.gsub!(%r{(\.lock|/)\z}, '_') # git restrictions
-      name.gsub!(/[\s\\>:~^]/, '_') # more git restrictions
-      name.gsub!(/[-\]\[:\.'"]/, '_')
-      name.gsub!(/_+/, '_')
-      Shellwords.escape(name)
+      safe_name = name.gsub(/\.\z/, '') # no ending with a dot, not really a git restriction.
+      safe_name.gsub!(/^\./, '_') # replace other dots by underscore
+      safe_name.gsub!(%r{(\.lock|/)\z}, '_') # git restrictions
+      safe_name.gsub!(/[\s\\>:~^]/, '_') # more git restrictions
+      safe_name.gsub!(/_+/, '_')
+      safe_name
     end
 
     private
