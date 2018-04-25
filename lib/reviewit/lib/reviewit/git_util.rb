@@ -37,7 +37,9 @@ module Reviewit
       safe_name = name.gsub(/\.\z/, '') # no ending with a dot, not really a git restriction.
       safe_name.gsub!(/^\./, '_') # replace other dots by underscore
       safe_name.gsub!(%r{(\.lock|/)\z}, '_') # git restrictions
-      safe_name.gsub!(/[\s\\>:~^]/, '_') # more git restrictions
+      safe_name.gsub!(/[\s\\>:~^\[\]\(\)]/, '_') # more git restrictions
+      safe_name.gsub!('-_', '_')
+      safe_name.gsub!('_-', '_')
       safe_name.gsub!(/_+/, '_')
       safe_name
     end
