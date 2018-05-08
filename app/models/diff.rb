@@ -10,7 +10,6 @@ class Diff
     @subject = @message_lines.shift || ''
     @subject.sub!('[PATCH] ', '')
     @commit_message = @message_lines.join
-    @commit_message.strip!
   end
 
   def each_file
