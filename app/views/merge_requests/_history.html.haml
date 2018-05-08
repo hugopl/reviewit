@@ -15,7 +15,7 @@
       - i += 1
         %tr
           %td
-            = patch_name(patch)
+            = patch_name(patch, i)
             - if @project.gitlab_ci? && patch.ok_to_retry_ci?
               %input.trigger-ci{ type: 'button', value: 'Trigger CI' }
           %td= patch.created_at.to_formatted_s(:short)

@@ -3,9 +3,9 @@ module MergeRequestsHelper
     @patches ||= @mr.patches
   end
 
-  def patch_name(patch)
-    i = @mr.patches.index(patch) + 1
-    patch.description.blank? ? "#{i.ordinalize} version" : patch.description
+  def patch_name(patch, version = nil)
+    version ||= @mr.patches.index(patch) + 1
+    patch.description.blank? ? "#{version.ordinalize} version" : "v#{version}: #{patch.description}"
   end
 
   def patch_linter_status(patch)
