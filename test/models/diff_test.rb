@@ -8,7 +8,7 @@ class DiffTest < ActiveSupport::TestCase
                                    "the helpless commenter.\n" \
                                    "\n" \
                                    "This bug would cease to be noticed as soon as some other person\n" \
-                                   'commented on the merge request.'
+                                   "commented on the merge request.\n\n"
     # Multiline subject
     diff = Diff.new(patch('diff_subject_and_message_2'))
     diff.subject.must_equal "- API moved to it's own namespace. - Butons aren't links, they are now real buttons. - " \
