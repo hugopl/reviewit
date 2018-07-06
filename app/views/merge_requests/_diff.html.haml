@@ -10,7 +10,7 @@
         = diff_file_status(file)
 
         .toggle-file-btn= file.deleted? ? 'Show' : 'Hide'
-      .code-review-container
+      .code-review-container{class: (file.deleted? ? 'hide' : '')}
         %table.code-review
           - file.each_change do |change, type, location, old_ln, new_ln|
             - blocker = @comments[location]&.any?(&:blocker?)
