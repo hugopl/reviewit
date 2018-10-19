@@ -7,5 +7,6 @@
       = link_to p.name, project_path(p)
       ,
       %span= link_to merge_request_count(p), project_merge_requests_path(p)
-    .project.description= p.description.blank? ? '?' : p.description
+    - if p.description?
+      .project.description= p.description
 %p= link_to 'Create project', new_project_path
