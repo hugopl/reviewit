@@ -28,7 +28,7 @@ class MergeRequest < ActiveRecord::Base
 
   before_save :write_history
 
-  after_commit :notify_jira
+  after_commit :notify_jira, on: :create
   after_create :send_webpush_creation_notification
 
   def can_update?
