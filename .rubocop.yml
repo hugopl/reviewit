@@ -6,7 +6,7 @@ AllCops:
     - bin/**/*
   DisplayCopNames: true
   TargetRubyVersion: 2.3
-  TargetRailsVersion: 4.1
+  TargetRailsVersion: 4.2
 Layout/IndentHeredoc:
   Enabled: false
 Layout/MultilineHashBraceLayout:
