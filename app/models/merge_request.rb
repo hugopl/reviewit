@@ -28,7 +28,7 @@ class MergeRequest < ActiveRecord::Base
 
   before_save :write_history
 
-  after_create :notify_jira
+  after_commit :notify_jira
   after_create :send_webpush_creation_notification
 
   def can_update?
@@ -267,21 +267,18 @@ class MergeRequest < ActiveRecord::Base
     match = /#{project.jira_ticket_regexp}/.match(patch.commit_message)
     return if match.nil?
 
-    message = "Merge request created at https://#{ReviewitConfig.mail.domain}/mr/#{id}"
-    Thread.new do
-      ActiveRecord::Base.connection.close
-      match.to_a.each do |ticket_id|
-        uri = URI("#{project.jira_api_url}/issue/#{ticket_id}/comment")
-        request = Net::HTTP::Post.new(uri.to_s)
-        request.basic_auth(project.jira_username, project.jira_password)
-        request['Content-Type'] = 'application/json'
-        request.body = { 'body' => message }.to_json
+    ticket_id = match.to_a.first
+    return if ticket_id.nil?
 
-        http = Net::HTTP.new(uri.hostname, uri.port)
-        http.use_ssl = true if uri.scheme == 'https'
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
-        http.start { |h| h.request(request) }
-      end
-    end
+    uri = URI("#{project.jira_api_url}/issue/#{ticket_id}/comment")
+    request = Net::HTTP::Post.new(uri.to_s)
+    request.basic_auth(project.jira_username, project.jira_password)
+    request['Content-Type'] = 'application/json'
+    request.body = { 'body' => "Merge request created at https://#{ReviewitConfig.mail.domain}/mr/#{id}" }.to_json
+
+    http = Net::HTTP.new(uri.hostname, uri.port)
+    http.use_ssl = true if uri.scheme == 'https'
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
+    http.start { |h| h.request(request) }
   end
 end
