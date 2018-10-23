@@ -12,7 +12,7 @@ class ReviewitConfig
     def load_data
       data = read_yaml
       data.merge!(data[Rails.env]) if data.key?(Rails.env)
-      data.symbolize_keys!
+      data.deep_symbolize_keys!
       apply_defaults(data)
       apply_open_structs(data)
       data
