@@ -5,8 +5,8 @@ require 'openssl'
 require 'tempfile'
 
 class MergeRequest < ActiveRecord::Base
-  belongs_to :author, class_name: User
-  belongs_to :reviewer, class_name: User
+  belongs_to :author, class_name: 'User'
+  belongs_to :reviewer, class_name: 'User'
   belongs_to :project
 
   has_many :patches, -> { order(:created_at) }, dependent: :destroy
