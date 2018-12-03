@@ -23,6 +23,9 @@ class MergeRequestsController < ApplicationController
     merge_request.solve_issues_by_id(current_user, params[:solved])
     n = params[:solved].count
     flash[:success] = "#{n} #{'issue'.pluralize(n)} tagged as solved!"
+  rescue RuntimeError => e
+    flash[:danger] = e.message
+  ensure
     redirect_to action: :show
   end
 
