@@ -31,7 +31,7 @@ module Reviewit
     before do
       raise Error.new("Version #{Reviewit::VERSION} required.", 426) if version_changed?
 
-      @current_user = User.find_by_api_token(headers['X-Token'])
+      @current_user = User.find_by(api_token: headers['X-Token'])
       raise Error.new('Sorry, invalid token.', 401) if @current_user.nil?
 
       raise Error.new('Configuration changed.', 460) if configuration_changed?

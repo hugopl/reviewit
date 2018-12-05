@@ -98,15 +98,6 @@ Rails/CreateTableWithTimestamps:
     - 'db/migrate/20141003232638_create_tables.rb'
     - 'db/migrate/20141119010138_add_history_events_table.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: Whitelist.
-# Whitelist: find_by_sql
-Rails/DynamicFindBy:
-  Exclude:
-    - 'app/api/reviewit/api.rb'
-    - 'app/controllers/merge_requests_controller.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: Include.

@@ -1,6 +1,6 @@
 class MergeRequestsController < ApplicationController
   def update
-    @patch = merge_request.patches.find_by_id(params[:patch_id]) or raise 'Invalid patch'
+    @patch = merge_request.patches.find_by(id: params[:patch_id]) or raise 'Invalid patch'
     @mr.solve_issues_by_location(current_user, @patch, params[:solved].keys) if params[:solved].present?
     @mr.add_comments(current_user, @patch, params[:comments], params[:blockers])
 
