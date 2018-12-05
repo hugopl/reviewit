@@ -1,4 +1,4 @@
-class HistoryEvent < ActiveRecord::Base
+class HistoryEvent < ApplicationRecord
   belongs_to :who, class_name: 'User'
 
   validates :who, presence: true

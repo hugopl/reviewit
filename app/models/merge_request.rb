@@ -4,7 +4,7 @@ require 'net/http'
 require 'openssl'
 require 'tempfile'
 
-class MergeRequest < ActiveRecord::Base
+class MergeRequest < ApplicationRecord
   belongs_to :author, class_name: 'User'
   belongs_to :reviewer, class_name: 'User'
   belongs_to :project

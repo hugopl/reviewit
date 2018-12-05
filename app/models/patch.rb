@@ -1,4 +1,4 @@
-class Patch < ActiveRecord::Base
+class Patch < ApplicationRecord
   belongs_to :merge_request
 
   has_many :comments, dependent: :destroy
