@@ -34,6 +34,7 @@ class GitPushWorker
     # CI pushes are always forced pushes, so we can resubmit to CI.
     push_ok = git.push(branch, forced: true)
     fail("Failed to push branch #{branch}") unless push_ok
+
     patch.update_attribute(:gitlab_ci_hash, git.sha1)
   end
 

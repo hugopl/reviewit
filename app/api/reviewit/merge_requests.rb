@@ -76,6 +76,7 @@ module Reviewit
         desc 'Accept a merge request'
         patch :accept do
           raise 'This merge request was already accepted.' if merge_request.accepted? or merge_request.integrating?
+
           merge_request.integrate! current_user
           ok
         end
@@ -85,6 +86,7 @@ module Reviewit
           raise 'You can not abandon a merge request in the integration process, wait a bit.' if merge_request.integrating?
           raise 'Too late, this merge request was already accepted.' if merge_request.accepted?
           raise 'This merge request was already abandoned.' if merge_request.abandoned?
+
           merge_request.abandon! current_user
           ok
         end

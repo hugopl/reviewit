@@ -62,6 +62,7 @@ class Diff
 
     def label
       return @name unless renamed?
+
       @label ||= path_diff(@renamed_from, @name)
     end
 
@@ -159,6 +160,7 @@ class Diff
     diff.each_line do |line|
       @index += 1
       next if send(@file_metadata_reader, line)
+
       send(@state, line)
     end
   end
@@ -182,6 +184,7 @@ class Diff
 
   def start_reading_git_file_metadata(line)
     return false unless line.start_with?('diff --git ')
+
     @file = File.new
     line =~ %r{^diff --git a/(.*) b/(.*)}
     @file.name = $2 == '/dev/null' ? $1 : $2
@@ -205,6 +208,7 @@ class Diff
       else
         line =~ %r{^... ./(.*)}
         return true if $1.nil?
+
         file_name ||= $1
       end
       @file = File.new

@@ -44,6 +44,7 @@ module Reviewit
         patch :unlock do
           n = project.locked_branches.where(branch: params[:branch]).delete_all
           raise 'Branch not locked, nothing done.' if n.zero?
+
           ok.to_json
         end
       end

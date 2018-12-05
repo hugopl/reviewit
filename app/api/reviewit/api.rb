@@ -52,11 +52,13 @@ module Reviewit
 
       def version_changed?
         return false if setup_request?
+
         headers['X-Cli-Version'] != Reviewit::VERSION
       end
 
       def configuration_changed?
         return false if setup_request?
+
         headers['X-Project-Hash'] != project.configuration_hash
       end
 

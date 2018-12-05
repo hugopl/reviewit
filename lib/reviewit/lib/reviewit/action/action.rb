@@ -50,6 +50,7 @@ module Reviewit
 
       res = system("#{editor} #{message_file.path}")
       raise 'Can\'t open an editor, set eht EDITOR or VISUAL environment variables. Or just install nano :-)' if res.nil?
+
       comments = File.read message_file.path
 
       comments = comments.lines.select { |line| line =~ /^[^#]/ }

@@ -69,6 +69,7 @@ class Patch < ActiveRecord::Base
 
   def reviewer_stamp
     return unless merge_request.accepted? or merge_request.integrating?
+
     "Reviewed by #{reviewer.name} on MR ##{merge_request.id}\n"
   end
 end

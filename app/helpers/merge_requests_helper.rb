@@ -22,6 +22,7 @@ module MergeRequestsHelper
     else
       last_patch = mr.patch
       return if last_patch.nil?
+
       time = last_patch.updated_at
       last_comment = last_patch.comments.order('id DESC').limit(1).first
       time = last_comment.created_at if last_comment
@@ -56,6 +57,7 @@ module MergeRequestsHelper
 
   def should_show_patch_comment_divisor(patch, main_patch)
     return patch.comments.general.any? if patch == main_patch
+
     patch.comments.general.any?
   end
 

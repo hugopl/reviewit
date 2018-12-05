@@ -21,6 +21,7 @@ class ReviewitConfig
     def apply_open_structs(data)
       data.each do |k, v|
         next unless v.is_a?(Hash)
+
         data[k] = OpenStruct.new(v)
       end
     end
@@ -46,6 +47,7 @@ class ReviewitConfig
         data[symbol]
       else
         return super unless symbol.to_s.ends_with?('=')
+
         data[symbol.to_s.chop.to_sym] = args.first
       end
     end

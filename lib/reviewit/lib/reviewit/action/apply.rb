@@ -38,6 +38,7 @@ module Reviewit
       end
       options[:mr] = ARGV
       raise 'You need to inform the merge request id' if options[:mr].nil?
+
       options
     end
 

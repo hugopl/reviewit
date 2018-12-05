@@ -14,6 +14,7 @@ module Reviewit
       Trollop.options {}
       mr = ARGV.shift
       raise 'You need to inform the merge request id' if mr.nil?
+
       { mr: mr }
     end
   end

@@ -8,6 +8,7 @@ module ProjectsHelper
   def merge_request_count(project)
     count = project.merge_requests.pending.count
     return 'No open merge requests' if count.zero?
+
     pluralize(count, 'merge request pending', 'merge requests pending')
   end
 
@@ -20,6 +21,7 @@ module ProjectsHelper
     period.times do
       day = day.tomorrow.to_date
       next if mrs.key?(day)
+
       mrs[day] = 0
     end
 

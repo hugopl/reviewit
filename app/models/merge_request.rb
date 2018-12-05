@@ -45,12 +45,14 @@ class MergeRequest < ActiveRecord::Base
 
   def solve_issues_by_id(reviewer, issue_ids)
     raise 'Merge request author cannot mark an issue as solved' if author == reviewer
+
     comments.blocker.where(id: issue_ids).update_all(status: Comment.statuses[:solved], reviewer_id: reviewer.id)
     add_history_event(reviewer, "tagged #{'issue'.pluralize(issue_ids.count)} #{issue_ids.to_sentence} as solved.")
   end
 
   def solve_issues_by_location(reviewer, patch, locations)
     raise 'Merge request author cannot mark an issue as solved' if author == reviewer
+
     issue_ids = patch.comments.blocker.where(location: locations).pluck(:id)
     patch.comments.blocker.where(id: issue_ids).update_all(status: Comment.statuses[:solved], reviewer_id: reviewer.id)
     add_history_event(reviewer, "tagged #{'issue'.pluralize(issue_ids.count)} #{issue_ids.to_sentence} as solved.")
@@ -77,6 +79,7 @@ class MergeRequest < ActiveRecord::Base
     transaction do
       comments.each do |location, text|
         next if text.strip.empty?
+
         comment = Comment.new
         comment.user = author
         comment.patch = patch
@@ -124,6 +127,7 @@ class MergeRequest < ActiveRecord::Base
   def patch_diff(from = 0, to = nil)
     to ||= patches.count
     raise ActiveRecord::RecordNotFound, 'Patch diff not found' if from >= to || to > patches.count
+
     # convert to zero based index.
     from -= 1
     to -= 1
@@ -181,6 +185,7 @@ class MergeRequest < ActiveRecord::Base
 
   def send_webpush_comment_notification(who, n_of_comments)
     return if who == author
+
     author.send_webpush_assync("#{n_of_comments} new comments", subject, my_path)
   end
 
@@ -243,6 +248,7 @@ class MergeRequest < ActiveRecord::Base
 
   def write_history
     return if !target_branch_changed? || target_branch_was.nil?
+
     add_history_event(author, "changed the target branch from #{target_branch_was} to #{target_branch}")
   end
 
