@@ -41,14 +41,6 @@ Performance/Casecmp:
   Exclude:
     - 'config/deploy.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect.
-Performance/HashEachMethods:
-  Exclude:
-    - 'app/models/diff.rb'
-    - 'lib/reviewit/lib/reviewit/action/list.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect.
@@ -171,7 +163,7 @@ Style/FormatString:
     - 'app/helpers/projects_helper.rb'
 
 # Offense count: 1
-Style/MethodMissing:
+Style/MissingRespondToMissing:
   Exclude:
     - 'app/models/reviewit_config.rb'
 
