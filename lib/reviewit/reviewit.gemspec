@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.description = 'Reviewit command line interface, because sometimes Web interface sux.'
   s.license     = 'MIT'
 
-  s.add_runtime_dependency 'trollop', '~> 2.0'
+  s.add_runtime_dependency 'optimist', '~> 3.0'
   s.add_development_dependency 'awesome_print', '~> 1.2'
 
   s.files         = %w(lib/reviewit.rb

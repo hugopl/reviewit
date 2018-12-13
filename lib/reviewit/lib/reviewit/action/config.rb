@@ -11,7 +11,7 @@ module Reviewit
 
     def self.parse_options
       subcommands = Reviewit::ACTIONS - ['cancel']
-      options = Trollop.options do
+      options = Optimist.options do
         banner "Use review config <action> <parameter1> <parameter2> ...\n\nOptions:"
         stop_on subcommands
       end

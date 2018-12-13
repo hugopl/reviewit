@@ -21,7 +21,7 @@ module Reviewit
     end
 
     def self.parse_options
-      options = Trollop.options do
+      options = Optimist.options do
         opt :message, 'A message to the given action', type: String
         opt :linter, 'Run linter', default: true
         opt :rename, 'Rename branch after push.', default: true

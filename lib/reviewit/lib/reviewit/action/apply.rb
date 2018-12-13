@@ -32,7 +32,7 @@ module Reviewit
     end
 
     def self.parse_options
-      options = Trollop.options do
+      options = Optimist.options do
         opt :branch, 'Create a branch, then apply the patch', default: true
         opt :fetch, 'Fetch repository before apply the branch', default: true
       end

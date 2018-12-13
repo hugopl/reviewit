@@ -7,7 +7,7 @@ module Reviewit
     end
 
     def self.parse_options
-      options = Trollop.options
+      options = Optimist.options
       options[:branch] = ARGV.shift
       options
     end

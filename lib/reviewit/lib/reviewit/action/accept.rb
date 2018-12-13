@@ -11,7 +11,7 @@ module Reviewit
     end
 
     def self.parse_options
-      Trollop.options {}
+      Optimist.options {}
       mr = ARGV.shift
       raise 'You need to inform the merge request id' if mr.nil?
 

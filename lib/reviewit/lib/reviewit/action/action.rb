@@ -73,7 +73,7 @@ module Reviewit
     end
 
     def self.parse_options
-      Trollop.options
+      Optimist.options
     end
 
     def root_dir

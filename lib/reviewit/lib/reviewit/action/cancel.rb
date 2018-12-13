@@ -15,7 +15,7 @@ module Reviewit
     end
 
     def self.parse_options
-      Trollop.options
+      Optimist.options
       mr = ARGV.shift
       { mr: mr }
     end
