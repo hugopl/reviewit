@@ -1,4 +1,4 @@
-require 'trollop'
+require 'optimist'
 
 require 'reviewit/api.rb'
 require 'reviewit/action/action.rb'
