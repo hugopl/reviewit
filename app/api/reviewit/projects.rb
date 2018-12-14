@@ -32,7 +32,7 @@ module Reviewit
 
         desc 'Lock a branch'
         patch :lock do
-          locked_branch = project.locked_branches.build(who: current_user, branch: params[:branch])
+          locked_branch = project.locked_branches.build(who: current_user, branch: params[:branch], reason: params[:reason])
           if locked_branch.save
             ok.to_json
           else

@@ -92,8 +92,7 @@ module MergeRequestsHelper
 
   def foreach_locked_branches
     @project.locked_branches.includes(:who).group_by(&:who).each do |user, locked_branches|
-      branches = locked_branches.map { |i| "<strong>#{i.branch}</strong>" }.to_sentence.html_safe
-      yield(user.name, branches, locked_branches.size)
+      yield(user.name, locked_branches)
     end
   end
 

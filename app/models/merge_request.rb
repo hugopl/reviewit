@@ -108,7 +108,7 @@ class MergeRequest < ApplicationRecord
                                                                               patch_id != :not_specified
     raise 'This merge request is already closed.' if closed?
     raise 'This merge request is being integrated by another request, please wait' if integrating?
-    raise "The target branch was locked by #{who_locked_the_branch?.name}" if target_branch_locked?
+    raise "The target branch was locked by #{branch_lock.who.name}" if target_branch_locked?
 
     add_history_event reviewer, 'accepted the merge request'
 
@@ -198,11 +198,11 @@ class MergeRequest < ApplicationRecord
   end
 
   def target_branch_locked?
-    project.locked_branches.where(branch: target_branch).any?
+    branch_lock.present?
   end
 
-  def who_locked_the_branch?
-    project.users.joins(:locked_branches).where(locked_branches: { branch: target_branch }).first
+  def branch_lock
+    @branch_lock ||= project.locked_branches.where(branch: target_branch).first
   end
 
   private

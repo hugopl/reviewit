@@ -2,7 +2,8 @@
 
 - if target_branch_locked?
   .alert.info
-    The target branch for this merge request was locked by <strong>#{@mr.who_locked_the_branch?.name}</strong>.
+    The target branch for this merge request was locked by <strong>#{@mr.branch_lock.who.name}</strong> at #{@mr.branch_lock.created_at.to_formatted_s(:short)}<br>
+    Reason: <em>“#{@mr.branch_lock.reason}”</em>
 
 = render partial: 'summary'
 = render partial: 'history'

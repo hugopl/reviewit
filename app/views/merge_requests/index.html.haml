@@ -5,8 +5,16 @@
 
 - if @project.locked_branches.any?
   .alert.info
-    - foreach_locked_branches do |user, locked_branches, n|
-      #{"Branch".pluralize(n)} #{locked_branches} locked by #{user}<br>
+    - foreach_locked_branches do |user, locked_branches|
+      - if locked_branches.size == 1
+        Branch <strong>#{locked_branches.first.branch}</strong> locked by #{user}
+        at #{locked_branches.first.created_at.to_formatted_s(:short)}, reason: <em>“#{locked_branches.first.reason}”</em>
+      - else
+        #{locked_branches.size} #{"branch".pluralize(locked_branches.size)} locked by #{user}
+        %ul
+          - locked_branches.each do |locked_branch|
+            <li><strong>#{locked_branch.branch}</strong> at #{locked_branch.created_at.to_formatted_s(:short)},
+            reason: <em>“#{locked_branch.reason}”</em></li>
 
 - if @waiting_you.empty? && @waiting_others.empty?
   %p Nothing here, go drink some wine :-)

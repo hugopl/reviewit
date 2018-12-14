@@ -32,8 +32,8 @@ module Reviewit
       patch("merge_requests/#{id}/accept")
     end
 
-    def lock_branch(branch)
-      patch('lock', branch: branch)
+    def lock_branch(branch, reason)
+      patch('lock', branch: branch, reason: reason)
     end
 
     def unlock_branch(branch)
