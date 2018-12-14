@@ -6,9 +6,8 @@ class Diff
     @message_lines = []
     @file_metadata_reader = source == :git ? :start_reading_git_file_metadata : :start_reading_interdiff_file_metadata
     process_patch(diff)
+    process_subject
 
-    @subject = @message_lines.shift || ''
-    @subject.sub!('[PATCH] ', '')
     @commit_message = @message_lines.join
   end
 
@@ -26,6 +25,23 @@ class Diff
   attr_reader :subject
   attr_reader :commit_message
   attr_reader :raw
+
+  private
+
+  def process_subject
+    # Subject can be Q-Encoded.
+    @subject[0] = @subject[0].sub('[PATCH] ', '')
+    @subject.map! do |line|
+      if line.start_with?('=?UTF-8?q?') && line.end_with?('?=')
+        line.byteslice(10, line.size - 12).unpack('M').first
+      else
+        line
+      end
+    end
+    @subject = @subject.join
+  end
+
+  public
 
   class File
     attr_accessor :name
@@ -167,14 +183,14 @@ class Diff
 
   def state_idle(line)
     if line =~ /^Subject: (.*)/
-      @message_lines << $1
+      @subject = [$1]
       @state = :state_reading_subject
     end
     @state = :state_reading_commit_message if line.blank?
   end
 
   def state_reading_subject(line)
-    @message_lines[0] += $1 if line =~ /^( .+)/
+    @subject << $1[1..-1] if line =~ /^( .+)/
     @state = :state_reading_commit_message if line.blank?
   end
 
