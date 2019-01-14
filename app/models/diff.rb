@@ -29,6 +29,7 @@ class Diff
   private
 
   def process_subject
+    return '' if @subject.nil?
     # Subject can be Q-Encoded.
     @subject[0] = @subject[0].sub('[PATCH] ', '')
     @subject.map! do |line|
