@@ -37,9 +37,9 @@ class Diff
         line.byteslice(10, line.size - 12).unpack('M').first
       else
         line
-      end
+      end.strip
     end
-    @subject = @subject.join
+    @subject = @subject.join(' ')
   end
 
   public
