@@ -49,6 +49,5 @@ var ready = function() {
     alreadyTriedToRegisterNotifications = true
   }
 }
-$(document).ready(ready);
 $(document).on('turbolinks:load', ready);
 //= require serviceworker-companion
