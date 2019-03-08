@@ -41,22 +41,19 @@ module Reviewit
       config.action_mailer.default_url_options = { host: 'example.com' }
       config.action_mailer.default_options = { from: 'reviewit@example.com' }
     else
-      config.action_mailer.delivery_method = ReviewitConfig.mail.delivery_method.to_sym
+      delivery_method = ReviewitConfig.mail.delivery_method.to_sym
+      config.action_mailer.delivery_method = delivery_method
 
       config.action_mailer.smtp_settings = {
         address:              ReviewitConfig.mail.address,
         port:                 ReviewitConfig.mail.port,
-        authentication:       ReviewitConfig.mail.authentication,
-        domain:               ReviewitConfig.mail.domain,
         enable_starttls_auto: ReviewitConfig.mail.enable_starttls_auto,
         user_name:            ReviewitConfig.mail.user_name,
         password:             ReviewitConfig.mail.password,
-        openssl_verify_mode:  ReviewitConfig.mail.openssl_verify_mode
       }
 
-      config.action_mailer.file_settings = {
-        location: 'logs/mails'
-      }
+      config.action_mailer.file_settings = { location: 'logs/mails' } if delivery_method == :file
+
       config.action_mailer.default_url_options = {
         host: ReviewitConfig.mail.host
       }
