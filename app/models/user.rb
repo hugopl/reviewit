@@ -74,7 +74,7 @@ class User < ApplicationRecord
     end
   rescue Timeout::Error
     nil
-  rescue Webpush::InvalidSubscription
+  rescue Webpush::InvalidSubscription, Webpush::ResponseError
     update_attributes(webpush_endpoint: nil, webpush_p256dh: nil, webpush_auth: nil)
   end
 
