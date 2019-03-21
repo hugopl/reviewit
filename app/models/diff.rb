@@ -34,7 +34,7 @@ class Diff
     @subject[0] = @subject[0].sub('[PATCH] ', '')
     @subject.map! do |line|
       if line.start_with?('=?UTF-8?q?') && line.end_with?('?=')
-        line.byteslice(10, line.size - 12).unpack('M').first
+        line.byteslice(10, line.size - 12).unpack('M').first.force_encoding('utf-8')
       else
         line
       end.strip
