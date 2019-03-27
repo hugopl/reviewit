@@ -1,4 +1,6 @@
-window.projects = function() {
+export default function projects() {
+    renderCharts()
+
     var tag = $('#project_users');
     if (!tag.length)
         return;
@@ -28,3 +30,12 @@ window.projects = function() {
                   placeholderText: 'Type the user names'
               });
 };
+
+function renderCharts() {
+    if ($('#project-mr-chart').length === 0)
+        return
+
+    Highcharts.chart('project-mr-chart', mrChartData)
+    Highcharts.chart('project-reviews-chart', reviewersChartData)
+    Highcharts.chart('project-authors-chart', authorsChartData)
+}

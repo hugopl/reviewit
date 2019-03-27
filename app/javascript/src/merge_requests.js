@@ -1,4 +1,4 @@
-function merge_requests() {
+export default function merge_requests() {
     $(".patch-history input[type=radio]").on('change', function(event) {
         handle_history_radios(event.target);
     });
@@ -101,10 +101,14 @@ function show_comment_box(tr) {
             + "</div>"
             + "<div class='comment-controls'>"
             + blockerHTML
-            + "<input type=button class=reject onclick='hide_comment_box(this);' value=Cancel>"
+            + "<input type=button class=reject value=Cancel>"
             + "</div>"
             + "</td></tr>";
     $(html).insertAfter(tr);
+    $(tr.nextSibling).find('input.reject').on('click', function(event) {
+        hide_comment_box(event.target);
+    });
+
     var textArea = $(tr.nextSibling).find('textarea').get(0);
     new_editor(textArea);
 };
