@@ -1,24 +1,7 @@
-%h2 Sign up
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = devise_error_messages!
-  %div
-    = f.label :name, class: 'required'
-    %br/
-    = f.text_field :name, autofocus: true, placeholder: 'This will be used in your commits'
-  %div
-    = f.label :email, class: 'required'
-    %br/
-    = f.email_field :email, autofocus: true, placeholder: 'This will be used for sign in'
-  %div
-    = f.label :password, class: 'required'
-    - if @validatable
-      %i
-        (#{@minimum_password_length} characters minimum)
-    %br/
-    = f.password_field :password, autocomplete: 'off'
-  %div
-    = f.label :password_confirmation, class: 'required'
-    %br/
-    = f.password_field :password_confirmation, autocomplete: 'off'
-  %div= f.submit 'Sign up'
-= render 'devise/shared/links'
+.ui.raised.segment.left.aligned
+  = semantic_ui_form(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+    = f.text :name, autofocus: true, placeholder: 'This will be used in your commits'
+    = f.email :email, label: 'E-mail', placeholder: 'This will be used for sign in'
+    = f.password :password, placeholder: 'Your password'
+    = f.password :password_confirmation, placeholder: 'Password confirmation'
+    %button.ui.fluid.large.primary.submit.button Sign up

@@ -1,0 +1,11 @@
+$icons-font-path: '~semantic-ui-sass/icons' !default;
+$flags-image-path: '~semantic-ui-sass/images' !default;
+@import "~semantic-ui-sass/semantic-ui";
+@import "~simplemde/dist/simplemde.min";
+
+@import "../src/stylesheets/base";
+@import "../src/stylesheets/layout";
+@import "../src/stylesheets/devise";
+@import "../src/stylesheets/merge_requests";
+@import "../src/stylesheets/projects";
+

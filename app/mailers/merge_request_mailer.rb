@@ -41,8 +41,8 @@ class MergeRequestMailer < ApplicationMailer
 
   def action(params)
     case params[:mr_action]
-    when 'Accept' then 'accepted'
-    when 'Abandon' then 'abandoned'
+    when 'accept' then 'accepted'
+    when 'abandon' then 'abandoned'
     else
       'commented on'
     end

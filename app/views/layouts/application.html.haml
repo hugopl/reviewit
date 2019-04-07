@@ -4,34 +4,37 @@
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
     %title= page_title
     = render 'application/favicon'
-    %link{ href: '/manifest.json', rel: 'manifest' }/
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
-    = stylesheet_pack_tag 'stylesheets'
+    %link{ href: '/packs/manifest.json', rel: 'manifest' }/
+    = stylesheet_pack_tag 'stylesheets', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = csrf_meta_tags
   %body{ 'data-who-am-i' => controller_name }
-    #header
-      .content
-        %span.path
-          = link_to 'Home', projects_path
-          - if under? 'projects'
-            \/ #{link_to @project.name, @project}
-          - if under_index_of? 'merge_requests'
-            \/ #{link_to 'Merge Requests', project_merge_requests_path(@project)}
-          - if under? 'merge_requests'
-            \/ #{link_to(@mr.id, project_merge_request_path(@project, @mr).tr('.', '/'))}
-        .user-nav
-          = current_user.name
-          = link_to faq_path, 'data-balloon' => 'FAQ', 'data-balloon-pos' => 'down' do
-            %i.fa.fa-question-circle
-          = link_to edit_user_registration_path, 'data-balloon' => 'Settings', 'data-balloon-pos' => 'down' do
-            %i.fa.fa-gears
-          = link_to destroy_user_session_path, method: :delete, 'data-balloon' => 'Sign out', 'data-balloon-pos' => 'down' do
-            %i.fa.fa-sign-out
-    .content
+    #header.ui.fixed.menu
+      .ui.container
+        .ui.two.column.grid{ style: 'width: 100%' }
+          .column
+            .ui.large.breadcrumb
+              = link_to 'Home', projects_path, html: { class: 'section' }
+              - if under? 'projects'
+                %i.right.angle.icon.divider
+                = link_to @project.name, @project, html: { class: 'section' }
+              - if under_index_of? 'merge_requests'
+                %i.right.angle.icon.divider
+                = link_to 'Merge Requests', project_merge_requests_path(@project), html: { class: 'section' }
+              - if under? 'merge_requests'
+                %i.right.angle.icon.divider
+                = link_to(@mr.id, project_merge_request_path(@project, @mr).tr('.', '/'), html: { class: 'section' })
+          .right.aligned.column
+            %span.username= current_user.name
+            = link_to faq_path, 'data-balloon' => 'FAQ', 'data-balloon-pos' => 'down' do
+              %i.question.circle.large.icon
+            = link_to edit_user_registration_path, 'data-balloon' => 'Settings', 'data-balloon-pos' => 'down' do
+              %i.user.large.icon
+            = link_to destroy_user_session_path, method: :delete, 'data-balloon' => 'Sign out', 'data-balloon-pos' => 'down' do
+              %i.sign.out.alternate.large.icon
+    .ui.main.container
       = render 'flash_messages'
       = yield
-    #error_tips
     %footer
       Review it! #{version} © 2014-#{Time.now.year}
       %a{ href: 'https://github.com/hugopl/reviewit/graphs/contributors' } All contributors

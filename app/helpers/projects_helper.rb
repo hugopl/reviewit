@@ -34,7 +34,8 @@ module ProjectsHelper
 
     {
       chart: {
-        type: 'spline'
+        type: 'spline',
+        backgroundColor: nil
       },
       title: {
         text: "Merge requests creation per day (last #{period} days)"
@@ -85,8 +86,7 @@ module ProjectsHelper
 
     {
       chart: {
-        plotBackgroundColor: nil,
-        plotBorderWidth: nil,
+        backgroundColor: nil,
         plotShadow: false,
         type: 'pie'
       },

@@ -1,13 +1,18 @@
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-  %div
-    = f.label :email
-    = f.email_field :email, autofocus: true
-  %div
-    = f.label :password
-    = f.password_field :password, autocomplete: 'off'
-  - if devise_mapping.rememberable?
-    %div
-      = f.check_box :remember_me
-      = f.label :remember_me
-  %div= f.submit 'Log in'
-= render 'devise/shared/links'
+- flash.each do |_key, value|
+  %p.error= value
+
+.ui.raised.segment.left.aligned
+  = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui large form' }) do |f|
+    .field
+      .ui.left.icon.input
+        %i.user.icon
+        = f.email_field :email, autofocus: true, placeholder: 'E-mail address'
+    .field
+      .ui.left.icon.input
+        %i.lock.icon
+        =f.password_field :password, placeholder: 'Password'
+    .field.left.aligned
+      .ui.checkbox
+        = f.check_box :remember_me
+        %label{ for: 'user_remember_me' } Remember me?
+    %button.ui.fluid.large.primary.submit.button Login

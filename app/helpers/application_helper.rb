@@ -1,6 +1,21 @@
 require 'digest/md5'
 
 module ApplicationHelper
+  def semantic_ui_form(name, *args, &block)
+    options = args.extract_options!
+    options[:html] = { class: 'ui form' }
+    args << options.merge(builder: SemanticUiFormBuilder)
+    form_for(name, *args, &block)
+  end
+
+  def semantic_ui_message_class(type)
+    case type
+    when 'notice' then 'info'
+    when 'success' then 'positive'
+    when 'danger' then 'negative'
+    end
+  end
+
   def under_index_of?(section)
     path_info.include? section
   end
@@ -10,8 +25,8 @@ module ApplicationHelper
     index and index < (path_info.count - 1) and path_info[index + 1] =~ /\A\d+\z/
   end
 
-  def gravatar_url(user, size = 40)
-    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(user.email)}?s=#{size}"
+  def gravatar_url(email, size = 40)
+    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}?s=#{size}"
   end
 
   def version

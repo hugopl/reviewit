@@ -1,20 +1,34 @@
-%h1= @mr.patch.subject
+%h1.ui.header= @mr.patch.subject
 
 - if target_branch_locked?
-  .alert.info
-    The target branch for this merge request was locked by <strong>#{@mr.branch_lock.who.name}</strong> at #{@mr.branch_lock.created_at.to_formatted_s(:short)}<br>
-    Reason: <em>“#{@mr.branch_lock.reason}”</em>
+  .ui.warning.icon.message
+    %i.lock.icon
+    .content
+      .header #{@mr.target_branch} is locked
+      <em>“#{@mr.branch_lock.reason}”</em> (#{@mr.branch_lock.who.name} at #{@mr.branch_lock.created_at.to_formatted_s(:short)})
 
 = render partial: 'summary'
 = render partial: 'history'
 = render partial: 'blockers'
 
+- if @patch.integration_log.present?
+  .ui.accordion
+    .title.active
+      %h3.ui.header
+        %i.dropdown.icon
+        Git Integration log
+    .content.active
+      .ui.inverted.segment
+        %pre= @patch.integration_log
+
+
 :javascript
   var isAuthor = #{@mr.author == current_user};
   var isOpenMR = #{!@mr.closed?};
 
-= form_tag(project_merge_request_path(@project, @mr, to: params[:to]), method: 'patch') do
+= form_tag(project_merge_request_path(@project, @mr, to: params[:to]), id: 'mr-form', method: 'patch') do
   = hidden_field_tag(:patch_id, @patch.id)
+  = hidden_field_tag(:mr_action, '')
 
   = render partial: 'diff', locals: { patch: @patch }
   - if interdiff_view?
@@ -22,14 +36,39 @@
   - else
     = render 'comments'
 
+  - if @mr.open? || @mr.needs_rebase?
+    - blockers = @mr.comments.blocker.count
+    - if blockers.positive?
+      .ui.message.info
+        You cannot accept this merge request because it still have <b><a href=#issue-list>#{pluralize(blockers, 'open issue')}</a></b>.
+
   .merge-bar
     - if @mr.open? || @mr.needs_rebase?
-      - blockers = @mr.comments.blocker.count
-      - if blockers.positive?
-        .alert.info
-          You cannot accept this merge request because it still have <b><a href=#issuelist>#{pluralize(blockers, 'open issue')}</a></b>.
       - if @mr.author != current_user && !target_branch_locked? && blockers.zero?
-        = submit_tag 'Accept', name: 'mr_action',
-                               data: { confirm: "Are you sure about accept this patch into #{@mr.target_branch}?" }
-      = submit_tag 'Abandon', class: 'reject', name: 'mr_action', data: { confirm: 'Are you sure?' }
-    %input.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }/
+        %button#accept.ui.button{ type: 'button'} Accept
+      %button#abandon.ui.red.button{ type: 'button'} Abandon
+    %input.ui.primary.button.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }
+
+  #accept-modal.ui.basic.modal
+    .ui.icon.header
+      %i.flag.checkered.icon
+      Merge this on <span class="js-tada">#{@mr.target_branch}</span>?
+    .actions
+      .ui.green.cancel.inverted.button
+        %i.check.icon
+        Not yet
+      #accept-model-button.ui.red.basic.ok.inverted.button
+        %i.remove.icon
+        Yes, merge it on #{@mr.target_branch}!
+
+  #abandon-modal.ui.basic.modal
+    .ui.icon.header
+      %i.trash.alternate.icon
+      Abandon merge request!?
+    .actions
+      .ui.green.cancel.inverted.button
+        %i.remove.icon
+        No
+      .ui.red.basic.inverted.ok.button
+        %i.checkmark.icon
+        Yes, abandon it!

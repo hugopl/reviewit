@@ -1,9 +1,16 @@
+- reply ||= false
 .comment{ id: "comment-#{comment.id}" }
-  = link_to('<i class="fa fa-link"></i>'.html_safe,
-            project_merge_request_path(@project, @mr, to: @to, anchor: "comment-#{comment.id}"))
-  = image_tag gravatar_url(comment.user), class: 'avatar'
-  .comment-header
-    = comment.user.name
-    %span
-      wrote #{time_ago_in_words(comment.created_at)} ago
-  .comment-body.markdown= emojify(comment.content)
+  %a.avatar
+    %img{ src: gravatar_url(comment.user.email) }
+  .content
+    %a.author= comment.user.name
+    .metadata #{time_ago_in_words(comment.created_at)} ago
+    .text.markdown= emojify(comment.content)
+    .actions
+      - if reply
+        %a.js-add-comment
+          %i.reply.icon
+          Reply
+      = link_to(project_merge_request_path(@project, @mr, to: @to, anchor: "comment-#{comment.id}")) do
+        %i.linkify.icon
+        Permalink

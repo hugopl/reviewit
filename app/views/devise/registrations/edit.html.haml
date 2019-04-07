@@ -1,35 +1,16 @@
-%h1
-  Edit #{resource_name.to_s.humanize}
-= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-  %div
-    = f.label(:name, class: 'required')
-    %br/
-    = f.text_field(:name, autofocus: true, placeholder: 'This will be used in your commits')
-  %div
-    = f.label(:email, class: 'required')
-    %br/
-    = f.email_field(:email, autofocus: true)
-  - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-    %div
-      Currently waiting confirmation for: #{resource.unconfirmed_email}
-  %div
-    = f.label(:timezone)
-    %br/
-    - default_timezone = (params[:user] || {})[:time_zone] || @user.time_zone
-    = time_zone_select(resource_name, :time_zone, TZInfo::Timezone.all, { default: default_timezone,
-                                                                          model: TZInfo::Timezone }, class: 'select2select')
-  %div
-    = f.label(:password)
-    %i (leave blank if you don't want to change it)
-    %br/
-    = f.password_field :password, autocomplete: 'off'
-  %div
-    = f.label(:password_confirmation)
-    %br/
-    = f.password_field :password_confirmation, autocomplete: 'off'
-  %div
-    = f.label(:current_password)
-    %i (we need your current password to confirm your changes)
-    %br/
-    = f.password_field(:current_password, autocomplete: 'off')
-  %div= f.submit 'Update'
+%h1 Your Profile
+
+= semantic_ui_form(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+  .two.fields
+    = f.text :name, placeholder: 'This will be used in your commits', info: "leave blank if you don't want to change it"
+    = f.email :email, label: 'E-mail', placeholder: 'This will be used for sign in'
+  - default_timezone = (params[:user] || {})[:time_zone] || @user.time_zone
+  .fields
+    = f.timezone :timezone, value: default_timezone
+  .two.fields
+    = f.password :password, placeholder: 'Your password'
+    = f.password :password_confirmation, placeholder: 'Password confirmation'
+  .fields
+    = f.password :current_password, placeholder: 'Current password',
+                                    info: 'we need your current password to confirm your changes',
+                                    action_button: 'Update'

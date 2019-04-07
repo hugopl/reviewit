@@ -1,0 +1,132 @@
+.code-review-header {
+  width: 100% !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  text-align: center;
+  font-weight: bold;
+  span {
+    font-family: monospace;
+  }
+
+  .js-toggle-diff {
+    cursor: pointer;
+  }
+}
+
+.js-trigger-ci {
+  cursor: pointer;
+}
+
+.comment-controls {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  overflow: auto;
+}
+
+.editor-box {
+  margin-top: 5px;
+}
+
+span.js-tada {
+  display: inline-block;
+}
+
+.merge-bar {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: right;
+}
+
+table.code-review {
+  border-top: none !important;
+  margin-top: 0px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+/*  overflow-x: scroll;*/
+
+  .del {
+    background: #FFF6F6;
+    color: #9F3A38;
+    .line {
+      background: #ffe7e7;
+      color: #943634;
+      border-right-color: #e7baba;
+    }
+  }
+
+  .add {
+    color: #2C662D;
+    background-color: rgb(252, 255, 245);
+    box-shadow: 0px 0px 0px #A3C293 inset;
+    .line {
+      background: #f7ffe6;
+      color: #275b28;
+      border-right-color: #b9e7b9;
+    }
+  }
+
+  .info {
+    color: #ccc;
+    background-color: #fafafa;
+  }
+
+  td {
+    border-top: none !important;
+    padding: 0px 6px 0px 6px !important;
+  }
+
+  tr.comments td {
+    border-top: 1px solid rgba(34, 36, 38, 0.1) !important;
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1) !important;
+  }
+
+  td.add-comment {
+    border-top: 1px solid rgba(34, 36, 38, 0.1) !important;
+    border-bottom: 1px solid rgba(34, 36, 38, 0.1) !important;
+  }
+
+  tr.comments + tr > td.add-comment {
+    border-top: none !important;
+  }
+
+  .line {
+    font-family: monospace;
+    background-color: whitesmoke;
+    border-right: 1px solid #ccc;
+    text-align: right;
+  }
+
+  .code {
+    font-family: monospace;
+  }
+
+  // Add comment button
+  td > .js-add-comment {
+    position: relative;
+    float: left;
+    width: 20px;
+    height: 20px;
+    color: #276f86;
+    visibility: hidden;
+    margin-left: -16px;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      transform: scale(1.5, 1.5);
+    }
+  }
+
+  tr[data-location]:hover {
+    > td > .js-add-comment {
+     visibility: visible;
+    }
+  }
+
+  tr[class=info]:hover {
+    > td > .js-add-comment {
+      visibility: hidden;
+    }
+  }
+}

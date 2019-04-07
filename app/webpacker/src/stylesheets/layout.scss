@@ -1,0 +1,44 @@
+.devise-layout {
+  .column {
+    max-width: 450px;
+  }
+}
+
+#header {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  .username {
+    font-weight: bold;
+    color: #A0A0A0;
+    padding-right: 10px;
+  }
+}
+
+.main.container {
+  margin-top: 60px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+body > .ui.main.container {
+  flex: 1;
+}
+
+#header, footer {
+  flex: none;
+}
+
+footer {
+  color: #ccc;
+  padding: 20px 0 10px 0;
+  font-size: 12px;
+  font-style: italic;
+  text-align: center;
+}

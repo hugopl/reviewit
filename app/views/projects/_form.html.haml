@@ -1,47 +1,41 @@
-= form_for @project, url: { action: action } do |f|
-  %label.required Name
-  %br/
-  = f.text_field :name, placeholder: 'The project name'
+= semantic_ui_form(@project, url: { action: action }) do |f|
 
-  %label Description
-  %br/
-  = f.text_field :description, placeholder: 'Be succinct'
+  - if action == 'update'
+    %button#destroy-project-btn.ui.right.floated.red.button{ type: 'button', 'data-project-id' => @project.id } Destroy
 
-  %label.required Git repository
-  %br/
-  = f.text_field :repository, placeholder: 'The project git repository URL'
+  = f.text :name, placeholder: 'The project name'
+  = f.text :description, placeholder: 'Project description, be succinct'
+  .two.fields
+    = f.text :repository, placeholder: 'The project git repository URL'
+    = f.text :linter, placeholder: 'Command run by CLI before create/update a MR', info: 'a script in the project directory that will run before any MR creation or update'
 
-  %label Linter
-  %i (a script in the project directory that will run before any MR creation or update)
-  %br/
-  = f.text_field :linter, placeholder: 'Command run by CLI before create/update a MR'
+  .field
+    %label Project users
+    .ui.small.multiple.search.selection.dropdown
+      = f.hidden_field('user_ids', value: @project.user_ids.join(','))
+      %i.dropdown.icon
+      .default.text Select users for this project
+      .menu
+        - User.pluck(:id, :name, :email).each do |id, name, email|
+          .item{ 'data-value' => id }
+            %img.avatar{src: gravatar_url(email)}
+            = name
 
-  %label.required Users
-  %br/
-  %ul#project_users{ 'data-myself' => current_user.name.to_s, 'data-users' => User.all_names.join('|').to_s }
-    - @project.users.each do |user|
-      %li= user.name
+  %h4.ui.horizontal.divider.header
+    %i.share.alternate.icon
+    Jira integration
 
-  %h1 Jira integration
+  .two.fields
+    = f.text :jira_username
+    = f.password :jira_password, info: 'Stored in plain text!! So make sure this user can only comment in Jira'
+  .two.fields
+    = f.text :jira_ticket_regexp, info: 'This must capture the Ticket id'
+    = f.text :jira_api_url, label: 'Jira API v2 URL', info: 'e.g. https://myjira.com/rest/api/2'
 
-  %label Jira user
-  = f.text_field :jira_username
+  %h4.ui.horizontal.divider.header
+    %i.gitlab.icon
+    GitLab CI integration
 
-  %label Jira password
-  %i (Stored in plain text!! So make sure this user can only comment in Jira)
-  = f.password_field :jira_password
+  = f.text :gitlab_ci_project_url, label: 'Gitlab project URL', info: 'https://my_gitlab.org/my_user/my_project'
 
-  %label Jira Ticket Regexp
-  %i (This must capture the Ticket id)
-  = f.text_field :jira_ticket_regexp
-
-  %label Jira API v2 URL
-  %i (e.g. https://myjira.com/rest/api/2)
-  = f.text_field :jira_api_url
-
-  %h1 GitLab CI integration
-
-  %label Gitlab project URL
-  %i (e.g. https://my_gitlab.org/my_user/my_project)
-  = f.text_field :gitlab_ci_project_url
-  = f.submit action.humanize, class: 'button'
+  %button.ui.primary.submit.button Create

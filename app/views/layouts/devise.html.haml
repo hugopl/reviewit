@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
+    %title Review it!
+    %link{ href: '/packs/manifest.json', rel: 'manifest' }/
+    = render 'application/favicon'
+    = stylesheet_pack_tag 'stylesheets', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = csrf_meta_tags
+  %body.devise-layout
+    .ui.middle.aligned.center.aligned.grid
+      .column
+        #logo= image_tag(asset_pack_path('media/images/logo.png'))
+        %h1 Review it!
+        = yield
+        = render 'devise/shared/links'

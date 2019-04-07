@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   around_action :time_zone, if: :current_user
 
   layout proc { |_controller|
-    user_signed_in? ? 'application' : 'devise/sessions'
+    user_signed_in? ? 'application' : 'devise'
   }
 
   def project

@@ -1,19 +1,34 @@
-%h1= @project.name
+%h1.ui.header= @project.name
 
 %p= link_to merge_request_count(@project), project_merge_requests_path(@project)
-%p To setup review it command line interface on your project working copy, do:
-%code
-  $ curl -H "X-Token: #{current_user.api_token}" -k -f #{full_setup_url} | ruby
+%p To setup review it command line interface on your project, copy and run the following command:
+
+.ui.fluid.action.input
+  %input{ readonly: true, value: "curl -H \"X-Token: #{current_user.api_token}\" -k -f #{full_setup_url} | ruby" }
+  %button#copy-cli-install.ui.labeled.icon.button
+    %i.copy.icon
+    Copy
+
 %p
-  Then type <code>review --help</code>.
+%p Then type <code>review --help</code>.
 
-%h2 Team
+%h4.ui.horizontal.divider.header
+  %i.users.icon
+  Team
 
-%p= @project.users.pluck(:name).to_sentence
-%p
-  Didn't like it!? So #{link_to 'edit your project', edit_project_path(@project)}.
 
-%h2 Statistics
+.ui.tiny.horizontal.list
+  - @project.users.order(name: :asc).pluck(:name, :email).each do |name, email|
+    .item
+      %img.ui.avatar.image{ src: gravatar_url(email) }
+      .content
+        .header= name
+
+%p #{link_to 'Edit your project', edit_project_path(@project)} to add/remove users to the project.
+
+%h4.ui.horizontal.divider.header
+  %i.chart.line.icon
+  Statistics
 
 #project-reviews-chart
 #project-authors-chart

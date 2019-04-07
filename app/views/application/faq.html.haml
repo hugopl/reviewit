@@ -1,6 +1,6 @@
-%h1 Frequent Asked Questions
+%h1.ui.header Frequent Asked Questions
 
-%h2 How do I create a merge request?
+%h3 How do I create a merge request?
 %p
   The only way to create a merge request is using the command line interface (CLI),
   after get it installed and configured into your project type:
@@ -10,16 +10,16 @@
   This will create a merge request with the last commit on the current branch (git HEAD),
   after accepted the patch will be merged into the branch <code>TARGET_BRANCH</code>.
 
-%h2 How do I install the CLI?
+%h3 How do I install the CLI?
 %p
   Go to the #{link_to 'initial page', projects_path}, click on the desired project.
   This will send you to the merge request list, now click on the project name in the bar on top of the page
   and follow the instructions.
 
-%h2 How do I update a merge request?
+%h3 How do I update a merge request?
 %p
   Ammend your changes to your commit (<code>git commit --amend</code>) then type <code>review push</code>.
 
-%h2 How do I change the merge request target branch?
+%h3 How do I change the merge request target branch?
 %p
   With the commit related to the merge request on git HEAD type: <code>review push NEW_TARGET_BRANCH</code>.

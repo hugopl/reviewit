@@ -9,15 +9,13 @@ class ProjectsController < ApplicationController
   end
 
   def create
+    preprocess_user_ids
     @project = Project.new(project_params)
-    set_project_users
     if @project.save
       flash[:success] = 'The project was successfully created.'
 
       redirect_to @project
     else
-      flash.now[:danger] = 'Please, review the form fields below before try again.'
-
       render 'new'
     end
   end
@@ -35,8 +33,6 @@ class ProjectsController < ApplicationController
 
       redirect_to @project
     else
-      flash.now[:danger] = 'Please, review the form fields below before try again.'
-
       render :edit
     end
   end
@@ -50,17 +46,16 @@ class ProjectsController < ApplicationController
 
   private
 
-  def set_project_users
-    names = params[:project][:users].is_a?(Array) ? params[:project][:users] : []
-    users = User.where(name: names) << current_user
-    users.uniq!
-    @project.users = users
+  def preprocess_user_ids
+    user_ids = project_params[:user_ids].split(',').map(&:to_i) << current_user.id
+    user_ids.uniq!
+    project_params[:user_ids] = user_ids
   end
 
   def project_params
-    params.require(:project).permit(:name, :repository, :description, :linter,
-                                    :gitlab_ci_project_url,
-                                    :jira_username, :jira_password, :jira_ticket_regexp,
-                                    :jira_api_url)
+    @project_params ||= params.require(:project).permit(:name, :repository, :description, :linter,
+                                                        :gitlab_ci_project_url, :user_ids,
+                                                        :jira_username, :jira_password, :jira_ticket_regexp,
+                                                        :jira_api_url)
   end
 end

@@ -1,11 +1,16 @@
-%h1 Events History
+%h1.ui.header Events History
 %p
   Merge request created at #{@mr.created_at.to_formatted_s :long}
-  by #{@mr.author.name},
+  by <strong>#{@mr.author.name}</strong>,
   and since then#{@mr.history_events.empty? ? ' nothing happened.' : ':'}
-%ul
-  - @mr.history_events.each do |event|
-    %li
-      = event.who.name
-      = event.what
-      at #{event.when.to_formatted_s :short}
+
+.ui.feed
+  - @mr.history_events.includes(:who).each do |event|
+    .event
+      .label
+        %img{ src: gravatar_url(event.who.email) }
+      .content
+        .date= event.when.to_formatted_s :short
+        .summary
+          = event.who.name
+          = event.what

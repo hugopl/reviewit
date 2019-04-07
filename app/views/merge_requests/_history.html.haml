@@ -1,34 +1,50 @@
 = form_tag(project_merge_request_path(@project, @mr), method: 'get') do
-  %h2.toggle-mini.show Patch history
-  %div
-    %table.mini
-      %tr
-        %th Base
-        %th Created at
-        %th Lint
-        %th CI
-        %th= radio_button_tag('from', 0, @from.zero?)
-        %th
-      - patches = @mr.patches.to_a
-      - last_i = patches.size
-      - patches.each_with_index do |patch, i|
-      - i += 1
-        %tr
-          %td
-            = patch_name(patch, i)
-            - if @project.gitlab_ci? && patch.ok_to_retry_ci?
-              %input.trigger-ci{ type: 'button', value: 'Trigger CI' }
-          %td= patch.created_at.to_formatted_s(:short)
-          %td= patch_linter_status(patch)
-          %td= patch_ci_icon(patch)
-          %td= radio_button_tag('from', i, @from == i, disabled: (i >= @to)) if i != last_i
-          %td= radio_button_tag('to', i, @to == i, disabled: (i <= @from))
-      %tr
-        %td.buttons{ colspan: 6 }
-          %input#patch-history-submit{ type: 'button', value: 'Show diff' }
-
-
-- unless @patch.integration_log.blank?
-  %section.integrationlog
-    %h2 Integration log
-    %code= @patch.integration_log
+  .ui.accordion
+    .title
+      %h3.ui.header
+        %i.dropdown.icon
+        Patch history
+    .content
+      .patch-history
+        %table.ui.very.basic.small.table
+          %thead
+            %tr
+              %th Base
+              %th Created at
+              %th Lint
+              %th CI
+              %th
+                .ui.radio.checkbox
+                  = radio_button_tag('from', 0, @from.zero?)
+                  %label
+              %th
+          %tbody
+            - patches = @mr.patches.to_a
+            - last_i = patches.size
+            - patches.each_with_index do |patch, i|
+            - i += 1
+              %tr
+                %td
+                  = patch_name(patch, i)
+                  - if @project.gitlab_ci? && patch.ok_to_retry_ci?
+                    ―
+                    %a.js-trigger-ci Trigger CI
+                %td.collapsing= patch.created_at.to_formatted_s(:short)
+                %td.collapsing
+                  %i.ui.icon{ class: patch_linter_status(patch) }
+                %td.collapsing
+                  %i.icon{ class: ci_icon(patch) }
+                %td.collapsing
+                  - if i != last_i
+                    .ui.radio.checkbox
+                      = radio_button_tag('from', i, @from == i, disabled: (i >= @to))
+                      %label
+                %td.collapsing
+                  .ui.radio.checkbox
+                    = radio_button_tag('to', i, @to == i, disabled: (i <= @from))
+                    %label
+          %tfoot
+            %tr
+              %th{ colspan: 6 }
+                = link_to('See all history events', history_project_merge_request_path)
+                %button.ui.small.primary.button.right.floated#patch-history-submit Show diff

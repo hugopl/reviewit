@@ -18,19 +18,14 @@
 import Rails from 'rails-ujs'
 import Turbolinks from 'turbolinks'
 
-import Highcharts from 'highcharts'
-window.Highcharts = Highcharts
-import SimpleMDE from 'simplemde'
-window.SimpleMDE = SimpleMDE
-window.marked = require('marked')
-
-import '../src/application.js'
-import merge_requests from '../src/merge_requests.js'
+import '../src/javascript/router.js'
+import merge_requests from '../src/javascript/merge_requests.js'
 window.merge_requests = merge_requests
-import projects from '../src/projects.js'
+import projects from '../src/javascript/projects.js'
 window.projects = projects
+import $ from 'jquery'
+
+window.$ = $
 
 Rails.start();
 Turbolinks.start()
-
-//import '../src/serviceworker-companion.js'

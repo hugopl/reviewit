@@ -1,9 +1,4 @@
-%h2 Forgot your password?
-= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-  = devise_error_messages!
-  %div
-    = f.label :email
-    %br/
-    = f.email_field :email, autofocus: true
-  %div= f.submit 'Reset password!'
-= render 'devise/shared/links'
+.ui.raised.segment.left.aligned
+  = semantic_ui_form(resource, as: resource_name, url: password_path(resource_name)) do |f|
+    = f.email :name, autofocus: true, placeholder: 'Your registered e-mail address', label: 'We can send a new one to your e-mail'
+    %button.ui.fluid.large.primary.submit.button Reset password!

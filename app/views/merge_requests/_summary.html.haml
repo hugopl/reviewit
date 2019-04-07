@@ -1,17 +1,24 @@
-.mr-summary
-  Status:
-  %span{ class: @mr.status }= @mr.status.humanize
-  %br/
-  Author:
-  %span= @mr.author.name
-  %br/
-  Branch:
-  %span= @mr.target_branch
-  %br/
-  = link_to 'History events', history_project_merge_request_path
-  - if @mr.accepted?
-    %br/
-    = @mr.status.humanize
-    by: #{@mr.reviewer.name}
+.ui.top.attached.segment
+  .markdown= @patch.commit_message
+.ui.bottom.attached.warning.message= author_sentence(@mr)
 
-.message.markdown= @patch.commit_message
+.ui.five.statistics
+  .statistic
+    .value
+      %i.ui.icon{class: ci_icon(@mr.patch)}
+    .label CI status
+  .statistic
+    .value
+      %i.ui.icon{class: patch_linter_status(@mr.patch)}
+    .label Linter
+  .statistic
+    .value= @mr.target_branch
+    .label Target
+  .statistic
+    .value
+      %img.ui.inline.circular.image{ src: gravatar_url(@mr.author.email) }
+    .label= @mr.author.name
+  .statistic
+    .value
+      %i.ui.icon{class: status_icon(@mr)}
+    .label= @mr.status

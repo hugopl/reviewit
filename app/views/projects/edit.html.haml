@@ -1,7 +1,17 @@
 %h1 Edit Project
 
-= link_to 'Destroy project', @project, method: :delete,
-                                       data: { confirm: 'Are you sure?' },
-                                       id: 'project_destroy',
-                                       class: 'reject button'
 = render partial: 'form', locals: { action: 'update' }
+
+.ui.basic.modal
+  .ui.icon.header
+    %i.trash.alternate.icon
+    Destroy Project!?
+  .content
+    %p By destroying a project it will be lost <strong>forever</strong>, are you sure?
+  .actions
+    .ui.green.cancel.inverted.button
+      %i.remove.icon
+      No
+    .ui.red.basic.ok.inverted.button
+      %i.checkmark.icon
+      Yes, destroy it!
