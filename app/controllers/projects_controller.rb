@@ -26,12 +26,12 @@ class ProjectsController < ApplicationController
 
   def update
     params[:project].delete(:jira_password) if (params[:project] || {})[:jira_password].blank?
-    project.update_attributes(project_params)
-    set_project_users
-    if @project.save
+
+    if project.update_attributes(project_params)
       flash[:success] = 'The project was successfully updated.'
 
-      redirect_to @project
+      path = project.user_ids.include?(current_user.id) ? project : root_path
+      redirect_to(path)
     else
       render :edit
     end
@@ -53,9 +53,11 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    @project_params ||= params.require(:project).permit(:name, :repository, :description, :linter,
-                                                        :gitlab_ci_project_url, :user_ids,
-                                                        :jira_username, :jira_password, :jira_ticket_regexp,
-                                                        :jira_api_url)
+    data = params.require(:project).permit(:name, :repository, :description, :linter,
+                                           :gitlab_ci_project_url, :user_ids,
+                                           :jira_username, :jira_password, :jira_ticket_regexp,
+                                           :jira_api_url)
+    data[:user_ids] = data[:user_ids]&.split(',')&.map(&:to_i)&.compact
+    data
   end
 end
