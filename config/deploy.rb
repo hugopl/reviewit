@@ -4,6 +4,7 @@ require 'mina/git'
 require 'mina/rvm'
 require 'mina_sidekiq/tasks'
 require 'mina/unicorn'
+require 'mina/webpacker'
 
 domain = ENV['DOMAIN']
 deploy_to = ENV['DEPLOY_TO'] || '/home/reviewit'
@@ -37,6 +38,7 @@ set :sidekiq_log, 'log/sidekiq.log'
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 set :shared_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/reviewit.yml', 'config/unicorn.rb')
+set :webpack_dirs, ['app/webpacker/']
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -62,7 +64,7 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    invoke :'rails:assets_precompile'
+    invoke :'webpacker:compile'
     invoke :'deploy:cleanup'
 
     on :launch do
