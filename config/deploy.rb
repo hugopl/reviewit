@@ -4,7 +4,6 @@ require 'mina/git'
 require 'mina/rvm'
 require 'mina_sidekiq/tasks'
 require 'mina/unicorn'
-require 'mina/webpacker'
 
 domain = ENV['DOMAIN']
 deploy_to = ENV['DEPLOY_TO'] || '/home/reviewit'
@@ -64,7 +63,8 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    invoke :'webpacker:compile'
+    command 'yarn'
+    command './bin/webpack'
     invoke :'deploy:cleanup'
 
     on :launch do

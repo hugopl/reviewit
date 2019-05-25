@@ -142,8 +142,6 @@ GEM
       mina (>= 1.0.2)
     mina-unicorn (2.0.0)
       mina (~> 1.0)
-    mina-webpacker (0.2.0)
-      mina (~> 1.0)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -304,7 +302,6 @@ DEPENDENCIES
   mina
   mina-sidekiq
   mina-unicorn
-  mina-webpacker
   minitest-reporters
   pg
   rails (~> 5.2.2)

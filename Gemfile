@@ -27,7 +27,6 @@ group :development, :test do
   gem 'mina', require: false
   gem 'mina-sidekiq', require: false
   gem 'mina-unicorn', require: false
-  gem 'mina-webpacker', require: false
   gem 'rubocop', require: false
 end
 
