@@ -101,7 +101,7 @@ module MergeRequestsHelper
 
   def mr_label(mr)
     if mr.project.gitlab_ci?
-      "<i class=\"#{ci_icon(mr.patch)} icon\"></i> #{mr.target_branch}".html_safe
+      "<i class=\"#{ci_icon_css(mr.patch)} icon\"></i> #{mr.target_branch}".html_safe
     else
       mr.target_branch
     end
