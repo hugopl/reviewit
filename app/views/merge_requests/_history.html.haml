@@ -32,8 +32,7 @@
                 %td.collapsing= patch.created_at.to_formatted_s(:short)
                 %td.collapsing
                   %i.ui.icon{ class: patch_linter_status(patch) }
-                %td.collapsing
-                  %i.icon{ class: ci_icon(patch) }
+                %td.collapsing= ci_icon(patch)
                 %td.collapsing
                   - if i != last_i
                     .ui.radio.checkbox

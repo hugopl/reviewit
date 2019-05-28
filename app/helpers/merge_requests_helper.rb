@@ -116,6 +116,18 @@ module MergeRequestsHelper
   end
 
   def ci_icon(patch)
+    return unless patch.project.gitlab_ci?
+
+    icon = %(<i class="#{ci_icon_css(patch)} icon"></i>).html_safe
+    if patch.unknown?
+      icon
+    else
+      content_tag(:a, icon, target: "patch-#{patch.gitlab_ci_hash}",
+                            href: "#{patch.project.gitlab_ci_project_url}/builds/#{patch.gitlab_ci_build}")
+    end
+  end
+
+  def ci_icon_css(patch)
     case patch.gitlab_ci_status
     when 'failed' then 'red remove'
     when 'success' then 'green check'
