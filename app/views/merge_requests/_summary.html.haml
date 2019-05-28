@@ -5,7 +5,11 @@
 #summary-bar.ui.five.statistics
   .statistic
     .value= ci_icon(@mr.patch)
-    .label CI status
+    .label
+      - if @mr.patch.ok_to_retry_ci?
+        %a.ui.tiny.button.js-trigger-ci Trigger CI
+      - else
+        CI Status
   .statistic
     .value
       %i.ui.icon{class: patch_linter_status(@mr.patch)}
