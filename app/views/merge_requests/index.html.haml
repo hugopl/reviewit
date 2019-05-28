@@ -7,7 +7,7 @@
   .ui.icon.warning.message
     %i.lock.icon
     .content
-      .header #{"Branche".pluralize(locked_branches.size)} locked
+      .header #{'Branch'.pluralize(locked_branches.size)} locked
       %ul.list
         - locked_branches.each do |lock|
           %li <strong>#{lock.branch}</strong> - <em>“#{lock.reason}”</em> (#{lock.who.name} at #{lock.created_at.to_formatted_s(:short)})
