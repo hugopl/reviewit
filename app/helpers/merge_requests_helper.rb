@@ -47,23 +47,23 @@ module MergeRequestsHelper
   end
 
   def diff_file_status(file)
-    flags = {}
+    labels = {}
     if file.new?
-      flags['green'] = 'new'
-      flags['chmod-changed'] = "chmod #{file.new_chmod}"
+      labels['new'] = 'green'
+      labels["chmod #{file.new_chmod}"] = 'grey'
     elsif file.deleted?
-      flags['red'] = 'deleted'
+      labels['deleted'] = 'red js-deleted-file'
     elsif file.renamed?
-      flags['blue'] = "renamed #{file.similarity}"
+      labels["renamed #{file.similarity}"] = 'blue'
     elsif file.chmod_changed?
-      flags['teal'] = "chmod change: #{file.old_chmod} → #{file.new_chmod}"
+      labels["chmod change: #{file.old_chmod} → #{file.new_chmod}"] = 'teal'
     end
 
     # interdiff tags
-    flags['grey'] = file.interdiff_tag if file.interdiff_tag
+    labels[file.interdiff_tag] = 'grey' if file.interdiff_tag
 
-    flags.map do |flag, label|
-      content_tag(:div, label, class: "ui #{flag} label tiny js-deleted-file")
+    labels.map do |label, css|
+      content_tag(:div, label, class: "ui #{css} label tiny")
     end.join.html_safe
   end
 
