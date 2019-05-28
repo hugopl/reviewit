@@ -81,12 +81,11 @@ module MergeRequestsHelper
     if issue.patch_id != @mr.patch.id
       version = @mr.patch_ids.index(issue.patch_id) + 1
       options[:to] = version
-      extra = "On #{version.ordinalize} version"
+      extra = " ― On #{version.ordinalize} version"
     end
 
-    output = link_to(content, project_merge_request_path(@project, @mr, options))
-    output += content_tag(:span, extra, class: 'flag patch-warning') unless extra.blank?
-    output
+    link = link_to(content, project_merge_request_path(@project, @mr, options))
+    "#{link}#{extra}".html_safe
   end
 
   def code_comment_icon(comments)
