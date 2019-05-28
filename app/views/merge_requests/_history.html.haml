@@ -1,11 +1,11 @@
-= form_tag(project_merge_request_path(@project, @mr), method: 'get') do
-  .ui.accordion
-    .title
-      %h3.ui.header
-        %i.dropdown.icon
-        Patch history
-    .content
-      .patch-history
+.ui.accordion
+  .title
+    %h3.ui.header
+      %i.dropdown.icon
+      Patch history
+  .content
+    .patch-history
+      = form_tag(project_merge_request_path(@project, @mr), method: 'get') do
         %table.ui.very.basic.small.table
           %thead
             %tr
