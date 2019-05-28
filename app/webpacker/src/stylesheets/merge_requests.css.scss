@@ -46,21 +46,18 @@ table.code-review {
 
   .del {
     background: #FFF6F6;
-    color: #9F3A38;
+    background-color: #fdd;
     .line {
-      background: #ffe7e7;
-      color: #943634;
+      background-color: #fcc;
       border-right-color: #e7baba;
     }
   }
 
   .add {
-    color: #2C662D;
     background-color: rgb(252, 255, 245);
-    box-shadow: 0px 0px 0px #A3C293 inset;
+    background-color: #e6ffed;
     .line {
-      background: #f7ffe6;
-      color: #275b28;
+      background-color: #cdffd8;
       border-right-color: #b9e7b9;
     }
   }
