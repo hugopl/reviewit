@@ -101,4 +101,4 @@ Sometimes you aren't a believer and want to try the patch yourself, this is easy
 ### Clean up dead/reviewed branches
 
 Do `review cleanup`, it will issue a `git remote prune <your_remote>` and remove all local branches for merge requests
-already accepted or abandonned.
+already accepted or abandoned.
