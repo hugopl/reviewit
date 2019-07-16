@@ -10,7 +10,7 @@ class MergeRequestsController < ApplicationController
 
     case params[:mr_action]
     when 'accept' then accept
-    when 'bandon' then abandon
+    when 'abandon' then abandon
     else
       redirect_to(redir_params)
     end

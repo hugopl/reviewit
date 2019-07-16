@@ -47,7 +47,7 @@
       - if @mr.author != current_user && !target_branch_locked? && blockers.zero?
         %button#accept.ui.button{ type: 'button'} Accept
       %button#abandon.ui.red.button{ type: 'button'} Abandon
-    %input.ui.primary.button.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }
+    %input#mr_action.ui.primary.button.push-comments{ name: 'mr_action', type: 'submit', value: 'Just push comments' }
 
   #accept-modal.ui.basic.modal
     .ui.icon.header
