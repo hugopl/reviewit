@@ -15,7 +15,7 @@
 /config/reviewit.yml
 coverage/*
 *.rubyproject
-*.rubyproject.user
+*.rubyproject.user*
 /public/assets
 /public/*.gem
 /.ruby-version
