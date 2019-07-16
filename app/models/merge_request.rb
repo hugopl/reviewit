@@ -97,7 +97,10 @@ class MergeRequest < ApplicationRecord
   end
 
   def abandon!(reviewer)
+    raise "Can't abandon an accepted merge request." if accepted?
+
     add_history_event reviewer, 'abandoned the merge request'
+    self.reviewer = reviewer
     self.status = :abandoned
     save!
     RemoveCIBranchesWorker.perform_async(id) if project.gitlab_ci?
@@ -261,7 +264,7 @@ class MergeRequest < ApplicationRecord
   end
 
   def author_cant_be_reviewer
-    errors.add(:reviewer, 'can\'t be the author.') if author == reviewer
+    errors.add(:reviewer, 'can\'t be the author.') if !abandoned? && author == reviewer
   end
 
   def notify_jira
