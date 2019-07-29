@@ -11,7 +11,7 @@ module Reviewit
       thread.join
 
       puts 'Looking for outdated local branches...'
-      outdated_branches = local_branches_ids - @active_mrs
+      outdated_branches = (local_branches_ids - @active_mrs).uniq
       outdated_branches.each do |mr_id|
         remove_branch(branch_name(mr_id))
       end
