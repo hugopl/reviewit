@@ -36,6 +36,18 @@ module MergeRequestsHelper
     end
   end
 
+  def large_target_branch?
+    @mr.target_branch.size > 8
+  end
+
+  def target_branch_icon
+    large_target_branch? ? '<i class="icon code branch grey"></i>'.html_safe : @mr.target_branch
+  end
+
+  def target_branch_label
+    large_target_branch? ? @mr.target_branch : 'Target'
+  end
+
   def should_show_patch_comment_divisor(patch, main_patch)
     return patch.comments.general.any? if patch == main_patch
 

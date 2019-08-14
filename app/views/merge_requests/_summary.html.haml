@@ -15,8 +15,8 @@
       %i.ui.icon{class: patch_linter_status(@mr.patch)}
     .label Linter
   .statistic
-    .value= @mr.target_branch
-    .label Target
+    .value= target_branch_icon
+    .label= target_branch_label
   .statistic
     .value
       %img.ui.inline.circular.image{ src: gravatar_url(@mr.author.email) }
