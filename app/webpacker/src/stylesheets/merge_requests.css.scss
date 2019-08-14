@@ -136,3 +136,26 @@ table.code-review {
     }
   }
 }
+
+.text.markdown pre, .editor-preview pre {
+  background-color: white;
+  border: 1px dashed lightgrey;
+  border-radius: 4px;
+  overflow-x: auto;
+  padding: 4px;
+}
+
+.text.markdown code, .editor-preview code {
+  background-color: white;
+  border: 1px dashed lightgrey;
+  border-radius: 4px;
+}
+
+.text.markdown pre code, .editor-preview pre code {
+  border: none;
+  background: none;
+}
+
+#mr-form .ui.comments {
+  max-width: none;
+}
