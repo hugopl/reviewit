@@ -1,5 +1,5 @@
 class Patch < ApplicationRecord
-  belongs_to :merge_request
+  belongs_to :merge_request, touch: true
 
   has_many :comments, dependent: :destroy
 

@@ -22,18 +22,8 @@ module MergeRequestsHelper
   end
 
   def merge_request_status_line(mr)
-    if mr.closed?
-      "Closed #{distance_of_time_in_words(Time.now, mr.updated_at)} ago,"
-    else
-      last_patch = mr.patch
-      return if last_patch.nil?
-
-      time = last_patch.updated_at
-      last_comment = last_patch.comments.order('id DESC').limit(1).first
-      time = last_comment.created_at if last_comment
-      time = distance_of_time_in_words(Time.now, time)
-      "Pending for #{time}"
-    end
+    time = distance_of_time_in_words(Time.now, mr.updated_at)
+    mr.closed? ? "Closed #{time} ago," : "Pending for #{time}"
   end
 
   def large_target_branch?
