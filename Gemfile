@@ -27,6 +27,7 @@ group :development, :test do
   gem 'mina-sidekiq', require: false
   gem 'mina-unicorn', require: false
   gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :test do

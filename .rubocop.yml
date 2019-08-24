@@ -1,27 +1,16 @@
+require:
+  - rubocop-rails
 inherit_from: .rubocop_todo.yml
 
 AllCops:
   Exclude:
     - db/schema.rb
     - bin/**/*
+    - node_modules/**/*
   DisplayCopNames: true
-  TargetRubyVersion: 2.3
-  TargetRailsVersion: 5.2
+  TargetRubyVersion: '2.5'
+  TargetRailsVersion: '5.2'
 Layout/IndentHeredoc:
-  Enabled: false
-Layout/MultilineHashBraceLayout:
-  Enabled: false
-Layout/MultilineMethodCallBraceLayout:
-  Enabled: false
-Lint/AmbiguousBlockAssociation:
-  Enabled: false
-Lint/DuplicateMethods:
-  Enabled: false
-Lint/UnneededRequireStatement:
-  Enabled: false
-Lint/UriEscapeUnescape:
-  Enabled: false
-Lint/Void:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
@@ -37,65 +26,33 @@ Metrics/MethodLength:
   Enabled: false
 Metrics/ModuleLength:
   Enabled: false
-Metrics/ParameterLists:
-  Enabled: false
 Metrics/PerceivedComplexity:
   Enabled: false
 Naming/HeredocDelimiterCase:
   Enabled: false
 Naming/HeredocDelimiterNaming:
   Enabled: false
-Naming/VariableNumber:
+Naming/UncommunicativeMethodParamName:
   Enabled: false
-Rails/HasAndBelongsToMany:
+Rails/Output:
+  Exclude:
+    - 'config/deploy.rb'
+    - 'lib/reviewit/**/*'
+Rails/HelperInstanceVariable:
   Enabled: false
-Rails/HasManyOrHasOneDependent:
+Rails/InverseOf:
   Enabled: false
 Security/Eval:
   Exclude:
     - lib/reviewit/lib/reviewit/api.rb
-Style/AndOr:
-  Enabled: false
-Style/ClassAndModuleChildren:
-  Enabled: false
-Style/ClassVars:
-  Enabled: false
-Style/DateTime:
-  Enabled: false
 Style/Documentation:
-  Enabled: false
-Style/EachWithObject:
   Enabled: false
 Style/EmptyMethod:
   Enabled: false
-Style/FormatStringToken:
-  Enabled: false
-Style/FrozenStringLiteralComment:
-  Enabled: false
-Style/GuardClause:
-  Enabled: false
-Style/MixinUsage:
-  Enabled: false
-Style/MutableConstant:
-  Enabled: false
-Style/Not:
-  Enabled: false
-Style/NumericLiterals:
-  MinDigits: 7
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%i': '()'
     '%w': '()'
     '%W': '()'
-Style/PerlBackrefs:
-  Enabled: false
-Style/RedundantConditional:
-  Enabled: false
-Style/SafeNavigation:
-  Enabled: false
-Style/SignalException:
-  Enabled: false
-Style/SpecialGlobalVars:
-  Enabled: false
-Style/TernaryParentheses:
+Style/StringLiterals:
   Enabled: false
