@@ -35,6 +35,5 @@ group :test do
   gem 'faker'
   gem 'minitest-reporters'
   gem 'rails-perftest'
-  gem 'ruby-prof'
   gem 'simplecov', require: false
 end
