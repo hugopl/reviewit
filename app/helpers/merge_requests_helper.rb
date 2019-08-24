@@ -50,6 +50,8 @@ module MergeRequestsHelper
 
   def diff_file_status(file)
     labels = {}
+    labels[number_to_human_size(file.size)] = 'black' if file.binary? && !file.delta?
+
     if file.new?
       labels['new'] = 'green'
       labels["chmod #{file.new_chmod}"] = 'grey'

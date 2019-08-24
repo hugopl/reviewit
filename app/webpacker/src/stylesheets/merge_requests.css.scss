@@ -44,6 +44,15 @@ table.code-review {
   border-top-right-radius: 0px !important;
 /*  overflow-x: scroll;*/
 
+  .binary-image {
+    text-align: center;
+    background-color: white;
+    background-image: linear-gradient(45deg, lightgray 25%, transparent 25%, transparent 75%, lightgray 75%, lightgray),
+                      linear-gradient(45deg, lightgray 25%, transparent 25%, transparent 75%, lightgray 75%, lightgray);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+  }
+
   .del {
     background: #FFF6F6;
     background-color: #fdd;

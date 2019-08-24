@@ -8,6 +8,9 @@ class Diff
     process_patch(diff)
     process_subject
 
+    each_file do |file|
+      file.changes = Zlib::Inflate.inflate(file.changes.pack('C*')) if file.binary? && !file.delta?
+    end
     @commit_message = @message_lines.join
   end
 
@@ -53,12 +56,22 @@ class Diff
     attr_accessor :index
     attr_accessor :similarity
     attr_accessor :binary
-    attr_accessor :interdiff_tag
     alias binary? binary
+    attr_accessor :delta
+    alias delta? delta
+    attr_accessor :size
+    attr_accessor :interdiff_tag
     attr_writer :status
 
     def initialize
       @changes = []
+    end
+
+    def image?
+      return false unless binary? # This fails for SVG, so SVG is show as text
+
+      ext = @name.downcase.scan(/\.([^.]\w*)\z/).first.first
+      %w(png jpg jpeg gif tif tiff eps jif jpx).include?(ext)
     end
 
     def new?
@@ -83,6 +96,7 @@ class Diff
       @label ||= path_diff(@renamed_from, @name)
     end
 
+    # Call this on binary files is wrong
     def each_change
       old_ln = old_ln_cache = 0
       new_ln = new_ln_cache = 0
@@ -267,20 +281,33 @@ class Diff
     when /^GIT binary patch$/
       @file.binary = true
       @file.index = @index + 1
-      @file.changes << 'This is a binary file, code to view it here is not done yet :-('
+      @file.size = 0
       @state = :state_reading_file_changes
       nil
     end
   end
 
   def state_reading_file_changes(line)
-    return if @file.binary?
-
     if line == "-- \n"
       @state = :state_idle
+    elsif @file.binary?
+      read_binary(line)
     else
       line.chop! if line.end_with?("\n")
       @file.changes << line
+    end
+  end
+
+  def read_binary(line)
+    return if @file.delta?
+
+    if line.start_with?('delta ')
+      @file.delta = true # We don't support deltas in binary patches.
+    elsif line.start_with?('literal ')
+      size = line.scan(/\d+/).first.to_i
+      @file.size += size
+    elsif line != "\n" && !line.start_with?('HcmV')
+      @file.changes.push(*Base85.decode(line))
     end
   end
 end

@@ -7,17 +7,30 @@
       = file.label
       = diff_file_status(file)
     %table.ui.small.table.code-review
-      - file.each_change do |change, type, location, old_ln, new_ln|
-        - blocker = @comments[location]&.any?(&:blocker?)
-        %tr{ class: type, data: { location: location } }
-          %td.collapsing.line= old_ln
-          %td.collapsing.line= new_ln
-          %td.code #{@disable_comments ? '' : '<i class="comment icon js-add-comment"></i>'.html_safe}#{change}
-        - if @comments.include?(location)
-          %tr.comments{ data: { location: location, blocker: blocker } }
-            %td.line.center.aligned{ colspan: 2 }
-              %i{ class: code_comment_icon(@comments[location]) }
+      - if file.image?
+        %tr
+          - if file.changes.present?
+            %td.binary-image
+              %img{ src: "data:image/*;base64,#{Base64.encode64(file.changes)}" }
+          - else
             %td
-              .ui.comments
-                - @comments[location].each do |comment|
-                  = render partial: 'comment', locals: { comment: comment, reply: true }
+              %em This is a binary in delta format, preview is only show when all info is inside the patch.
+      - elsif file.binary?
+        %tr
+          %td
+            %em Binary file, contents not show.
+      - else
+        - file.each_change do |change, type, location, old_ln, new_ln|
+          - blocker = @comments[location]&.any?(&:blocker?)
+          %tr{ class: type, data: { location: location } }
+            %td.collapsing.line= old_ln
+            %td.collapsing.line= new_ln
+            %td.code #{@disable_comments ? '' : '<i class="comment icon js-add-comment"></i>'.html_safe}#{change}
+          - if @comments.include?(location)
+            %tr.comments{ data: { location: location, blocker: blocker } }
+              %td.line.center.aligned{ colspan: 2 }
+                %i{ class: code_comment_icon(@comments[location]) }
+              %td
+                .ui.comments
+                  - @comments[location].each do |comment|
+                    = render partial: 'comment', locals: { comment: comment, reply: true }
