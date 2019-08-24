@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'devise'
-gem 'font-awesome-rails'
 gem 'grape', '~> 0.14'
 gem 'grape-entity', '~> 0.5'
 gem 'hamlit'
@@ -33,7 +32,6 @@ end
 group :test do
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rails-perftest'
   gem 'rspec-rails'
   gem 'simplecov', require: false
 end
