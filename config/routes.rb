@@ -11,6 +11,7 @@ Rails.application.routes.draw do
              path_names: { new: 'sign_up' },
              as: :user_registration do
                get :cancel
+               patch :regenerate_token
              end
   end
 

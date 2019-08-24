@@ -14,3 +14,11 @@
     = f.password :current_password, placeholder: 'Current password',
                                     info: 'we need your current password to confirm your changes',
                                     action_button: 'Update'
+
+%h4.ui.horizontal.divider.header
+  %i.terminal.icon
+  Command line interface options
+
+= semantic_ui_form(resource, as: resource_name, url: regenerate_token_user_registration_path) do
+  %p Current API token: <code>#{resource.api_token}</code>
+  %button.ui.primary.button Regenerate API token!

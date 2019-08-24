@@ -78,8 +78,6 @@ class User < ApplicationRecord
     update_attributes(webpush_endpoint: nil, webpush_p256dh: nil, webpush_auth: nil)
   end
 
-  private
-
   def generate_api_token
     loop do
       self.api_token = SecureRandom.urlsafe_base64
