@@ -43,10 +43,10 @@ class MergeRequestsController < ApplicationController
     @author = params[:author]
     @reviewer = params[:reviewer]
     @subject = params[:subject]
-    @mrs = @mrs.where(target_branch: @target_branch) unless @target_branch.blank?
-    @mrs = @mrs.where(author: @author) unless @author.blank?
-    @mrs = @mrs.where(reviewer: @reviewer) unless @reviewer.blank?
-    @mrs = @mrs.where('lower(subject) LIKE ?', "%#{@subject.downcase}%") unless @subject.blank?
+    @mrs = @mrs.where(target_branch: @target_branch) if @target_branch.present?
+    @mrs = @mrs.where(author: @author) if @author.present?
+    @mrs = @mrs.where(reviewer: @reviewer) if @reviewer.present?
+    @mrs = @mrs.where('lower(subject) LIKE ?', "%#{@subject.downcase}%") if @subject.present?
     @total = @mrs.count
   end
 

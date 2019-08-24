@@ -36,7 +36,7 @@ module Reviewit
           if locked_branch.save
             ok.to_json
           else
-            raise RuntimeError, locked_branch.errors.full_messages.join(', ')
+            raise locked_branch.errors.full_messages.join(', ')
           end
         end
 

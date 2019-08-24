@@ -44,10 +44,10 @@ module Reviewit
       list = get 'merge_requests'
       list.map do |item|
         {
-          id:        item['id'],
-          target:    item['target_branch'],
-          status:    item['status'],
-          subject:   item['subject'],
+          id: item['id'],
+          target: item['target_branch'],
+          status: item['status'],
+          subject: item['subject'],
           ci_status: item['ci_status']
         }
       end
@@ -115,7 +115,7 @@ module Reviewit
       raise response.body if response.code =~ /[^2]\d\d/
 
       data = JSON.parse(response.body)
-      return data
+      data
     rescue JSON::ParserError
       raise 'Error parsing returned JSON.'
     end

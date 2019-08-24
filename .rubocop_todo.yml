@@ -6,23 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleStyles, EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle.
-# SupportedHashRocketStyles: key, separator, table
-# SupportedColonStyles: key, separator, table
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Layout/AlignHash:
-  Exclude:
-    - 'config/application.rb'
-    - 'lib/reviewit/lib/reviewit/api.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterGuardClause:
-  Exclude:
-    - 'app/models/diff.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, IndentationWidth.
@@ -30,13 +13,6 @@ Layout/EmptyLineAfterGuardClause:
 Layout/MultilineMethodCallIndentation:
   Exclude:
     - 'app/helpers/projects_helper.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowInHeredoc.
-Layout/TrailingWhitespace:
-  Exclude:
-    - 'config/initializers/devise.rb'
 
 # Offense count: 1
 Lint/AmbiguousBlockAssociation:
@@ -47,12 +23,6 @@ Lint/AmbiguousBlockAssociation:
 Lint/IneffectiveAccessModifier:
   Exclude:
     - 'lib/reviewit/lib/reviewit/action/action.rb'
-
-# Offense count: 1
-# Configuration parameters: ContextCreatingMethods, MethodCreatingMethods.
-Lint/UselessAccessModifier:
-  Exclude:
-    - 'app/models/diff.rb'
 
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
@@ -131,16 +101,6 @@ Rails/OutputSafety:
     - 'app/helpers/merge_requests_helper.rb'
     - 'app/helpers/projects_helper.rb'
     - 'app/helpers/semantic_ui_form_builder.rb'
-
-# Offense count: 9
-# Cop supports --auto-correct.
-# Configuration parameters: NotNilAndNotEmpty, NotBlank, UnlessBlank.
-Rails/Present:
-  Exclude:
-    - 'app/api/reviewit/merge_requests.rb'
-    - 'app/controllers/merge_requests_controller.rb'
-    - 'app/helpers/merge_requests_helper.rb'
-    - 'app/models/project.rb'
 
 # Offense count: 3
 # Configuration parameters: Include.
@@ -242,12 +202,6 @@ Style/MutableConstant:
     - 'lib/reviewit/lib/reviewit/action/list.rb'
     - 'lib/reviewit/lib/reviewit/version.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Not:
-  Exclude:
-    - 'app/models/merge_request.rb'
-
 # Offense count: 22
 # Cop supports --auto-correct.
 Style/PerlBackrefs:
@@ -255,26 +209,6 @@ Style/PerlBackrefs:
     - 'app/helpers/application_helper.rb'
     - 'app/models/diff.rb'
     - 'lib/reviewit/lib/reviewit/action/cleanup.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/RedundantBegin:
-  Exclude:
-    - 'app/api/reviewit/ci.rb'
-    - 'app/models/user.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantException:
-  Exclude:
-    - 'app/api/reviewit/projects.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'lib/reviewit/lib/reviewit/api.rb'
 
 # Offense count: 7
 # Cop supports --auto-correct.
@@ -299,17 +233,3 @@ Style/SpecialGlobalVars:
     - 'lib/reviewit/lib/reviewit/action/config.rb'
     - 'lib/reviewit/lib/reviewit/app.rb'
     - 'lib/reviewit/lib/reviewit/git_util.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInHashLiteral:
-  Exclude:
-    - 'config/application.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/UnpackFirst:
-  Exclude:
-    - 'app/models/diff.rb'

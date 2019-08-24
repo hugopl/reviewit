@@ -62,7 +62,7 @@ module Reviewit
           MergeRequest.transaction do
             diff = Diff.new(params[:diff])
             mr.subject = diff.subject
-            mr.target_branch = params[:target_branch] unless params[:target_branch].blank?
+            mr.target_branch = params[:target_branch] if params[:target_branch].present?
             mr.status = :open
             mr.add_patch(diff: diff,
                          linter_ok: params[:linter_ok].true?,

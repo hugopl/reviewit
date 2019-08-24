@@ -33,19 +33,18 @@ class Diff
 
   def process_subject
     return '' if @subject.nil?
+
     # Subject can be Q-Encoded.
     @subject[0] = @subject[0].sub('[PATCH] ', '')
     @subject.map! do |line|
       if line.start_with?('=?UTF-8?q?') && line.end_with?('?=')
-        line.byteslice(10, line.size - 12).unpack('M').first.force_encoding('utf-8')
+        line.byteslice(10, line.size - 12).unpack1('M').force_encoding('utf-8')
       else
         line
       end.strip
     end
     @subject = @subject.join(' ')
   end
-
-  public
 
   class File
     attr_accessor :name
@@ -182,8 +181,6 @@ class Diff
       output.reverse.join('/')
     end
   end
-
-  private
 
   def process_patch(diff)
     @state = :state_idle

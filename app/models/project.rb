@@ -11,7 +11,7 @@ class Project < ApplicationRecord
   validate :validate_repository
 
   def gitlab_ci?
-    !gitlab_ci_project_url.blank?
+    gitlab_ci_project_url.present?
   end
 
   def configuration_hash

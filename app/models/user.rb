@@ -47,11 +47,9 @@ class User < ApplicationRecord
     return unless webpush_notification_enabled?
 
     Thread.new do
-      begin
-        send_webpush(title, body, url)
-      ensure
-        ActiveRecord::Base.connection.close
-      end
+      send_webpush(title, body, url)
+    ensure
+      ActiveRecord::Base.connection.close
     end
   end
 

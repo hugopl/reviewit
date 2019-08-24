@@ -18,7 +18,7 @@ module MergeRequestsHelper
   end
 
   def search_request?
-    !params[:author].blank? || !params[:target_branch].blank? || !params[:subject].blank?
+    params[:author].present? || params[:target_branch].present? || params[:subject].present?
   end
 
   def merge_request_status_line(mr)

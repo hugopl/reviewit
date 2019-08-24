@@ -32,7 +32,7 @@ class MergeRequest < ApplicationRecord
   after_create :send_webpush_creation_notification
 
   def can_update?
-    not %w(accepted integrating).include? status
+    !%w(accepted integrating).include?(status)
   end
 
   def closed?

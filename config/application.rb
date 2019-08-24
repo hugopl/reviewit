@@ -45,11 +45,11 @@ module Reviewit
       config.action_mailer.delivery_method = delivery_method
 
       config.action_mailer.smtp_settings = {
-        address:              ReviewitConfig.mail.address,
-        port:                 ReviewitConfig.mail.port,
+        address: ReviewitConfig.mail.address,
+        port: ReviewitConfig.mail.port,
         enable_starttls_auto: ReviewitConfig.mail.enable_starttls_auto,
-        user_name:            ReviewitConfig.mail.user_name,
-        password:             ReviewitConfig.mail.password,
+        user_name: ReviewitConfig.mail.user_name,
+        password: ReviewitConfig.mail.password
       }
 
       config.action_mailer.file_settings = { location: 'logs/mails' } if delivery_method == :file
