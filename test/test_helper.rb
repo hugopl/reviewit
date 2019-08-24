@@ -10,7 +10,7 @@ Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true)]
 
 module ActiveSupport
   class TestCase
-    include FactoryGirl::Syntax::Methods
+    include FactoryBot::Syntax::Methods
     include Warden::Test::Helpers
     extend MiniTest::Spec::DSL
 
