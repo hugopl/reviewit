@@ -2,14 +2,15 @@
   .markdown= @patch.commit_message
 .ui.bottom.attached.warning.message= author_sentence(@mr)
 
-#summary-bar.ui.five.statistics
-  .statistic
-    .value= ci_icon(@mr.patch)
-    .label
-      - if @mr.patch.ok_to_retry_ci?
-        %a.ui.tiny.button.js-trigger-ci Trigger CI
-      - else
-        CI Status
+#summary-bar.ui.statistics{ class: @project.gitlab_ci? ? 'five' : 'four' }
+  - if @project.gitlab_ci?
+    .statistic
+      .value= ci_icon(@mr.patch)
+      .label
+        - if @mr.patch.ok_to_retry_ci?
+          %a.ui.tiny.button.js-trigger-ci Trigger CI
+        - else
+          CI Status
   .statistic
     .value
       %i.ui.icon{class: patch_linter_status(@mr.patch)}
