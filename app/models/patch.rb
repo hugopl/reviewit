@@ -11,6 +11,7 @@ class Patch < ApplicationRecord
   validates :commit_message, length: { minimum: 0 }, allow_nil: false
 
   after_create :update_jira_ticket
+  after_create :reset_likes
   after_commit :really_push_to_ci, on: :create, unless: :canceled?
 
   delegate :author, to: :merge_request
@@ -87,5 +88,9 @@ class Patch < ApplicationRecord
 
     merge_request.notify_jira if !silent && merge_request.jira_ticket_changed?
     merge_request.save!
+  end
+
+  def reset_likes
+    merge_request.likes.delete_all
   end
 end

@@ -1,6 +1,7 @@
 .ui.top.attached.segment
   .markdown= @patch.commit_message
-.ui.bottom.attached.warning.message= author_sentence(@mr)
+.ui.bottom.attached.warning.message
+  = author_sentence(@mr)
 
 #summary-bar.ui.statistics{ class: @project.gitlab_ci? ? 'five' : 'four' }
   - if @project.gitlab_ci?

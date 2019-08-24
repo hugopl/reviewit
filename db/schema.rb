@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_24_052620) do
+ActiveRecord::Schema.define(version: 2019_08_24_211848) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 2019_08_24_052620) do
     t.string "what", limit: 255, null: false
     t.index ["merge_request_id"], name: "index_history_events_on_merge_request_id"
     t.index ["who_id"], name: "index_history_events_on_who_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "merge_request_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["merge_request_id"], name: "index_likes_on_merge_request_id"
+    t.index ["user_id", "merge_request_id"], name: "index_likes_on_user_id_and_merge_request_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "locked_branches", id: :serial, force: :cascade do |t|

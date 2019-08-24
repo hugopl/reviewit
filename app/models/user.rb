@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   before_create :generate_api_token
   has_many :comments
+  has_many :likes
   has_many :merge_requests, foreign_key: :author_id
   has_many :patches, through: :merge_requests
   has_many :locked_branches, foreign_key: :who_id

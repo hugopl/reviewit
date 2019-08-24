@@ -18,6 +18,7 @@ export default function merge_requests() {
     });
     $('#accept').on('click', function(event) { showSubmitModal('accept'); });
     $('#abandon').on('click', function(event) { showSubmitModal('abandon'); });
+    $('#like').on('click', function(event) { like(event); });
     $('#accept-model-button').on('mouseover', function(event) { $('.js-tada').transition('tada'); });
     if ($('textarea').length > 0)
         new_editor($('textarea').get(0), false);
@@ -31,6 +32,12 @@ function showSubmitModal(action) {
         $('#mr-form').submit();
         return false;
     }}).modal('show')
+}
+
+function like(event) {
+    $('#mr_action').val('like');
+    $('#mr-form').submit();
+    return false;
 }
 
 function request_patch_diff(event) {

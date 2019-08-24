@@ -13,8 +13,11 @@ module MergeRequestsHelper
   end
 
   def author_sentence(mr)
-    closed_info = mr.closed? ? ", #{@mr.status} by <strong>#{@mr.reviewer.name}</strong>." : ''
-    "Authored by <strong>#{mr.author.name}</strong>#{closed_info}".html_safe
+    closed_info = mr.closed? ? ", #{@mr.status} by <strong>#{@mr.reviewer.name}</strong>" : ''
+    likes = User.joins(:likes).where(likes: { merge_request: mr }).pluck(:name).to_sentence
+    likes = "<br>Looks good to: <em>#{likes}</em>." if likes.present?
+
+    "Authored by <strong>#{mr.author.name}</strong>#{closed_info}.#{likes}".html_safe
   end
 
   def search_request?

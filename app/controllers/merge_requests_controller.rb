@@ -12,6 +12,7 @@ class MergeRequestsController < ApplicationController
     when 'accept' then accept
     when 'abandon' then abandon
     else
+      @mr.likes.create(user: current_user) if params[:mr_action] == 'like'
       redirect_to(redir_params)
     end
   rescue RuntimeError => e

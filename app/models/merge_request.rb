@@ -11,6 +11,7 @@ class MergeRequest < ApplicationRecord
 
   has_many :patches, -> { order(:created_at) }, dependent: :destroy
   has_many :history_events, -> { order(:when) }, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   enum status: %i(open integrating needs_rebase accepted abandoned)
 
