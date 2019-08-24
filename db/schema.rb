@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_24_211848) do
+ActiveRecord::Schema.define(version: 2019_08_24_221104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -18,11 +18,11 @@ ActiveRecord::Schema.define(version: 2019_08_24_211848) do
 
   create_table "comments", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "patch_id"
+    t.integer "patch_id", null: false
     t.text "content", default: "", null: false
     t.integer "location", default: 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status", limit: 2
     t.integer "reviewer_id"
     t.index ["patch_id"], name: "index_comments_on_patch_id"
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 2019_08_24_211848) do
 
   create_table "history_events", id: :serial, force: :cascade do |t|
     t.integer "merge_request_id", null: false
-    t.integer "who_id"
-    t.datetime "when"
+    t.integer "who_id", null: false
+    t.datetime "when", null: false
     t.string "what", limit: 255, null: false
     t.index ["merge_request_id"], name: "index_history_events_on_merge_request_id"
     t.index ["who_id"], name: "index_history_events_on_who_id"
@@ -51,21 +51,21 @@ ActiveRecord::Schema.define(version: 2019_08_24_211848) do
     t.integer "project_id", null: false
     t.integer "who_id", null: false
     t.string "branch", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "reason", default: "", null: false
     t.index ["branch", "project_id"], name: "index_locked_branches_on_branch_and_project_id", unique: true
   end
 
   create_table "merge_requests", id: :serial, force: :cascade do |t|
-    t.integer "project_id"
-    t.integer "author_id"
+    t.integer "project_id", null: false
+    t.integer "author_id", null: false
     t.integer "reviewer_id"
     t.integer "status", default: 0, null: false
     t.string "target_branch", limit: 255, null: false
     t.string "subject", limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "jira_ticket"
     t.string "jira_url"
     t.index ["author_id"], name: "index_merge_requests_on_author_id"
@@ -74,14 +74,14 @@ ActiveRecord::Schema.define(version: 2019_08_24_211848) do
   end
 
   create_table "patches", id: :serial, force: :cascade do |t|
-    t.integer "merge_request_id"
+    t.integer "merge_request_id", null: false
     t.text "description", default: ""
     t.text "commit_message", null: false
     t.text "diff", default: "", null: false
     t.boolean "linter_ok", default: false, null: false
     t.text "integration_log"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "gitlab_ci_hash", limit: 255
     t.integer "gitlab_ci_status", default: 0
     t.text "subject"
@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 2019_08_24_211848) do
     t.string "description", limit: 255, default: "", null: false
     t.string "repository", limit: 255, null: false
     t.string "linter", limit: 255, default: "", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "gitlab_ci_project_url", limit: 255
     t.text "jira_username"
     t.text "jira_password"
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 2019_08_24_211848) do
     t.string "current_sign_in_ip", limit: 255
     t.string "last_sign_in_ip", limit: 255
     t.string "api_token", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "time_zone", default: "UTC"
     t.text "webpush_endpoint"
     t.string "webpush_auth"
