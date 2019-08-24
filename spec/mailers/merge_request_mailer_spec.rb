@@ -18,10 +18,17 @@ describe MergeRequestMailer do
     expect(email.body).to include('Ruby hash function')
   end
 
+  it 'does not send an update email if there is no comments' do
+    email = MergeRequestMailer.updated(user1, mr, Hash.new({})).deliver_now
+    expect(email).to be_nil
+    email = MergeRequestMailer.updated(user1, mr, comments: { '0' => '' }).deliver_now
+    expect(email).to be_nil
+  end
+
   it 'sends emails from same MR in the same thread' do
     email1 = MergeRequestMailer.created(mr).deliver_now
     mr.add_comments(user2, mr.patch, [[0, 'Hello']], [])
-    email2 = MergeRequestMailer.updated(user1, mr, Hash.new({})).deliver_now
+    email2 = MergeRequestMailer.updated(user1, mr, comments: { '1' => 'hey' }).deliver_now
 
     assert_equal(email1.header['Message-ID'].value,
                  email2.header['In-Reply-To'].value)

@@ -14,6 +14,7 @@ class MergeRequestMailer < ApplicationMailer
     @mr = mr
     @action = action(params)
     @comments = params[:comments]
+    return if @comments.empty? || @comments == { '0' => '' }
 
     headers('In-Reply-To' => message_id(mr))
     send_email(mr.people_involved)
