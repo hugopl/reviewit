@@ -88,7 +88,9 @@ class DiffTest < ActiveSupport::TestCase
     logo = diff.files['app/assets/images/logo.png']
     logo.must_be :new?
     logo.must_be :binary?
-    logo.changes.must_equal ['This is a binary file, code to view it here is not done yet :-(']
+    logo.size.must_equal 2097
+    logo.changes.encoding.name.must_equal 'ASCII-8BIT'
+    logo.changes.size.must_equal 2097
   end
 
   def test_line_index
