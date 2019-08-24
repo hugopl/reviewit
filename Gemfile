@@ -33,7 +33,7 @@ end
 group :test do
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'minitest-reporters'
   gem 'rails-perftest'
+  gem 'rspec-rails'
   gem 'simplecov', require: false
 end

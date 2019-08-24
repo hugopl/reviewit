@@ -1,8 +1,11 @@
 language: ruby
 rvm:
-  - '2.3.6'
+  - '2.5.5'
 services:
   - postgresql
 before_script:
   - psql -c 'create database reviewit_test;' -U postgres
   - bin/setup
+script:
+  - bin/rake db:test:prepare RAILS_ENV=test
+  - bin/rake
