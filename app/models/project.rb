@@ -14,6 +14,10 @@ class Project < ApplicationRecord
     gitlab_ci_project_url.present?
   end
 
+  def jira_enabled?
+    jira_api_url.present? && jira_ticket_regexp.present? && jira_username.present? && jira_password.present?
+  end
+
   def configuration_hash
     Digest::MD5.hexdigest(linter)
   end

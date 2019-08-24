@@ -10,6 +10,7 @@ class Patch < ApplicationRecord
   validates :diff, presence: true
   validates :commit_message, length: { minimum: 0 }, allow_nil: false
 
+  after_create :update_jira_ticket
   after_commit :really_push_to_ci, on: :create, unless: :canceled?
 
   delegate :author, to: :merge_request
@@ -71,5 +72,20 @@ class Patch < ApplicationRecord
     return unless merge_request.accepted? or merge_request.integrating?
 
     "Reviewed by #{reviewer.name} on MR ##{merge_request.id}\n"
+  end
+
+  def update_jira_ticket(silent: false)
+    return unless project.jira_enabled?
+
+    ticket = Regexp.new(project.jira_ticket_regexp).match(commit_message)
+    return if ticket.nil?
+
+    url = Regexp.new("https:\/\/[^ ]*#{ticket}").match(commit_message)
+
+    merge_request.jira_ticket = ticket.to_s
+    merge_request.jira_url = url.to_s
+
+    merge_request.notify_jira if !silent && merge_request.jira_ticket_changed?
+    merge_request.save!
   end
 end

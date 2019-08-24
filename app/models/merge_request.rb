@@ -28,7 +28,6 @@ class MergeRequest < ApplicationRecord
 
   before_save :write_history
 
-  after_commit :notify_jira, on: :create
   after_create :send_webpush_creation_notification
 
   def can_update?
@@ -208,6 +207,19 @@ class MergeRequest < ApplicationRecord
     @branch_lock ||= project.locked_branches.where(branch: target_branch).first
   end
 
+  def notify_jira
+    uri = URI("#{project.jira_api_url}/issue/#{jira_ticket}/comment")
+    request = Net::HTTP::Post.new(uri.to_s)
+    request.basic_auth(project.jira_username, project.jira_password)
+    request['Content-Type'] = 'application/json'
+    request.body = { 'body' => "Merge request created at https://#{ReviewitConfig.mail.domain}/mr/#{id}" }.to_json
+
+    http = Net::HTTP.new(uri.hostname, uri.port)
+    http.use_ssl = true if uri.scheme == 'https'
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
+    http.start { |h| h.request(request) }
+  end
+
   private
 
   def interdiff(diff1, diff2)
@@ -265,29 +277,5 @@ class MergeRequest < ApplicationRecord
 
   def author_cant_be_reviewer
     errors.add(:reviewer, 'can\'t be the author.') if !abandoned? && author == reviewer
-  end
-
-  def notify_jira
-    return if project.jira_username.blank? ||
-              project.jira_password.blank? ||
-              project.jira_api_url.blank? ||
-              project.jira_ticket_regexp.blank?
-
-    match = /#{project.jira_ticket_regexp}/.match(patch.commit_message)
-    return if match.nil?
-
-    ticket_id = match.to_a.first
-    return if ticket_id.nil?
-
-    uri = URI("#{project.jira_api_url}/issue/#{ticket_id}/comment")
-    request = Net::HTTP::Post.new(uri.to_s)
-    request.basic_auth(project.jira_username, project.jira_password)
-    request['Content-Type'] = 'application/json'
-    request.body = { 'body' => "Merge request created at https://#{ReviewitConfig.mail.domain}/mr/#{id}" }.to_json
-
-    http = Net::HTTP.new(uri.hostname, uri.port)
-    http.use_ssl = true if uri.scheme == 'https'
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl?
-    http.start { |h| h.request(request) }
   end
 end

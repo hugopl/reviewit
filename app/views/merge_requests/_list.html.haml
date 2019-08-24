@@ -5,7 +5,9 @@
     - mrs.each do |mr|
       .item
         .right.floated.content
-          %a.ui.label= mr_label(mr)
+          - if mr.jira_ticket
+            %a.ui.label{href: mr.jira_url}= mr.jira_ticket
+          .ui.label= mr_label(mr)
         %img.ui.avatar.image{src: gravatar_url(mr.author.email)}
         .content
           = link_to(project_merge_request_path(@project, mr), class: 'header') do

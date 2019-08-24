@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_16_164209) do
+ActiveRecord::Schema.define(version: 2019_08_24_052620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 2019_07_16_164209) do
     t.string "subject", limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "jira_ticket"
+    t.string "jira_url"
     t.index ["author_id"], name: "index_merge_requests_on_author_id"
     t.index ["project_id"], name: "index_merge_requests_on_project_id"
     t.index ["reviewer_id"], name: "index_merge_requests_on_reviewer_id"
