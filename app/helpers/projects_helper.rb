@@ -67,8 +67,8 @@ module ProjectsHelper
 
   def projects_merge_request_chart(project, role, title)
     query = project.merge_requests.joins(role).accepted.limit(100)
-                                   .select('users.name')
-                                   .order('merge_requests.created_at DESC').to_sql
+                   .select('users.name')
+                   .order('merge_requests.created_at DESC').to_sql
     db = ActiveRecord::Base.connection
     data = db.execute("SELECT name, COUNT(name) AS y FROM (#{query}) AS data GROUP BY name").to_a
 
