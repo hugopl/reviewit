@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def merge_request
-    @mr ||= project.merge_requests.find(widget_id(:merge_request_id))
+    @mr ||= project.merge_requests.find(widget_id(:merge_request_id)) # rubocop:disable Naming/MemoizedInstanceVariableName
   end
 
   def configure_permitted_parameters
