@@ -56,14 +56,6 @@ Rails/EnumHash:
     - 'app/models/merge_request.rb'
     - 'app/models/patch.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/FindBy:
-  Exclude:
-    - 'app/models/merge_request.rb'
-
 # Offense count: 2
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb

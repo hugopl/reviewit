@@ -205,7 +205,7 @@ class MergeRequest < ApplicationRecord
   end
 
   def branch_lock
-    @branch_lock ||= project.locked_branches.where(branch: target_branch).first
+    @branch_lock ||= project.locked_branches.find_by(branch: target_branch)
   end
 
   def notify_jira
