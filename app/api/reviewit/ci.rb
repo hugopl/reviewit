@@ -13,6 +13,8 @@ module Reviewit
       patch = Patch.find_by(gitlab_ci_hash: sha)
       patch.update_attributes(gitlab_ci_status: status, gitlab_ci_build: build)
 
+      return unless patch.author.notify_mr_ci_by_webpush?
+
       if patch.failed? || patch.success?
         title = patch.success? ? 'CI green!!' : 'CI failed :-('
         patch.author.send_webpush_assync(title, patch.subject, patch.merge_request.my_path)

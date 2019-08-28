@@ -1,4 +1,4 @@
-%h1 Your Profile
+%h1.ui.header Your Profile
 
 = semantic_ui_form(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
   .two.fields
@@ -12,8 +12,26 @@
     = f.password :password_confirmation, placeholder: 'Password confirmation'
   .fields
     = f.password :current_password, placeholder: 'Current password',
-                                    info: 'we need your current password to confirm your changes',
-                                    action_button: 'Update'
+                                    info: 'we need your current password to confirm your changes'
+
+  %h4.ui.horizontal.divider.header
+    %i.bullhorn.icon
+    Notifications
+
+  .ui.horizontal.segments
+    .ui.segment
+      %h5.ui.header E-mail notifications
+      = f.checkbox :notify_mr_creation_by_email, label: 'Merge request creation.'
+      = f.checkbox :notify_mr_update_by_email, label: 'Merge request comments.'
+    .ui.segment
+      %h5.ui.header Web push notifications
+      = f.checkbox :notify_mr_creation_by_webpush, label: 'Merge request creation.'
+      = f.checkbox :notify_mr_update_by_webpush, label: 'Merge request comments.'
+      = f.checkbox :notify_mr_ci_by_webpush, label: 'Merge request CI events.'
+      = f.checkbox :notify_mr_status_by_webpush, label: 'Merge request status change.'
+
+  .right.aligned
+    =f.submit('Save changes', class: 'ui primary button')
 
 %h4.ui.horizontal.divider.header
   %i.terminal.icon

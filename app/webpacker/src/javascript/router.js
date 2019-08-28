@@ -22,6 +22,8 @@ var ready = function() {
   $(".dropdown").dropdown()
   // Enable accordions
   $('.ui.accordion').accordion()
+  // Enable checkboxes
+  $('.ui.checkbox').checkbox()
 
   // If we are not in a devise layout
   /*if (!alreadyTriedToRegisterNotifications && document.body.className !== "devise") {

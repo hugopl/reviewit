@@ -37,6 +37,20 @@ class SemanticUiFormBuilder < ActionView::Helpers::FormBuilder
     '</div>'.html_safe
   end
 
+  def checkbox(method, options = {})
+    value = @object.send(method)
+    name = "#{@object_name}[#{method}]"
+    label ||= options[:label] || method.to_s.titleize
+
+    '<div class="inline field">' \
+      '<div class="ui toggle checkbox">' \
+        "#{@template.hidden_field_tag(name, 'false')}" \
+        "#{@template.check_box_tag(name, 'true', value)}" \
+        "<label>#{label}</label>" \
+      '</div>' \
+    '</div>'.html_safe
+  end
+
   private
 
   def inline_dropdown_items(options)

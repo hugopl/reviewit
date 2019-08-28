@@ -6,7 +6,7 @@ class MergeRequestMailer < ApplicationMailer
     @mr = mr
 
     headers('Message-ID' => message_id(mr))
-    send_email(mr.project.users)
+    send_email(mr.project.users.where(notify_mr_creation_by_email: true))
   end
 
   def updated(user, mr, params)
@@ -17,7 +17,7 @@ class MergeRequestMailer < ApplicationMailer
     return if @comments.empty? || @comments == { '0' => '' }
 
     headers('In-Reply-To' => message_id(mr))
-    send_email(mr.people_involved)
+    send_email(mr.people_involved(:notify_mr_update_by_email))
   end
 
   private

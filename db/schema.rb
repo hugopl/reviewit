@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_24_221104) do
+ActiveRecord::Schema.define(version: 2019_08_28_004504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -131,6 +131,12 @@ ActiveRecord::Schema.define(version: 2019_08_24_221104) do
     t.text "webpush_endpoint"
     t.string "webpush_auth"
     t.string "webpush_p256dh"
+    t.boolean "notify_mr_creation_by_email", default: true, null: false
+    t.boolean "notify_mr_creation_by_webpush", default: true, null: false
+    t.boolean "notify_mr_update_by_email", default: true, null: false
+    t.boolean "notify_mr_update_by_webpush", default: true, null: false
+    t.boolean "notify_mr_ci_by_webpush", default: true, null: false
+    t.boolean "notify_mr_status_by_webpush", default: true, null: false
     t.index ["api_token"], name: "index_users_on_api_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

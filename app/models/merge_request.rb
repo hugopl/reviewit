@@ -144,10 +144,12 @@ class MergeRequest < ApplicationRecord
     patches.where.not(id: patch.id)
   end
 
-  def people_involved
+  # FIXME Remove this and implement a watchers list.
+  def people_involved(notification)
     people = User.joins(:comments)
                  .joins('INNER JOIN patches ON patches.id = comments.patch_id')
                  .joins('INNER JOIN merge_requests ON merge_requests.id = patches.merge_request_id')
+                 .where(notification => true)
                  .where('merge_requests.id = ?', id).uniq
     people << reviewer if reviewer
     (people << author).uniq
@@ -178,25 +180,32 @@ class MergeRequest < ApplicationRecord
   end
 
   def send_webpush_creation_notification
-    users = project.users.webpush_enabled.to_a - [author]
+    users = project.users.webpush_enabled.where(notify_mr_creation_by_webpush: true).to_a - [author]
     User.send_webpush(users, "MR created on #{project.name}", subject, my_path)
   end
 
   def send_webpush_accept_notification
+    return unless author.notify_mr_status_by_webpush?
+
     author.send_webpush_assync('Your MR got accepted!', subject, my_path)
   end
 
   def send_webpush_comment_notification(who, n_of_comments)
     return if who == author
+    return unless author.notify_mr_update_by_webpush?
 
     author.send_webpush_assync("#{n_of_comments} new comments", subject, my_path)
   end
 
   def send_webpush_needs_rebase_notification
+    return unless author.notify_mr_status_by_webpush?
+
     author.send_webpush_assync('Rebase needed', subject, my_path)
   end
 
   def send_webpush_integration_failed
+    return unless author.notify_mr_status_by_webpush?
+
     author.send_webpush_assync('Integration failed', subject, my_path)
   end
 
