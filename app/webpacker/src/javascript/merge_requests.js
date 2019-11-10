@@ -1,4 +1,4 @@
-import SimpleMDE from 'simplemde'
+import EasyMDE from 'easymde'
 
 export default function merge_requests() {
     $(".patch-history input[type=radio]").on('change', function(event) {
@@ -84,11 +84,11 @@ function handle_history_radios(radio) {
 }
 
 function new_editor(elem, autofocus) {
-    var editor = new SimpleMDE({ element: elem,
-                                 status: false,
-                                 indentWithTabs: false,
-                                 autofocus: (typeof(autofocus) === 'undefined' ? true : autofocus),
-                                 spellChecker: false});
+    var editor = new EasyMDE({ element: elem,
+                               status: false,
+                               indentWithTabs: false,
+                               autofocus: (typeof(autofocus) === 'undefined' ? true : autofocus),
+                               spellChecker: false});
     editor.render();
 }
 
