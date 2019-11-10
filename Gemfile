@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'devise'
-gem 'grape', '~> 0.14'
-gem 'grape-entity', '~> 0.5'
+gem 'grape', '~> 1.2.4'
+gem 'grape-entity', '~> 0.7.1'
 gem 'hamlit'
 gem 'pg'
 gem 'rails', '~> 5.2.2'

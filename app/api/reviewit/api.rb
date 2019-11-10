@@ -14,16 +14,16 @@ module Reviewit
     prefix :api
 
     rescue_from Error do |e|
-      Rack::Response.new(e.message, e.code).finish
+      Rack::Response.new(e.message, e.code)
     end
     rescue_from ActiveRecord::RecordInvalid do |e|
-      Rack::Response.new(e.message, 422).finish
+      Rack::Response.new(e.message, 422)
     end
     rescue_from RuntimeError do |e|
-      Rack::Response.new(e.message, 400).finish
+      Rack::Response.new(e.message, 400)
     end
     rescue_from ActiveRecord::RecordNotFound do |e|
-      Rack::Response.new(e.message, 404).finish
+      Rack::Response.new(e.message, 404)
     end
 
     mount CI
