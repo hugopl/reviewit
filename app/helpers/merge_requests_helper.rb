@@ -12,12 +12,12 @@ module MergeRequestsHelper
     patch.linter_ok? ? 'green check' : 'red remove'
   end
 
-  def author_sentence(mr)
+  def author_sentence(mr, patch)
     closed_info = mr.closed? ? ", #{@mr.status} by <strong>#{@mr.reviewer.name}</strong>" : ''
     likes = User.joins(:likes).where(likes: { merge_request: mr }).pluck(:name).to_sentence
     likes = "<br>Looks good to: <em>#{likes}</em>." if likes.present?
 
-    "Authored by <strong>#{mr.author.name}</strong>#{closed_info}.#{likes}".html_safe
+    "Authored by <strong>#{mr.author.name}</strong> at #{patch.created_at.to_s(:short)}#{closed_info}.#{likes}".html_safe
   end
 
   def search_request?
