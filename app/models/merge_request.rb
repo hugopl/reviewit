@@ -144,7 +144,7 @@ class MergeRequest < ApplicationRecord
     patches.where.not(id: patch.id)
   end
 
-  # FIXME Remove this and implement a watchers list.
+  # FIXME: Remove this and implement a watchers list.
   def people_involved(notification)
     people = User.joins(:comments)
                  .joins('INNER JOIN patches ON patches.id = comments.patch_id')
