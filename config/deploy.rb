@@ -31,6 +31,7 @@ set :user, user
 set :forward_agent, true
 set :sidekiq_pid, 'tmp/pids/sidekiq.pid'
 set :sidekiq_log, 'log/sidekiq.log'
+set :keep_releases, 3
 
 # Shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
 # Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
