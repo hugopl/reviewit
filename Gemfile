@@ -21,6 +21,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'byebug'
+  gem 'foreman'
   gem 'grape_on_rails_routes'
   gem 'haml_lint', require: false
   gem 'mina', require: false

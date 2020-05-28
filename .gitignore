@@ -21,6 +21,7 @@ coverage/*
 /.ruby-version
 .ruby-gemset
 .byebug_history
+*.rdb
 
 /public/packs
 /public/packs-test

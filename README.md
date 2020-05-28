@@ -16,31 +16,18 @@ For the sake of simplicity, the work/review processes is split in two components
 
 ## Installing
 
-You need ruby at least 2.2.2, then install the gem dependencies.
+Reviewit is a rails 5 application, so as there's no docker image or something easier, you need to know how to set up
+a rails 5 application. But if you want to just run it in development mode:
 
-```
-$ bundle install --without development,test
-```
-
-Then create a postgres database called `reviewit` and run:
-
-```
+```Bash
+# Install things.
+$ bundle install
+$ yarn install
+# Setup/Create database.
 $ bin/setup
+# Start it.
+$ bundle exec foreman start
 ```
-
-For more information about database configuration look into Rails documentation and edit the file `config/database.yml`.
-
-Now you need to configure a reverse proxy with unicorn of some other web server do you plan to use, if you just want to
-look at reviewit while waste time configuring [Ngix](http://nginx.org/) and [Unicorn](https://unicorn.bogomips.org/),
-just run:
-
-```
-$ RAILS_ENV=production RAILS_SERVE_STATIC_FILES=1 unicorn_rails
-```
-
-Reviewit! execute git commands using sidekiq, so you need a redis-server running and accessible by Sidekiq, to start sidekiq
-in the development environment, use `bundle exec sidekiq`, if you are using the deploy script sidekiq is automatically started
-by it.
 
 To configure mail delivery options check the file `config/reviewit.yml`.
 
