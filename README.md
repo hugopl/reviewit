@@ -3,6 +3,12 @@
 
 ![Logo](./app/webpacker/images/logo.png)
 
+# Project archived!
+
+This project was used (and still being used, but migrating away) for the last 6 years at the company I work on. It was born because at the time Gitlab was really not good, but things are different now.
+
+This project served well for these years, now it's time to retire.
+
 # Review it!
 
 Review it! is a review tool for git-based projects.
